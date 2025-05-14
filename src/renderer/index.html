@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Check-In App</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Load web client API for browser compatibility -->
+  <script src="web-client.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="checkin">Member Check-In</button>
+      <button class="tab-btn" data-tab="api-explorer">Wix API Explorer</button>
+    </div>
+    
+    <!-- Check-in Tab -->
+    <div id="checkin-tab" class="tab-content active">
+      <h2>Member Check-In</h2>
+      <button id="scan-btn">Scan ID (Read CSV)</button>
+      <div id="scan-result" class="result"></div>
+      <div id="account-info" class="result"></div>
+      <div id="diagnostics-panel"></div>
+    </div>
+    
+    <!-- API Explorer Tab -->
+    <div id="api-explorer-tab" class="tab-content">
+      <h2>Wix API Explorer</h2>
+      <div class="api-explorer-container">
+        <div class="api-config-section">
+          <h3>API Configuration</h3>
+          <div id="api-config-info" class="config-info"></div>
+        </div>
+        
+        <div class="api-test-section">
+          <h3>Test API Endpoints</h3>
+          <div class="endpoint-selector">
+            <label for="endpoint-select">Select Endpoint:</label>
+            <select id="endpoint-select">
+              <option value="">Loading endpoints...</option>
+            </select>
+          </div>
+          
+          <div id="search-params" class="search-params">
+            <div class="param-group">
+              <label for="search-name">Search Name:</label>
+              <input type="text" id="search-name" placeholder="Enter name to search">
+            </div>
+          </div>
+          
+          <button id="test-api-btn">Test API Call</button>
+        </div>
+        
+        <div class="sdk-test-section">
+          <h3>Test Wix JavaScript SDK</h3>
+          <p class="sdk-description">Test the Wix JavaScript SDK with headless client authentication</p>
+          
+          <div class="param-group">
+            <label for="collection-id">Data Collection ID:</label>
+            <input type="text" id="collection-id" value="BannedNames" placeholder="Enter collection ID">
+          </div>
+          
+          <div class="button-group">
+            <button id="test-sdk-btn">Test Wix SDK</button>
+            <button id="test-sdk-simple-btn">Test SDK (Simple)</button>
+            <button id="inspect-sdk-btn">Inspect SDK</button>
+            <button id="test-adapter-btn">Test SDK Adapter</button>
+            <button id="test-compat-adapter-btn">Test Compat Adapter</button>
+          </div>
+        </div>
+        
+        <div class="direct-api-section">
+          <h3>Test Wix Direct API</h3>
+          <p class="api-description">Test the Wix REST API directly with your API key</p>
+          
+          <div class="param-group">
+            <label for="endpoint-type">Endpoint Type:</label>
+            <select id="endpoint-type">
+              <option value="members">Members</option>
+              <option value="contacts">Contacts</option>
+              <option value="collection">Data Collection</option>
+              <option value="search">Member Search</option>
+              <option value="pricing">Pricing Plans</option>
+            </select>
+          </div>
+          
+          <button id="test-direct-api-btn">Test Direct API</button>
+        </div>
+        
+        <div class="api-results-section">
+          <h3>API Results</h3>
+          <div class="results-container">
+            <div class="results-tabs">
+              <button class="result-tab-btn active" data-result-tab="data">Data</button>
+              <button class="result-tab-btn" data-result-tab="mappings">Field Mappings</button>
+            </div>
+            
+            <div id="api-results" class="api-results result-tab-content active" data-tab="data">
+              <div class="placeholder">Run a test API call to see results</div>
+            </div>
+            
+            <div id="field-mappings" class="field-mappings result-tab-content" data-tab="mappings">
+              <div class="placeholder">Run a test API call to see suggested field mappings</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Debug and Help panels -->
+  <div class="utility-buttons">
+    <button id="debug-btn" class="utility-btn">Debug</button>
+    <button id="help-btn" class="utility-btn">Help</button>
+  </div>
+  
+  <!-- Debug Panel -->
+  <div id="debug-panel" class="panel">
+    <div class="panel-header">
+      <h3>Wix SDK Response</h3>
+      <button id="close-debug-btn" class="close-btn">×</button>
+    </div>
+    <div class="panel-content">
+      <pre id="debug-content">No data available yet. Perform a scan to see Wix SDK Response.</pre>
+    </div>
+  </div>
+  
+  <!-- Help Panel -->
+  <div id="help-panel" class="panel">
+    <div class="panel-header">
+      <h3>Help</h3>
+      <button id="close-help-btn" class="close-btn">×</button>
+    </div>
+    <div class="panel-content">
+      <p>Something not working? Try restarting the app:</p>
+      <button id="restart-btn" class="action-btn">Restart</button>
+      <div id="support-info" class="support-info hidden">
+        <p>Did the restart not fix your issues? Contact OMAR MUSTAFA via RADIO if he is on-site OR call 214-734-1748.</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Load web compatibility layer before other scripts -->
+  <script src="web-compatibility.js"></script>
+  <script src="app.js"></script>
+  <script src="checkin.js"></script>
+  <script src="api-explorer.js"></script>
+</body>
+</html>

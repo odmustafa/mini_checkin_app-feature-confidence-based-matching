@@ -1,0 +1,24 @@
+{
+  "name": "mini_checkin_app",
+  "version": "1.0.0",
+  "main": "src/main.js",
+  "description": "Minimal Check-In App using real Scan-ID CSV and Wix API integration",
+  "scripts": {
+    "start": "electron .",
+    "web": "node src/web-server.js",
+    "open": "node src/web-server.js"
+  },
+  "dependencies": {
+    "@wix/crm": "^1.0.423",
+    "@wix/data": "^1.0.222",
+    "@wix/members": "^1.0.270",
+    "@wix/pricing-plans": "^1.0.176",
+    "@wix/sdk": "^1.15.18",
+    "axios": "^1.6.7",
+    "csv-parse": "^5.5.4",
+    "electron": "^28.2.0",
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1"
+  }
+}

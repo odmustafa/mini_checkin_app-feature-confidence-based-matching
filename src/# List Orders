@@ -1,0 +1,38 @@
+# List Orders
+
+Retrieves a list of up to 50 pricing plan orders and details, given the specified sorting and filtering.
+By default, this endpoint will retrieve all orders and return them sorted by createdDate in DESC, descending order.
+sort.fieldName supports endDate and createdDate fields and defaults to ASC, ascending order.
+
+```
+createdDate
+```
+
+
+```
+DESC
+```
+
+
+```
+sort.fieldName
+```
+
+
+```
+endDate
+```
+
+
+```
+createdDate
+```
+
+
+```
+ASC
+```
+
+You can only call this method when authenticated as a Wix app or Wix user [identity](https://dev.wix.com/docs/sdk/articles/getting-started/about-identities).
+[app permissions](https://dev.wix.com/docs/build-apps/develop-your-app/access/authorization/about-permissions)
+This method doesn’t return any custom errors, but may return standard errors. [Learn more about standard Wix errors](https://dev.wix.com/docs/rest/articles/getting-started/errors).

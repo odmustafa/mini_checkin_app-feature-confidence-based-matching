@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wix Pricing Plan Orders Summary</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial, sans-serif; background: #f6f8fa; margin: 0; padding: 0; }
+    .container { max-width: 900px; margin: 32px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #0001; padding: 24px; }
+    h1 { text-align: center; }
+    .order { border-bottom: 1px solid #eee; padding: 16px 0; }
+    .order:last-child { border-bottom: none; }
+    .summary-row { display: flex; flex-wrap: wrap; align-items: center; }
+    .summary-row > div { margin-right: 24px; min-width: 160px; }
+    .expand-btn { cursor: pointer; color: #1976d2; text-decoration: underline; background: none; border: none; font-size: 1em; }
+    .details, .error-details { display: none; margin: 12px 0 0 0; padding: 12px; background: #f0f4f8; border-radius: 4px; }
+    .error { color: #c62828; }
+    .success { color: #388e3c; }
+    .explanation { font-size: 0.98em; color: #333; margin-top: 4px; }
+    .json-view { font-size: 0.95em; background: #222; color: #eee; padding: 8px; border-radius: 4px; overflow-x: auto; }
+    @media (max-width: 600px) {
+      .summary-row { flex-direction: column; }
+      .summary-row > div { margin-bottom: 8px; margin-right: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Wix Pricing Plan Orders Summary</h1>
+    <div id="orders"></div>
+  </div>
+  <script>
+    async function fetchOrderSummary() {
+      try {
+        const resp = await fetch('order_summary.json');
+        if (!resp.ok) throw new Error('Could not load order_summary.json');
+        return await resp.json();
+      } catch (e) {
+        document.getElementById('orders').innerHTML = '<div class="error">Failed to load order summary: ' + e.message + '</div>';
+        return [];
+      }
+    }
+
+    function createOrderHTML(order) {
+      const errorClass = order.contactError ? 'error' : 'success';
+      const errorMsg = order.contactError ? `<span class="error">${order.contactError}</span>` : '<span class="success">OK</span>';
+      const explanation = order.contactErrorExplanation ? `<div class="explanation">${order.contactErrorExplanation}</div>` : '';
+      const diagnosticsBtn = order.contactError ? `<button class="expand-btn" onclick="toggleDetails('error-details-${order.idx}')">Show Error Diagnostics</button>` : '';
+      const detailsBtn = `<button class="expand-btn" onclick="toggleDetails('details-${order.idx}')">Show Full Order JSON</button>`;
+      return `
+        <div class="order">
+          <div class="summary-row">
+            <div><strong>#${order.idx}</strong></div>
+            <div><strong>Order ID:</strong> ${order.id || ''}</div>
+            <div><strong>Plan:</strong> ${order.plan || ''}</div>
+            <div><strong>Status:</strong> ${order.status || ''}</div>
+            <div><strong>Created:</strong> ${order.createdDate || ''}</div>
+          </div>
+          <div class="summary-row">
+            <div><strong>Contact ID:</strong> ${order.contactId || ''}</div>
+            <div><strong>Contact Name:</strong> ${order.contactName || ''}</div>
+            <div><strong>Contact Lookup:</strong> ${errorMsg}</div>
+          </div>
+          ${explanation}
+          ${diagnosticsBtn}
+          <div class="error-details" id="error-details-${order.idx}">
+            <div><strong>Error Message:</strong></div>
+            <div class="json-view">${order.contactError ? order.contactError : ''}</div>
+            <div><strong>Stack/Diagnostics:</strong></div>
+            <div class="json-view">${order.contactDiagnostics ? order.contactDiagnostics : ''}</div>
+          </div>
+          ${detailsBtn}
+          <div class="details" id="details-${order.idx}">
+            <div><strong>Full Order Object:</strong></div>
+            <div class="json-view">${JSON.stringify(order.fullOrder, null, 2)}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function toggleDetails(id) {
+      const el = document.getElementById(id);
+      if (el) el.style.display = el.style.display === 'block' ? 'none' : 'block';
+    }
+
+    async function renderOrders() {
+      const orders = await fetchOrderSummary();
+      if (!orders.length) {
+        document.getElementById('orders').innerHTML = '<div>No orders found.</div>';
+        return;
+      }
+      document.getElementById('orders').innerHTML = orders.map(createOrderHTML).join('');
+    }
+    renderOrders();
+  </script>
+</body>
+</html>
