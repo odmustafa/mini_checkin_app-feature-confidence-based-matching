@@ -20,6 +20,10 @@ out/
 wix.config.json
 wix-config.json
 webhook-config.json
+pubic.pem
+*.pem
+*-config.json
+*config.json
 
 # OS specific files
 .DS_Store
