@@ -18,6 +18,7 @@ out/
 
 # Credentials and sensitive data
 wix.config.json
+wix-config.json
 
 # OS specific files
 .DS_Store
