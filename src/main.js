@@ -8,6 +8,7 @@ const WixSdkTestSimple = require('./services/WixSdkTestSimple');
 const WixSdkInspector = require('./services/WixSdkInspector');
 const WixSdkAdapter = require('./services/WixSdkAdapter');
 const WixSdkCompatAdapter = require('./services/WixSdkCompatAdapter');
+const WebhookService = require('./services/WebhookService');
 
 let mainWindow;
 
@@ -125,4 +126,48 @@ ipcMain.handle('wix-sdk:list-pricing-plan-orders', async (event, { filter }) => 
 ipcMain.handle('app:restart', () => {
   app.relaunch();
   app.exit();
+});
+
+// Webhook Server handlers
+
+// Initialize webhook server
+ipcMain.handle('webhook:initialize', async (event, options = {}) => {
+  return await WebhookService.initialize(options);
+});
+
+// Start webhook server
+ipcMain.handle('webhook:start', async (event, options = {}) => {
+  return await WebhookService.start(options);
+});
+
+// Stop webhook server
+ipcMain.handle('webhook:stop', async () => {
+  return await WebhookService.stop();
+});
+
+// Get webhook server status
+ipcMain.handle('webhook:status', () => {
+  return WebhookService.getStatus();
+});
+
+// Generate new webhook secret
+ipcMain.handle('webhook:generate-secret', () => {
+  return { secret: WebhookService.generateWebhookSecret() };
+});
+
+// Set Wix App ID
+ipcMain.handle('webhook:set-app-id', async (event, appId) => {
+  return await WebhookService.setAppId(appId);
+});
+
+// Set Wix Public Key
+ipcMain.handle('webhook:set-public-key', async (event, publicKey) => {
+  return await WebhookService.setPublicKey(publicKey);
+});
+
+// Set up webhook event forwarding to the renderer process
+WebhookService.on('webhook', (data) => {
+  if (mainWindow) {
+    mainWindow.webContents.send('webhook:event', data);
+  }
 });

@@ -50,3 +50,24 @@ contextBridge.exposeInMainWorld('wixDirect', {
 contextBridge.exposeInMainWorld('electronAPI', {
   restartApp: () => ipcRenderer.invoke('app:restart')
 });
+
+// Expose Webhook Server API functionality
+contextBridge.exposeInMainWorld('webhookAPI', {
+  initialize: (options) => ipcRenderer.invoke('webhook:initialize', options),
+  start: (options) => ipcRenderer.invoke('webhook:start', options),
+  stop: () => ipcRenderer.invoke('webhook:stop'),
+  getStatus: () => ipcRenderer.invoke('webhook:status'),
+  generateSecret: () => ipcRenderer.invoke('webhook:generate-secret'),
+  setAppId: (appId) => ipcRenderer.invoke('webhook:set-app-id', appId),
+  setPublicKey: (publicKey) => ipcRenderer.invoke('webhook:set-public-key', publicKey),
+  onWebhookEvent: (callback) => {
+    // Create a listener for webhook events
+    const listener = (event, data) => callback(data);
+    ipcRenderer.on('webhook:event', listener);
+    
+    // Return a function to remove the listener
+    return () => {
+      ipcRenderer.removeListener('webhook:event', listener);
+    };
+  }
+});

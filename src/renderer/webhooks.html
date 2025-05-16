@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Mini Check-In App - Webhook Management</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Webhook Management</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html">Check-In</a></li>
+                    <li><a href="explorer.html">API Explorer</a></li>
+                    <li><a href="webhooks.html" class="active">Webhooks</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <section id="webhook-status" class="card">
+                <h2>Webhook Server Status</h2>
+                <div id="status-display">
+                    <p>Status: <span id="server-status">Not initialized</span></p>
+                    <p>Port: <span id="server-port">N/A</span></p>
+                    <p>URL: <span id="server-url">N/A</span></p>
+                </div>
+                <div class="server-options">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="use-ngrok" checked>
+                        <label for="use-ngrok">Use ngrok for public URL (recommended)</label>
+                        <p class="help-text">If disabled, the server will only be accessible locally.</p>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button id="initialize-server" class="primary-button">Initialize Server</button>
+                    <button id="start-server" class="success-button" disabled>Start Server</button>
+                    <button id="stop-server" class="danger-button" disabled>Stop Server</button>
+                </div>
+            </section>
+
+            <section id="webhook-config" class="card">
+                <h2>Webhook Configuration</h2>
+                <div class="form-group">
+                    <label for="webhook-secret">Webhook Secret:</label>
+                    <div class="input-group">
+                        <input type="text" id="webhook-secret" readonly>
+                        <button id="generate-secret" class="secondary-button">Generate New Secret</button>
+                        <button id="copy-secret" class="secondary-button">Copy</button>
+                    </div>
+                    <p class="help-text">This secret is used to verify webhook requests from Wix.</p>
+                </div>
+                <div class="form-group">
+                    <label for="webhook-endpoint">Webhook Endpoint:</label>
+                    <div class="input-group">
+                        <input type="text" id="webhook-endpoint" readonly>
+                        <button id="copy-endpoint" class="secondary-button">Copy</button>
+                    </div>
+                    <p class="help-text">Use this URL when configuring webhooks in the Wix Developer Center.</p>
+                </div>
+                
+                <h3>Wix SDK Configuration (Optional)</h3>
+                <p class="help-text">Configure these settings to use the Wix JavaScript SDK for webhook processing.</p>
+                
+                <div class="form-group">
+                    <label for="wix-app-id">Wix App ID:</label>
+                    <div class="input-group">
+                        <input type="text" id="wix-app-id" placeholder="Enter your Wix App ID">
+                        <button id="save-app-id" class="secondary-button">Save</button>
+                    </div>
+                    <p class="help-text">Your Wix App ID from the Wix Developer Center.</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="wix-public-key">Wix Public Key:</label>
+                    <div class="input-group">
+                        <textarea id="wix-public-key" placeholder="Enter your Wix Public Key" rows="5"></textarea>
+                        <button id="save-public-key" class="secondary-button">Save</button>
+                    </div>
+                    <p class="help-text">Your Wix Public Key from the Wix Developer Center (starts with -----BEGIN PUBLIC KEY-----).</p>
+                </div>
+                
+                <div id="sdk-status" class="status-box">
+                    <p>Wix SDK Status: <span id="sdk-status-text">Not configured</span></p>
+                </div>
+            </section>
+
+            <section id="webhook-events" class="card">
+                <h2>Recent Webhook Events</h2>
+                <div class="events-container">
+                    <div id="events-list">
+                        <p class="placeholder-text">No events received yet.</p>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button id="clear-events" class="secondary-button">Clear Events</button>
+                </div>
+            </section>
+
+            <section id="webhook-instructions" class="card">
+                <h2>How to Set Up Wix Webhooks</h2>
+                
+                <div class="instructions-container">
+                    <h3>Option 1: Using the Wix Developer Center (Recommended)</h3>
+                    <ol>
+                        <li>Initialize and start the webhook server above</li>
+                        <li>Copy the Webhook Endpoint URL</li>
+                        <li>Go to the <a href="https://dev.wix.com/api/webhooks" target="_blank">Wix Developer Center</a></li>
+                        <li>Create a new webhook subscription</li>
+                        <li>Paste the Webhook Endpoint URL</li>
+                        <li>Enter the Webhook Secret</li>
+                        <li>Select the events you want to subscribe to (e.g., <code>member/created</code>, <code>member/updated</code>, <code>order/created</code>)</li>
+                        <li>Save the webhook configuration</li>
+                    </ol>
+                </div>
+                
+                <div class="instructions-container">
+                    <h3>Option 2: Using the Wix JavaScript SDK</h3>
+                    <p>If you prefer to manage webhooks programmatically, you can use the Wix JavaScript SDK:</p>
+                    <pre><code>import { webhooks } from '@wix/webhooks';
+
+// Register a webhook
+async function registerWebhook() {
+  try {
+    const result = await webhooks.register({
+      // The webhook endpoint URL from this app
+      endpoint: 'YOUR_WEBHOOK_ENDPOINT_URL',
+      // The webhook secret from this app
+      webhookSecret: 'YOUR_WEBHOOK_SECRET',
+      // The event to subscribe to
+      event: 'member/created'
+    });
+    console.log('Webhook registered:', result);
+    return result;
+  } catch (error) {
+    console.error('Error registering webhook:', error);
+  }
+}</code></pre>
+                </div>
+                
+                <div class="note-box">
+                    <h4>Important Notes:</h4>
+                    <ul>
+                        <li><strong>Public URL Required:</strong> Wix can only send webhooks to publicly accessible URLs. If you're using local-only mode, you'll need to set up port forwarding or use a service like ngrok.</li>
+                        <li><strong>Webhook Secret:</strong> The secret is used to verify that webhook requests are coming from Wix. Always verify the signature in production environments.</li>
+                        <li><strong>Event Types:</strong> Different event types provide different data. Refer to the <a href="https://dev.wix.com/docs/sdk/api-reference/events/events" target="_blank">Wix Events Documentation</a> for details.</li>
+                    </ul>
+                </div>
+                
+                <p>For more information, see the <a href="https://dev.wix.com/docs/sdk/api-reference/events/introduction" target="_blank">Wix Webhooks Documentation</a>.</p>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Mini Check-In App</p>
+        </footer>
+    </div>
+
+    <script src="webhooks.js"></script>
+</body>
+</html>

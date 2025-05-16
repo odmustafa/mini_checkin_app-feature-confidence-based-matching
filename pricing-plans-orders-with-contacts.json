@@ -1,0 +1,1751 @@
+[
+  {
+    "planId": "13d0343d-390b-432a-863e-8e6f6e35bf25",
+    "subscriptionId": "5259cbf4-b2fa-4ad5-a26b-4ffba7a17104",
+    "wixPayOrderId": "87249a61-e30b-4c4a-a4b4-cbb5501d91d5",
+    "buyer": {
+      "memberId": "fcf0bb77-9b4e-4d19-87c8-0ea5f1a6026f",
+      "contactId": "fcf0bb77-9b4e-4d19-87c8-0ea5f1a6026f"
+    },
+    "priceDetails": {
+      "subtotal": "25.00",
+      "discount": "0",
+      "tax": {
+        "name": "Sales Tax",
+        "includedInPrice": false,
+        "rate": "8.25",
+        "amount": "2.06"
+      },
+      "total": "27.06",
+      "planPrice": "25",
+      "currency": "USD",
+      "singlePaymentForDuration": {
+        "count": 1,
+        "unit": "WEEK"
+      }
+    },
+    "pricing": {
+      "singlePaymentForDuration": {
+        "count": 1,
+        "unit": "WEEK"
+      },
+      "prices": [
+        {
+          "duration": {
+            "cycleFrom": 1,
+            "numberOfCycles": 1
+          },
+          "price": {
+            "subtotal": "25.00",
+            "discount": "0",
+            "tax": {
+              "name": "Sales Tax",
+              "includedInPrice": false,
+              "rate": "8.25",
+              "amount": "2.06"
+            },
+            "total": "27.06",
+            "currency": "USD",
+            "fees": [],
+            "proration": "0"
+          }
+        }
+      ]
+    },
+    "type": "ONLINE",
+    "orderMethod": "UNKNOWN",
+    "status": "ENDED",
+    "lastPaymentStatus": "PAID",
+    "startDate": "2025-05-04T07:57:05.058Z",
+    "endDate": "2025-05-12T04:59:59.999Z",
+    "pausePeriods": [],
+    "earliestEndDate": "2025-05-11T07:57:05.058Z",
+    "cycles": [
+      {
+        "index": 1,
+        "startedDate": "2025-05-04T07:57:05.058Z",
+        "endedDate": "2025-05-12T04:59:59.999Z"
+      }
+    ],
+    "planName": "Week Membership",
+    "planDescription": "Week Membership",
+    "planPrice": "25",
+    "formData": {
+      "formId": "9a88f3ae-5b1b-42c4-b07f-0953f34ff002",
+      "submissionId": "db1bb496-fcee-482d-9d4f-4d5ec70be20f",
+      "submissionData": {}
+    },
+    "statusNew": "ENDED",
+    "onEcom": false,
+    "_id": "73a13a2e-034d-4c89-8a5b-6ee80239c8ed",
+    "_createdDate": "2025-05-04T07:57:05.058Z",
+    "_updatedDate": "2025-05-12T05:00:18.323Z"
+  },
+  {
+    "planId": "13d0343d-390b-432a-863e-8e6f6e35bf25",
+    "subscriptionId": "6231c00f-259b-4188-9ec5-900bd709dddb",
+    "wixPayOrderId": "3bca248c-e4fd-4e1d-9600-2411c93a8781",
+    "buyer": {
+      "memberId": "5a3c626b-6c5f-4260-92a8-7fa017e119b5",
+      "contactId": "5a3c626b-6c5f-4260-92a8-7fa017e119b5"
+    },
+    "priceDetails": {
+      "subtotal": "25.00",
+      "discount": "0",
+      "tax": {
+        "name": "Sales Tax",
+        "includedInPrice": false,
+        "rate": "8.25",
+        "amount": "2.06"
+      },
+      "total": "27.06",
+      "planPrice": "25",
+      "currency": "USD",
+      "singlePaymentForDuration": {
+        "count": 1,
+        "unit": "WEEK"
+      }
+    },
+    "pricing": {
+      "singlePaymentForDuration": {
+        "count": 1,
+        "unit": "WEEK"
+      },
+      "prices": [
+        {
+          "duration": {
+            "cycleFrom": 1,
+            "numberOfCycles": 1
+          },
+          "price": {
+            "subtotal": "25.00",
+            "discount": "0",
+            "tax": {
+              "name": "Sales Tax",
+              "includedInPrice": false,
+              "rate": "8.25",
+              "amount": "2.06"
+            },
+            "total": "27.06",
+            "currency": "USD",
+            "fees": [],
+            "proration": "0"
+          }
+        }
+      ]
+    },
+    "type": "ONLINE",
+    "orderMethod": "UNKNOWN",
+    "status": "ENDED",
+    "lastPaymentStatus": "PAID",
+    "startDate": "2025-05-04T07:56:23.014Z",
+    "endDate": "2025-05-12T04:59:59.999Z",
+    "pausePeriods": [],
+    "earliestEndDate": "2025-05-11T07:56:23.014Z",
+    "cycles": [
+      {
+        "index": 1,
+        "startedDate": "2025-05-04T07:56:23.014Z",
+        "endedDate": "2025-05-12T04:59:59.999Z"
+      }
+    ],
+    "planName": "Week Membership",
+    "planDescription": "Week Membership",
+    "planPrice": "25",
+    "formData": {
+      "formId": "9a88f3ae-5b1b-42c4-b07f-0953f34ff002",
+      "submissionId": "8b201539-2bf1-45a9-b463-a57a23490eea",
+      "submissionData": {}
+    },
+    "statusNew": "ENDED",
+    "onEcom": false,
+    "_id": "a8e74c2c-141a-4619-81d0-f098933a8179",
+    "_createdDate": "2025-05-04T07:56:23.014Z",
+    "_updatedDate": "2025-05-12T05:00:12.092Z"
+  },
+  {
+    "planId": "13d0343d-390b-432a-863e-8e6f6e35bf25",
+    "subscriptionId": "29ca6361-24e1-4b62-87df-510a34362aae",
+    "wixPayOrderId": "7dc6a89f-02d0-4ae9-8ac4-c6c1593e60a4",
+    "buyer": {
+      "memberId": "2c968e1b-d309-440e-b3f9-2e4778fdf306",
+      "contactId": "2c968e1b-d309-440e-b3f9-2e4778fdf306"
+    },
+    "priceDetails": {
+      "subtotal": "25.00",
+      "discount": "0",
+      "tax": {
+        "name": "Sales Tax",
+        "includedInPrice": false,
+        "rate": "8.25",
+        "amount": "2.06"
+      },
+      "total": "27.06",
+      "planPrice": "25",
+      "currency": "USD",
+      "singlePaymentForDuration": {
+        "count": 1,
+        "unit": "WEEK"
+      }
+    },
+    "pricing": {
+      "singlePaymentForDuration": {
+        "count": 1,
+        "unit": "WEEK"
+      },
+      "prices": [
+        {
+          "duration": {
+            "cycleFrom": 1,
+            "numberOfCycles": 1
+          },
+          "price": {
+            "subtotal": "25.00",
+            "discount": "0",
+            "tax": {
+              "name": "Sales Tax",
+              "includedInPrice": false,
+              "rate": "8.25",
+              "amount": "2.06"
+            },
+            "total": "27.06",
+            "currency": "USD",
+            "fees": [],
+            "proration": "0"
+          }
+        }
+      ]
+    },
+    "type": "ONLINE",
+    "orderMethod": "UNKNOWN",
+    "status": "ENDED",
+    "lastPaymentStatus": "PAID",
+    "startDate": "2025-05-04T07:56:03.278Z",
+    "endDate": "2025-05-12T04:59:59.999Z",
+    "pausePeriods": [],
+    "earliestEndDate": "2025-05-11T07:56:03.278Z",
+    "cycles": [
+      {
+        "index": 1,
+        "startedDate": "2025-05-04T07:56:03.278Z",
+        "endedDate": "2025-05-12T04:59:59.999Z"
+      }
+    ],
+    "planName": "Week Membership",
+    "planDescription": "Week Membership",
+    "planPrice": "25",
+    "formData": {
+      "formId": "9a88f3ae-5b1b-42c4-b07f-0953f34ff002",
+      "submissionId": "c1980b56-3fc0-4a27-8e4e-f1d9ae121e31",
+      "submissionData": {}
+    },
+    "statusNew": "ENDED",
+    "onEcom": false,
+    "_id": "709af3cf-5937-400b-b55f-7f82f690280a",
+    "_createdDate": "2025-05-04T07:56:03.278Z",
+    "_updatedDate": "2025-05-12T05:00:25.548Z"
+  },
+  {
+    "planId": "13d0343d-390b-432a-863e-8e6f6e35bf25",
+    "subscriptionId": "347548c5-3f11-41d9-82a6-0c3f64626cfd",
+    "wixPayOrderId": "2035008a-ad40-4661-89d4-9fb2da49678b",
+    "buyer": {
+      "memberId": "82c11c79-9ca9-4961-9c15-09f3c26a060d",
+      "contactId": "82c11c79-9ca9-4961-9c15-09f3c26a060d"
+    },
+    "priceDetails": {
+      "subtotal": "25.00",
+      "discount": "0",
+      "tax": {
+        "name": "Sales Tax",
+        "includedInPrice": false,
+        "rate": "8.25",
+        "amount": "2.06"
+      },
+      "total": "27.06",
+      "planPrice": "25",
+      "currency": "USD",
+      "singlePaymentForDuration": {
+        "count": 1,
+        "unit": "WEEK"
+      }
+    },
+    "pricing": {
+      "singlePaymentForDuration": {
+        "count": 1,
+        "unit": "WEEK"
+      },
+      "prices": [
+        {
+          "duration": {
+            "cycleFrom": 1,
+            "numberOfCycles": 1
+          },
+          "price": {
+            "subtotal": "25.00",
+            "discount": "0",
+            "tax": {
+              "name": "Sales Tax",
+              "includedInPrice": false,
+              "rate": "8.25",
+              "amount": "2.06"
+            },
+            "total": "27.06",
+            "currency": "USD",
+            "fees": [],
+            "proration": "0"
+          }
+        }
+      ]
+    },
+    "type": "ONLINE",
+    "orderMethod": "UNKNOWN",
+    "status": "ENDED",
+    "lastPaymentStatus": "PAID",
+    "startDate": "2025-05-04T05:25:15.231Z",
+    "endDate": "2025-05-12T04:59:59.999Z",
+    "pausePeriods": [],
+    "earliestEndDate": "2025-05-11T05:25:15.231Z",
+    "cycles": [
+      {
+        "index": 1,
+        "startedDate": "2025-05-04T05:25:15.231Z",
+        "endedDate": "2025-05-12T04:59:59.999Z"
+      }
+    ],
+    "planName": "Week Membership",
+    "planDescription": "Week Membership",
+    "planPrice": "25",
+    "formData": {
+      "formId": "9a88f3ae-5b1b-42c4-b07f-0953f34ff002",
+      "submissionId": "4189879c-45cd-4f98-b4a4-71938f927ae6",
+      "submissionData": {}
+    },
+    "statusNew": "ENDED",
+    "onEcom": false,
+    "_id": "a0b51dfc-c1df-4f9f-8edf-1763d7789c9f",
+    "_createdDate": "2025-05-04T05:25:15.231Z",
+    "_updatedDate": "2025-05-12T05:00:13.661Z"
+  },
+  {
+    "planId": "73611036-8de9-44a6-8bff-be9147c3fa92",
+    "subscriptionId": "0a3007c5-8baf-4a74-9df7-3d46f0d917c6",
+    "wixPayOrderId": "411f3aa8-0de9-4ab8-8e89-4d93d467a30c",
+    "buyer": {
+      "memberId": "d85ac536-3c08-4fce-88a9-29781c166cdc",
+      "contactId": "d85ac536-3c08-4fce-88a9-29781c166cdc"
+    },
+    "priceDetails": {
+      "subtotal": "50.00",
+      "discount": "0",
+      "tax": {
+        "name": "Sales Tax",
+        "includedInPrice": false,
+        "rate": "8.25",
+        "amount": "4.13"
+      },
+      "total": "54.13",
+      "planPrice": "50",
+      "currency": "USD",
+      "singlePaymentForDuration": {
+        "count": 1,
+        "unit": "MONTH"
+      }
+    },
+    "pricing": {
+      "singlePaymentForDuration": {
+        "count": 1,
+        "unit": "MONTH"
+      },
+      "prices": [
+        {
+          "duration": {
+            "cycleFrom": 1,
+            "numberOfCycles": 1
+          },
+          "price": {
+            "subtotal": "50.00",
+            "discount": "0",
+            "tax": {
+              "name": "Sales Tax",
+              "includedInPrice": false,
+              "rate": "8.25",
+              "amount": "4.13"
+            },
+            "total": "54.13",
+            "currency": "USD",
+            "fees": [],
+            "proration": "0"
+          }
+        }
+      ]
+    },
+    "type": "ONLINE",
+    "orderMethod": "UNKNOWN",
+    "status": "ACTIVE",
+    "lastPaymentStatus": "PAID",
+    "startDate": "2025-05-03T21:23:43.221Z",
+    "endDate": "2025-06-04T04:59:59.999Z",
+    "pausePeriods": [],
+    "earliestEndDate": "2025-06-03T21:23:43.221Z",
+    "currentCycle": {
+      "index": 1,
+      "startedDate": "2025-05-03T21:23:43.221Z",
+      "endedDate": "2025-06-04T04:59:59.999Z"
+    },
+    "cycles": [
+      {
+        "index": 1,
+        "startedDate": "2025-05-03T21:23:43.221Z",
+        "endedDate": "2025-06-04T04:59:59.999Z"
+      }
+    ],
+    "planName": "Month Membership",
+    "planDescription": "Better than having to purchase multiple \"Week\" memberships, if you come more than once a month.",
+    "planPrice": "50",
+    "formData": {
+      "formId": "9a88f3ae-5b1b-42c4-b07f-0953f34ff002",
+      "submissionId": "bd1202a4-96de-4edf-aebd-8dc1913a2a93",
+      "submissionData": {}
+    },
+    "statusNew": "ACTIVE",
+    "onEcom": false,
+    "_id": "d2599711-7bff-4cd1-a007-c46e1e884997",
+    "_createdDate": "2025-05-03T21:23:43.221Z",
+    "_updatedDate": "2025-05-03T21:28:10.460Z"
+  },
+  {
+    "planId": "13d0343d-390b-432a-863e-8e6f6e35bf25",
+    "subscriptionId": "3e075193-368c-407b-984b-69596198e63b",
+    "wixPayOrderId": "6259e4b3-65db-4403-92d9-3f89a004e582",
+    "buyer": {
+      "memberId": "e9ffac77-8ec7-4615-b629-ffa12a3c5812",
+      "contactId": "e9ffac77-8ec7-4615-b629-ffa12a3c5812"
+    },
+    "priceDetails": {
+      "subtotal": "25.00",
+      "discount": "0",
+      "tax": {
+        "name": "Sales Tax",
+        "includedInPrice": false,
+        "rate": "8.25",
+        "amount": "2.06"
+      },
+      "total": "27.06",
+      "planPrice": "25",
+      "currency": "USD",
+      "singlePaymentForDuration": {
+        "count": 1,
+        "unit": "WEEK"
+      }
+    },
+    "pricing": {
+      "singlePaymentForDuration": {
+        "count": 1,
+        "unit": "WEEK"
+      },
+      "prices": [
+        {
+          "duration": {
+            "cycleFrom": 1,
+            "numberOfCycles": 1
+          },
+          "price": {
+            "subtotal": "25.00",
+            "discount": "0",
+            "tax": {
+              "name": "Sales Tax",
+              "includedInPrice": false,
+              "rate": "8.25",
+              "amount": "2.06"
+            },
+            "total": "27.06",
+            "currency": "USD",
+            "fees": [],
+            "proration": "0"
+          }
+        }
+      ]
+    },
+    "type": "ONLINE",
+    "orderMethod": "UNKNOWN",
+    "status": "ENDED",
+    "lastPaymentStatus": "PAID",
+    "startDate": "2025-05-03T18:35:17.404Z",
+    "endDate": "2025-05-11T04:59:59.999Z",
+    "pausePeriods": [],
+    "earliestEndDate": "2025-05-10T18:35:17.404Z",
+    "cycles": [
+      {
+        "index": 1,
+        "startedDate": "2025-05-03T18:35:17.404Z",
+        "endedDate": "2025-05-11T04:59:59.999Z"
+      }
+    ],
+    "planName": "Week Membership",
+    "planDescription": "Week Membership",
+    "planPrice": "25",
+    "formData": {
+      "formId": "9a88f3ae-5b1b-42c4-b07f-0953f34ff002",
+      "submissionId": "5dbf07c3-6047-4c86-8a3e-0bb78bba63b5",
+      "submissionData": {}
+    },
+    "statusNew": "ENDED",
+    "onEcom": false,
+    "_id": "7b723e54-ee22-4314-9ab4-18345e42a632",
+    "_createdDate": "2025-05-03T18:35:17.404Z",
+    "_updatedDate": "2025-05-11T05:00:24.853Z"
+  },
+  {
+    "planId": "be6bcdcf-55f2-4f45-a844-7a1c7dfa1985",
+    "subscriptionId": "49e74dfe-fb1d-4117-9074-494daaeb7499",
+    "buyer": {
+      "memberId": "189373a3-03dd-4316-bae6-ca7dd0b8cfed",
+      "contactId": "189373a3-03dd-4316-bae6-ca7dd0b8cfed"
+    },
+    "priceDetails": {
+      "subtotal": "0.00",
+      "discount": "0",
+      "tax": {
+        "name": "Sales Tax",
+        "includedInPrice": false,
+        "rate": "8.25",
+        "amount": "0"
+      },
+      "total": "0.00",
+      "planPrice": "0",
+      "currency": "USD",
+      "singlePaymentUnlimited": true
+    },
+    "pricing": {
+      "singlePaymentUnlimited": true,
+      "prices": [
+        {
+          "duration": {
+            "cycleFrom": 1,
+            "numberOfCycles": 1
+          },
+          "price": {
+            "subtotal": "0.00",
+            "discount": "0",
+            "tax": {
+              "name": "Sales Tax",
+              "includedInPrice": false,
+              "rate": "8.25",
+              "amount": "0"
+            },
+            "total": "0.00",
+            "currency": "USD",
+            "fees": [],
+            "proration": "0"
+          }
+        }
+      ]
+    },
+    "type": "OFFLINE",
+    "orderMethod": "UNKNOWN",
+    "status": "ACTIVE",
+    "lastPaymentStatus": "NOT_APPLICABLE",
+    "startDate": "2025-05-04T05:00:00Z",
+    "pausePeriods": [],
+    "currentCycle": {
+      "index": 1,
+      "startedDate": "2025-05-04T05:00:00Z"
+    },
+    "cycles": [
+      {
+        "index": 1,
+        "startedDate": "2025-05-04T05:00:00Z"
+      }
+    ],
+    "planName": "Legacy Membership",
+    "planDescription": "Legacy Membership at Tribute Gallery, a special tier for select individuals, granting unlimited access to our vibrant music community.",
+    "planPrice": "0",
+    "formData": {
+      "formId": "9a88f3ae-5b1b-42c4-b07f-0953f34ff002",
+      "submissionData": {}
+    },
+    "statusNew": "ACTIVE",
+    "onEcom": false,
+    "_id": "09f6963f-b3ae-429b-ad57-7ceb209bcaf8",
+    "_createdDate": "2025-05-03T06:39:55.871Z",
+    "_updatedDate": "2025-05-04T05:00:12.207Z"
+  },
+  {
+    "planId": "be6bcdcf-55f2-4f45-a844-7a1c7dfa1985",
+    "subscriptionId": "6712426d-cfcb-4ab0-ba32-7a2860cb6046",
+    "buyer": {
+      "memberId": "f4a0a54d-5557-487f-892e-1932291d354c",
+      "contactId": "f4a0a54d-5557-487f-892e-1932291d354c"
+    },
+    "priceDetails": {
+      "subtotal": "0.00",
+      "discount": "0",
+      "tax": {
+        "name": "Sales Tax",
+        "includedInPrice": false,
+        "rate": "8.25",
+        "amount": "0"
+      },
+      "total": "0.00",
+      "planPrice": "0",
+      "currency": "USD",
+      "singlePaymentUnlimited": true
+    },
+    "pricing": {
+      "singlePaymentUnlimited": true,
+      "prices": [
+        {
+          "duration": {
+            "cycleFrom": 1,
+            "numberOfCycles": 1
+          },
+          "price": {
+            "subtotal": "0.00",
+            "discount": "0",
+            "tax": {
+              "name": "Sales Tax",
+              "includedInPrice": false,
+              "rate": "8.25",
+              "amount": "0"
+            },
+            "total": "0.00",
+            "currency": "USD",
+            "fees": [],
+            "proration": "0"
+          }
+        }
+      ]
+    },
+    "type": "OFFLINE",
+    "orderMethod": "UNKNOWN",
+    "status": "ACTIVE",
+    "lastPaymentStatus": "NOT_APPLICABLE",
+    "startDate": "2025-05-04T05:00:00Z",
+    "pausePeriods": [],
+    "currentCycle": {
+      "index": 1,
+      "startedDate": "2025-05-04T05:00:00Z"
+    },
+    "cycles": [
+      {
+        "index": 1,
+        "startedDate": "2025-05-04T05:00:00Z"
+      }
+    ],
+    "planName": "Legacy Membership",
+    "planDescription": "Legacy Membership at Tribute Gallery, a special tier for select individuals, granting unlimited access to our vibrant music community.",
+    "planPrice": "0",
+    "formData": {
+      "formId": "9a88f3ae-5b1b-42c4-b07f-0953f34ff002",
+      "submissionData": {}
+    },
+    "statusNew": "ACTIVE",
+    "onEcom": false,
+    "_id": "808a19a7-9107-4f99-8714-856f7c5ece2f",
+    "_createdDate": "2025-05-03T06:39:26.262Z",
+    "_updatedDate": "2025-05-04T05:00:09.730Z"
+  },
+  {
+    "planId": "13d0343d-390b-432a-863e-8e6f6e35bf25",
+    "subscriptionId": "b7f056c6-e1f5-409d-a8a1-57712182e9e0",
+    "wixPayOrderId": "d47a01c1-1f9f-4b8d-ac3a-47b72df5f365",
+    "buyer": {
+      "memberId": "b8fffda7-056d-4647-9529-59669c56949b",
+      "contactId": "b8fffda7-056d-4647-9529-59669c56949b"
+    },
+    "priceDetails": {
+      "subtotal": "25.00",
+      "discount": "0",
+      "tax": {
+        "name": "Sales Tax",
+        "includedInPrice": false,
+        "rate": "8.25",
+        "amount": "2.06"
+      },
+      "total": "27.06",
+      "planPrice": "25",
+      "currency": "USD",
+      "singlePaymentForDuration": {
+        "count": 1,
+        "unit": "WEEK"
+      }
+    },
+    "pricing": {
+      "singlePaymentForDuration": {
+        "count": 1,
+        "unit": "WEEK"
+      },
+      "prices": [
+        {
+          "duration": {
+            "cycleFrom": 1,
+            "numberOfCycles": 1
+          },
+          "price": {
+            "subtotal": "25.00",
+            "discount": "0",
+            "tax": {
+              "name": "Sales Tax",
+              "includedInPrice": false,
+              "rate": "8.25",
+              "amount": "2.06"
+            },
+            "total": "27.06",
+            "currency": "USD",
+            "fees": [],
+            "proration": "0"
+          }
+        }
+      ]
+    },
+    "type": "OFFLINE",
+    "orderMethod": "UNKNOWN",
+    "status": "ENDED",
+    "lastPaymentStatus": "PAID",
+    "startDate": "2025-05-01T14:02:28.067Z",
+    "endDate": "2025-05-09T04:59:59.999Z",
+    "pausePeriods": [],
+    "earliestEndDate": "2025-05-08T14:02:28.067Z",
+    "cycles": [
+      {
+        "index": 1,
+        "startedDate": "2025-05-01T14:02:28.067Z",
+        "endedDate": "2025-05-09T04:59:59.999Z"
+      }
+    ],
+    "planName": "Week Membership",
+    "planDescription": "Week Membership",
+    "planPrice": "25",
+    "formData": {
+      "formId": "9a88f3ae-5b1b-42c4-b07f-0953f34ff002",
+      "submissionData": {}
+    },
+    "statusNew": "ENDED",
+    "onEcom": false,
+    "_id": "59252d28-cc08-48a6-8b20-0470870adee7",
+    "_createdDate": "2025-05-01T14:02:42.779Z",
+    "_updatedDate": "2025-05-09T05:00:17.143Z"
+  },
+  {
+    "planId": "73611036-8de9-44a6-8bff-be9147c3fa92",
+    "subscriptionId": "e067f61e-92bd-4e2d-91d3-41b52307db92",
+    "wixPayOrderId": "f16ee335-f192-43a5-8eb6-a4a6ef6cf475",
+    "buyer": {
+      "memberId": "821c637e-6380-4533-98a0-9fe298a0d536",
+      "contactId": "821c637e-6380-4533-98a0-9fe298a0d536"
+    },
+    "priceDetails": {
+      "subtotal": "50.00",
+      "discount": "0",
+      "tax": {
+        "name": "Sales Tax",
+        "includedInPrice": false,
+        "rate": "8.25",
+        "amount": "4.13"
+      },
+      "total": "54.13",
+      "planPrice": "50",
+      "currency": "USD",
+      "singlePaymentForDuration": {
+        "count": 1,
+        "unit": "MONTH"
+      }
+    },
+    "pricing": {
+      "singlePaymentForDuration": {
+        "count": 1,
+        "unit": "MONTH"
+      },
+      "prices": [
+        {
+          "duration": {
+            "cycleFrom": 1,
+            "numberOfCycles": 1
+          },
+          "price": {
+            "subtotal": "50.00",
+            "discount": "0",
+            "tax": {
+              "name": "Sales Tax",
+              "includedInPrice": false,
+              "rate": "8.25",
+              "amount": "4.13"
+            },
+            "total": "54.13",
+            "currency": "USD",
+            "fees": [],
+            "proration": "0"
+          }
+        }
+      ]
+    },
+    "type": "OFFLINE",
+    "orderMethod": "UNKNOWN",
+    "status": "ACTIVE",
+    "lastPaymentStatus": "PAID",
+    "startDate": "2025-04-27T23:48:29.047Z",
+    "endDate": "2025-05-28T04:59:59.999Z",
+    "pausePeriods": [],
+    "earliestEndDate": "2025-05-27T23:48:29.047Z",
+    "currentCycle": {
+      "index": 1,
+      "startedDate": "2025-04-27T23:48:29.047Z",
+      "endedDate": "2025-05-28T04:59:59.999Z"
+    },
+    "cycles": [
+      {
+        "index": 1,
+        "startedDate": "2025-04-27T23:48:29.047Z",
+        "endedDate": "2025-05-28T04:59:59.999Z"
+      }
+    ],
+    "planName": "Month Membership",
+    "planDescription": "Better than having to purchase multiple \"Week\" memberships, if you come more than once a month.",
+    "planPrice": "50",
+    "formData": {
+      "formId": "9a88f3ae-5b1b-42c4-b07f-0953f34ff002",
+      "submissionData": {}
+    },
+    "statusNew": "ACTIVE",
+    "onEcom": false,
+    "_id": "c5c62c6d-e0a8-4fc0-8448-f80aab3de58d",
+    "_createdDate": "2025-04-27T23:48:50.977Z",
+    "_updatedDate": "2025-04-27T23:48:52.365Z"
+  },
+  {
+    "planId": "13d0343d-390b-432a-863e-8e6f6e35bf25",
+    "subscriptionId": "d8dacb3b-ab48-4c9e-8f08-7fcca1dd8399",
+    "wixPayOrderId": "ee1487c0-3cbb-4c70-bc1b-f4d2ade5041c",
+    "buyer": {
+      "memberId": "a843afff-3dba-4a54-b393-7fc3dfe8f837",
+      "contactId": "a843afff-3dba-4a54-b393-7fc3dfe8f837"
+    },
+    "priceDetails": {
+      "subtotal": "25.00",
+      "discount": "0",
+      "tax": {
+        "name": "Sales Tax",
+        "includedInPrice": false,
+        "rate": "8.25",
+        "amount": "2.06"
+      },
+      "total": "27.06",
+      "planPrice": "25",
+      "currency": "USD",
+      "singlePaymentForDuration": {
+        "count": 1,
+        "unit": "WEEK"
+      }
+    },
+    "pricing": {
+      "singlePaymentForDuration": {
+        "count": 1,
+        "unit": "WEEK"
+      },
+      "prices": [
+        {
+          "duration": {
+            "cycleFrom": 1,
+            "numberOfCycles": 1
+          },
+          "price": {
+            "subtotal": "25.00",
+            "discount": "0",
+            "tax": {
+              "name": "Sales Tax",
+              "includedInPrice": false,
+              "rate": "8.25",
+              "amount": "2.06"
+            },
+            "total": "27.06",
+            "currency": "USD",
+            "fees": [],
+            "proration": "0"
+          }
+        }
+      ]
+    },
+    "type": "OFFLINE",
+    "orderMethod": "UNKNOWN",
+    "status": "ENDED",
+    "lastPaymentStatus": "PAID",
+    "startDate": "2025-04-27T23:38:42.991Z",
+    "endDate": "2025-05-05T04:59:59.999Z",
+    "pausePeriods": [],
+    "earliestEndDate": "2025-05-04T23:38:42.991Z",
+    "cycles": [
+      {
+        "index": 1,
+        "startedDate": "2025-04-27T23:38:42.991Z",
+        "endedDate": "2025-05-05T04:59:59.999Z"
+      }
+    ],
+    "planName": "Week Membership",
+    "planDescription": "Week Membership",
+    "planPrice": "25",
+    "formData": {
+      "formId": "9a88f3ae-5b1b-42c4-b07f-0953f34ff002",
+      "submissionData": {}
+    },
+    "statusNew": "ENDED",
+    "onEcom": false,
+    "_id": "9a6cd685-4539-441a-a163-b88e2a632d5e",
+    "_createdDate": "2025-04-27T23:38:59.765Z",
+    "_updatedDate": "2025-05-05T05:00:11.911Z"
+  },
+  {
+    "planId": "be6bcdcf-55f2-4f45-a844-7a1c7dfa1985",
+    "subscriptionId": "945c3649-be04-4dc1-8aca-0951df1387af",
+    "buyer": {
+      "memberId": "2542d31b-aa74-4edf-973d-f72dda4e0b72",
+      "contactId": "2542d31b-aa74-4edf-973d-f72dda4e0b72"
+    },
+    "priceDetails": {
+      "subtotal": "0.00",
+      "discount": "0",
+      "tax": {
+        "name": "Sales Tax",
+        "includedInPrice": true,
+        "rate": "8.25",
+        "amount": "0"
+      },
+      "total": "0.00",
+      "planPrice": "0",
+      "currency": "USD",
+      "singlePaymentUnlimited": true
+    },
+    "pricing": {
+      "singlePaymentUnlimited": true,
+      "prices": [
+        {
+          "duration": {
+            "cycleFrom": 1,
+            "numberOfCycles": 1
+          },
+          "price": {
+            "subtotal": "0.00",
+            "discount": "0",
+            "tax": {
+              "name": "Sales Tax",
+              "includedInPrice": true,
+              "rate": "8.25",
+              "amount": "0"
+            },
+            "total": "0.00",
+            "currency": "USD",
+            "fees": [],
+            "proration": "0"
+          }
+        }
+      ]
+    },
+    "type": "OFFLINE",
+    "orderMethod": "UNKNOWN",
+    "status": "ACTIVE",
+    "lastPaymentStatus": "NOT_APPLICABLE",
+    "startDate": "2025-04-08T06:46:04.098Z",
+    "pausePeriods": [],
+    "currentCycle": {
+      "index": 1,
+      "startedDate": "2025-04-08T06:46:04.098Z"
+    },
+    "cycles": [
+      {
+        "index": 1,
+        "startedDate": "2025-04-08T06:46:04.098Z"
+      }
+    ],
+    "planName": "Legacy Membership",
+    "planDescription": "Legacy Membership at Tribute Gallery, a special tier for select individuals, granting unlimited access to our vibrant music community.",
+    "planPrice": "0",
+    "formData": {
+      "formId": "9a88f3ae-5b1b-42c4-b07f-0953f34ff002",
+      "submissionData": {}
+    },
+    "statusNew": "ACTIVE",
+    "onEcom": false,
+    "_id": "763ba689-7f2a-4cf3-be65-697514d83004",
+    "_createdDate": "2025-04-08T06:46:15.773Z",
+    "_updatedDate": "2025-04-08T06:46:16.677Z"
+  },
+  {
+    "planId": "be6bcdcf-55f2-4f45-a844-7a1c7dfa1985",
+    "subscriptionId": "481b4df8-2f20-4d3e-99d7-d19c71b7bcc2",
+    "buyer": {
+      "memberId": "2542d31b-aa74-4edf-973d-f72dda4e0b72",
+      "contactId": "2542d31b-aa74-4edf-973d-f72dda4e0b72"
+    },
+    "priceDetails": {
+      "subtotal": "0.00",
+      "discount": "0",
+      "tax": {
+        "name": "Sales Tax",
+        "includedInPrice": true,
+        "rate": "8.25",
+        "amount": "0"
+      },
+      "total": "0.00",
+      "planPrice": "0",
+      "currency": "USD",
+      "singlePaymentUnlimited": true
+    },
+    "pricing": {
+      "singlePaymentUnlimited": true,
+      "prices": [
+        {
+          "duration": {
+            "cycleFrom": 1,
+            "numberOfCycles": 1
+          },
+          "price": {
+            "subtotal": "0.00",
+            "discount": "0",
+            "tax": {
+              "name": "Sales Tax",
+              "includedInPrice": true,
+              "rate": "8.25",
+              "amount": "0"
+            },
+            "total": "0.00",
+            "currency": "USD",
+            "fees": [],
+            "proration": "0"
+          }
+        }
+      ]
+    },
+    "type": "OFFLINE",
+    "orderMethod": "UNKNOWN",
+    "status": "CANCELED",
+    "cancellation": {
+      "cause": "OWNER_ACTION",
+      "effectiveAt": "IMMEDIATELY"
+    },
+    "lastPaymentStatus": "NOT_APPLICABLE",
+    "startDate": "2025-04-08T06:12:09.482Z",
+    "endDate": "2025-04-08T06:45:40.027Z",
+    "pausePeriods": [],
+    "cycles": [
+      {
+        "index": 1,
+        "startedDate": "2025-04-08T06:12:09.482Z",
+        "endedDate": "2025-04-08T06:45:40.027Z"
+      }
+    ],
+    "planName": "Legacy Membership",
+    "planDescription": "Legacy Membership at Tribute Gallery, a special tier for select individuals, granting unlimited access to our vibrant music community.",
+    "planPrice": "0",
+    "formData": {
+      "formId": "9a88f3ae-5b1b-42c4-b07f-0953f34ff002",
+      "submissionData": {}
+    },
+    "statusNew": "CANCELED",
+    "onEcom": false,
+    "_id": "4f9caff1-a731-4b02-9ffa-0b304edaccee",
+    "_createdDate": "2025-04-08T06:12:23.812Z",
+    "_updatedDate": "2025-04-08T06:45:40.452Z"
+  },
+  {
+    "planId": "be6bcdcf-55f2-4f45-a844-7a1c7dfa1985",
+    "subscriptionId": "1d01394e-81d4-432a-835f-40888b54acf2",
+    "buyer": {
+      "memberId": "44f217de-93f1-453a-adb8-90bb1a0e740f",
+      "contactId": "44f217de-93f1-453a-adb8-90bb1a0e740f"
+    },
+    "priceDetails": {
+      "subtotal": "0.00",
+      "discount": "0",
+      "tax": {
+        "name": "Sales Tax",
+        "includedInPrice": true,
+        "rate": "8.25",
+        "amount": "0"
+      },
+      "total": "0.00",
+      "planPrice": "0",
+      "currency": "USD",
+      "singlePaymentUnlimited": true
+    },
+    "pricing": {
+      "singlePaymentUnlimited": true,
+      "prices": [
+        {
+          "duration": {
+            "cycleFrom": 1,
+            "numberOfCycles": 1
+          },
+          "price": {
+            "subtotal": "0.00",
+            "discount": "0",
+            "tax": {
+              "name": "Sales Tax",
+              "includedInPrice": true,
+              "rate": "8.25",
+              "amount": "0"
+            },
+            "total": "0.00",
+            "currency": "USD",
+            "fees": [],
+            "proration": "0"
+          }
+        }
+      ]
+    },
+    "type": "OFFLINE",
+    "orderMethod": "UNKNOWN",
+    "status": "ACTIVE",
+    "lastPaymentStatus": "NOT_APPLICABLE",
+    "startDate": "2025-04-05T22:30:47.883Z",
+    "pausePeriods": [],
+    "currentCycle": {
+      "index": 1,
+      "startedDate": "2025-04-05T22:30:47.883Z"
+    },
+    "cycles": [
+      {
+        "index": 1,
+        "startedDate": "2025-04-05T22:30:47.883Z"
+      }
+    ],
+    "planName": "Legacy Membership",
+    "planDescription": "Legacy Membership at Tribute Gallery, a special tier for select individuals, granting unlimited access to our vibrant music community.",
+    "planPrice": "0",
+    "formData": {
+      "formId": "9a88f3ae-5b1b-42c4-b07f-0953f34ff002",
+      "submissionData": {}
+    },
+    "statusNew": "ACTIVE",
+    "onEcom": false,
+    "_id": "79a3fe90-6c34-41a1-a58f-00b668ff15c1",
+    "_createdDate": "2025-04-05T22:30:55.172Z",
+    "_updatedDate": "2025-04-05T22:30:56.084Z"
+  },
+  {
+    "planId": "73611036-8de9-44a6-8bff-be9147c3fa92",
+    "subscriptionId": "3d18a97b-5d66-4984-89c4-34da3c28481f",
+    "wixPayOrderId": "d56e5201-c31a-49ba-87b7-fcc987250d68",
+    "buyer": {
+      "memberId": "821c637e-6380-4533-98a0-9fe298a0d536",
+      "contactId": "821c637e-6380-4533-98a0-9fe298a0d536"
+    },
+    "priceDetails": {
+      "subtotal": "46.19",
+      "discount": "0",
+      "tax": {
+        "name": "Sales Tax",
+        "includedInPrice": true,
+        "rate": "8.25",
+        "amount": "3.81"
+      },
+      "total": "50.00",
+      "planPrice": "50",
+      "currency": "USD",
+      "singlePaymentForDuration": {
+        "count": 1,
+        "unit": "MONTH"
+      }
+    },
+    "pricing": {
+      "singlePaymentForDuration": {
+        "count": 1,
+        "unit": "MONTH"
+      },
+      "prices": [
+        {
+          "duration": {
+            "cycleFrom": 1,
+            "numberOfCycles": 1
+          },
+          "price": {
+            "subtotal": "46.19",
+            "discount": "0",
+            "tax": {
+              "name": "Sales Tax",
+              "includedInPrice": true,
+              "rate": "8.25",
+              "amount": "3.81"
+            },
+            "total": "50.00",
+            "currency": "USD",
+            "fees": [],
+            "proration": "0"
+          }
+        }
+      ]
+    },
+    "type": "OFFLINE",
+    "orderMethod": "UNKNOWN",
+    "status": "ENDED",
+    "lastPaymentStatus": "PAID",
+    "startDate": "2025-04-05T20:22:00.456Z",
+    "endDate": "2025-05-06T04:59:59.999Z",
+    "pausePeriods": [],
+    "earliestEndDate": "2025-05-05T20:22:00.456Z",
+    "cycles": [
+      {
+        "index": 1,
+        "startedDate": "2025-04-05T20:22:00.456Z",
+        "endedDate": "2025-05-06T04:59:59.999Z"
+      }
+    ],
+    "planName": "Month Membership",
+    "planDescription": "Better than having to purchase multiple \"Week\" memberships, if you come more than once a month.",
+    "planPrice": "50",
+    "formData": {
+      "formId": "9a88f3ae-5b1b-42c4-b07f-0953f34ff002",
+      "submissionData": {}
+    },
+    "statusNew": "ENDED",
+    "onEcom": false,
+    "_id": "9df29d23-3b92-419f-b2c7-d9663e3c2c5f",
+    "_createdDate": "2025-04-05T20:22:08.230Z",
+    "_updatedDate": "2025-05-06T05:00:09.694Z"
+  },
+  {
+    "planId": "13d0343d-390b-432a-863e-8e6f6e35bf25",
+    "subscriptionId": "3d153b23-531b-495e-9e29-fe1b51295a20",
+    "wixPayOrderId": "3b9cd99f-b7b2-4b3a-bae7-53f53497ea44",
+    "buyer": {
+      "memberId": "821c637e-6380-4533-98a0-9fe298a0d536",
+      "contactId": "821c637e-6380-4533-98a0-9fe298a0d536"
+    },
+    "priceDetails": {
+      "subtotal": "23.09",
+      "discount": "0",
+      "tax": {
+        "name": "Sales Tax",
+        "includedInPrice": true,
+        "rate": "8.25",
+        "amount": "1.91"
+      },
+      "total": "25.00",
+      "planPrice": "25",
+      "currency": "USD",
+      "singlePaymentForDuration": {
+        "count": 1,
+        "unit": "WEEK"
+      }
+    },
+    "pricing": {
+      "singlePaymentForDuration": {
+        "count": 1,
+        "unit": "WEEK"
+      },
+      "prices": [
+        {
+          "duration": {
+            "cycleFrom": 1,
+            "numberOfCycles": 1
+          },
+          "price": {
+            "subtotal": "23.09",
+            "discount": "0",
+            "tax": {
+              "name": "Sales Tax",
+              "includedInPrice": true,
+              "rate": "8.25",
+              "amount": "1.91"
+            },
+            "total": "25.00",
+            "currency": "USD",
+            "fees": [],
+            "proration": "0"
+          }
+        }
+      ]
+    },
+    "type": "OFFLINE",
+    "orderMethod": "UNKNOWN",
+    "status": "CANCELED",
+    "cancellation": {
+      "cause": "OWNER_ACTION",
+      "effectiveAt": "IMMEDIATELY"
+    },
+    "lastPaymentStatus": "PAID",
+    "startDate": "2025-04-05T20:19:36.484Z",
+    "endDate": "2025-04-05T20:21:14.719Z",
+    "pausePeriods": [],
+    "earliestEndDate": "2025-04-12T20:19:36.484Z",
+    "cycles": [
+      {
+        "index": 1,
+        "startedDate": "2025-04-05T20:19:36.484Z",
+        "endedDate": "2025-04-05T20:21:14.719Z"
+      }
+    ],
+    "planName": "Week Membership",
+    "planDescription": "Week Membership",
+    "planPrice": "25",
+    "formData": {
+      "formId": "9a88f3ae-5b1b-42c4-b07f-0953f34ff002",
+      "submissionData": {}
+    },
+    "statusNew": "CANCELED",
+    "onEcom": false,
+    "_id": "374835fb-f5e2-480e-9fe6-a866ee43ecb8",
+    "_createdDate": "2025-04-05T20:19:59.870Z",
+    "_updatedDate": "2025-04-05T20:21:15.416Z"
+  },
+  {
+    "planId": "be6bcdcf-55f2-4f45-a844-7a1c7dfa1985",
+    "subscriptionId": "5a67599b-497d-4d77-ba97-5b89742f9b36",
+    "buyer": {
+      "memberId": "777865d1-5e7c-4242-88a1-fc562176fd50",
+      "contactId": "777865d1-5e7c-4242-88a1-fc562176fd50"
+    },
+    "priceDetails": {
+      "subtotal": "0.00",
+      "discount": "0",
+      "tax": {
+        "name": "Sales Tax",
+        "includedInPrice": true,
+        "rate": "8.25",
+        "amount": "0"
+      },
+      "total": "0.00",
+      "planPrice": "0",
+      "currency": "USD",
+      "singlePaymentUnlimited": true
+    },
+    "pricing": {
+      "singlePaymentUnlimited": true,
+      "prices": [
+        {
+          "duration": {
+            "cycleFrom": 1,
+            "numberOfCycles": 1
+          },
+          "price": {
+            "subtotal": "0.00",
+            "discount": "0",
+            "tax": {
+              "name": "Sales Tax",
+              "includedInPrice": true,
+              "rate": "8.25",
+              "amount": "0"
+            },
+            "total": "0.00",
+            "currency": "USD",
+            "fees": [],
+            "proration": "0"
+          }
+        }
+      ]
+    },
+    "type": "OFFLINE",
+    "orderMethod": "UNKNOWN",
+    "status": "ACTIVE",
+    "lastPaymentStatus": "NOT_APPLICABLE",
+    "startDate": "2025-04-05T20:17:17.037Z",
+    "pausePeriods": [],
+    "currentCycle": {
+      "index": 1,
+      "startedDate": "2025-04-05T20:17:17.037Z"
+    },
+    "cycles": [
+      {
+        "index": 1,
+        "startedDate": "2025-04-05T20:17:17.037Z"
+      }
+    ],
+    "planName": "Legacy Membership",
+    "planDescription": "Legacy Membership at Tribute Gallery, a special tier for select individuals, granting unlimited access to our vibrant music community.",
+    "planPrice": "0",
+    "formData": {
+      "formId": "9a88f3ae-5b1b-42c4-b07f-0953f34ff002",
+      "submissionData": {}
+    },
+    "statusNew": "ACTIVE",
+    "onEcom": false,
+    "_id": "4600b981-0a10-436b-a7a8-65089751eb5b",
+    "_createdDate": "2025-04-05T20:17:28.869Z",
+    "_updatedDate": "2025-04-05T20:17:29.433Z"
+  },
+  {
+    "planId": "be6bcdcf-55f2-4f45-a844-7a1c7dfa1985",
+    "subscriptionId": "cb9a2be0-2fbb-43c0-be84-e1f03cae1e12",
+    "buyer": {
+      "memberId": "fb08b60a-d77a-43ed-b141-5fbb24010f4c",
+      "contactId": "fb08b60a-d77a-43ed-b141-5fbb24010f4c"
+    },
+    "priceDetails": {
+      "subtotal": "0.00",
+      "discount": "0",
+      "tax": {
+        "name": "Sales Tax",
+        "includedInPrice": true,
+        "rate": "8.25",
+        "amount": "0"
+      },
+      "total": "0.00",
+      "planPrice": "0",
+      "currency": "USD",
+      "singlePaymentUnlimited": true
+    },
+    "pricing": {
+      "singlePaymentUnlimited": true,
+      "prices": [
+        {
+          "duration": {
+            "cycleFrom": 1,
+            "numberOfCycles": 1
+          },
+          "price": {
+            "subtotal": "0.00",
+            "discount": "0",
+            "tax": {
+              "name": "Sales Tax",
+              "includedInPrice": true,
+              "rate": "8.25",
+              "amount": "0"
+            },
+            "total": "0.00",
+            "currency": "USD",
+            "fees": [],
+            "proration": "0"
+          }
+        }
+      ]
+    },
+    "type": "OFFLINE",
+    "orderMethod": "UNKNOWN",
+    "status": "ACTIVE",
+    "lastPaymentStatus": "NOT_APPLICABLE",
+    "startDate": "2025-04-05T19:01:58.044Z",
+    "pausePeriods": [],
+    "currentCycle": {
+      "index": 1,
+      "startedDate": "2025-04-05T19:01:58.044Z"
+    },
+    "cycles": [
+      {
+        "index": 1,
+        "startedDate": "2025-04-05T19:01:58.044Z"
+      }
+    ],
+    "planName": "Legacy Membership",
+    "planDescription": "Legacy Membership at Tribute Gallery, a special tier for select individuals, granting unlimited access to our vibrant music community.",
+    "planPrice": "0",
+    "formData": {
+      "formId": "9a88f3ae-5b1b-42c4-b07f-0953f34ff002",
+      "submissionData": {}
+    },
+    "statusNew": "ACTIVE",
+    "onEcom": false,
+    "_id": "8bc84999-bc77-4004-837c-fc860cf4cc96",
+    "_createdDate": "2025-04-05T19:02:07.458Z",
+    "_updatedDate": "2025-04-05T19:02:07.957Z"
+  },
+  {
+    "planId": "be6bcdcf-55f2-4f45-a844-7a1c7dfa1985",
+    "subscriptionId": "88d6a1ef-7698-4a3c-a03c-4a0455f61add",
+    "buyer": {
+      "memberId": "fcee39ed-0c2f-4ba9-8249-0b9a29060afd",
+      "contactId": "fcee39ed-0c2f-4ba9-8249-0b9a29060afd"
+    },
+    "priceDetails": {
+      "subtotal": "0.00",
+      "discount": "0",
+      "tax": {
+        "name": "Sales Tax",
+        "includedInPrice": true,
+        "rate": "8.25",
+        "amount": "0"
+      },
+      "total": "0.00",
+      "planPrice": "0",
+      "currency": "USD",
+      "singlePaymentUnlimited": true
+    },
+    "pricing": {
+      "singlePaymentUnlimited": true,
+      "prices": [
+        {
+          "duration": {
+            "cycleFrom": 1,
+            "numberOfCycles": 1
+          },
+          "price": {
+            "subtotal": "0.00",
+            "discount": "0",
+            "tax": {
+              "name": "Sales Tax",
+              "includedInPrice": true,
+              "rate": "8.25",
+              "amount": "0"
+            },
+            "total": "0.00",
+            "currency": "USD",
+            "fees": [],
+            "proration": "0"
+          }
+        }
+      ]
+    },
+    "type": "OFFLINE",
+    "orderMethod": "UNKNOWN",
+    "status": "ACTIVE",
+    "lastPaymentStatus": "NOT_APPLICABLE",
+    "startDate": "2025-04-05T19:00:35.476Z",
+    "pausePeriods": [],
+    "currentCycle": {
+      "index": 1,
+      "startedDate": "2025-04-05T19:00:35.476Z"
+    },
+    "cycles": [
+      {
+        "index": 1,
+        "startedDate": "2025-04-05T19:00:35.476Z"
+      }
+    ],
+    "planName": "Legacy Membership",
+    "planDescription": "Legacy Membership at Tribute Gallery, a special tier for select individuals, granting unlimited access to our vibrant music community.",
+    "planPrice": "0",
+    "formData": {
+      "formId": "9a88f3ae-5b1b-42c4-b07f-0953f34ff002",
+      "submissionData": {}
+    },
+    "statusNew": "ACTIVE",
+    "onEcom": false,
+    "_id": "864dc5e9-db1c-4e0e-bcd2-efb8d8338baa",
+    "_createdDate": "2025-04-05T19:00:42.723Z",
+    "_updatedDate": "2025-04-05T19:00:43.459Z"
+  },
+  {
+    "planId": "be6bcdcf-55f2-4f45-a844-7a1c7dfa1985",
+    "subscriptionId": "f581927c-2bf1-4ca9-b9a0-8578b7daa150",
+    "buyer": {
+      "memberId": "16b35e67-c092-46de-a1f2-36a33bb50157",
+      "contactId": "16b35e67-c092-46de-a1f2-36a33bb50157"
+    },
+    "priceDetails": {
+      "subtotal": "0.00",
+      "discount": "0",
+      "tax": {
+        "name": "Sales Tax",
+        "includedInPrice": true,
+        "rate": "8.25",
+        "amount": "0"
+      },
+      "total": "0.00",
+      "planPrice": "0",
+      "currency": "USD",
+      "singlePaymentUnlimited": true
+    },
+    "pricing": {
+      "singlePaymentUnlimited": true,
+      "prices": [
+        {
+          "duration": {
+            "cycleFrom": 1,
+            "numberOfCycles": 1
+          },
+          "price": {
+            "subtotal": "0.00",
+            "discount": "0",
+            "tax": {
+              "name": "Sales Tax",
+              "includedInPrice": true,
+              "rate": "8.25",
+              "amount": "0"
+            },
+            "total": "0.00",
+            "currency": "USD",
+            "fees": [],
+            "proration": "0"
+          }
+        }
+      ]
+    },
+    "type": "OFFLINE",
+    "orderMethod": "UNKNOWN",
+    "status": "ACTIVE",
+    "lastPaymentStatus": "NOT_APPLICABLE",
+    "startDate": "2025-04-05T18:59:37.980Z",
+    "pausePeriods": [],
+    "currentCycle": {
+      "index": 1,
+      "startedDate": "2025-04-05T18:59:37.980Z"
+    },
+    "cycles": [
+      {
+        "index": 1,
+        "startedDate": "2025-04-05T18:59:37.980Z"
+      }
+    ],
+    "planName": "Legacy Membership",
+    "planDescription": "Legacy Membership at Tribute Gallery, a special tier for select individuals, granting unlimited access to our vibrant music community.",
+    "planPrice": "0",
+    "formData": {
+      "formId": "9a88f3ae-5b1b-42c4-b07f-0953f34ff002",
+      "submissionData": {}
+    },
+    "statusNew": "ACTIVE",
+    "onEcom": false,
+    "_id": "b9e42482-b8f2-4f47-8fe0-5983b2a15f78",
+    "_createdDate": "2025-04-05T18:59:52.780Z",
+    "_updatedDate": "2025-04-05T18:59:53.256Z"
+  },
+  {
+    "planId": "69f19d78-d255-47c8-ac27-1507ec149800",
+    "subscriptionId": "87081bc3-0c57-46ff-aa05-5412bca5d638",
+    "wixPayOrderId": "0d900799-dc0d-4576-91f1-eb34462c235e",
+    "buyer": {
+      "memberId": "189373a3-03dd-4316-bae6-ca7dd0b8cfed",
+      "contactId": "189373a3-03dd-4316-bae6-ca7dd0b8cfed"
+    },
+    "priceDetails": {
+      "subtotal": "92.38",
+      "discount": "0",
+      "tax": {
+        "name": "Sales Tax",
+        "includedInPrice": true,
+        "rate": "8.25",
+        "amount": "7.62"
+      },
+      "total": "100.00",
+      "planPrice": "100",
+      "currency": "USD",
+      "singlePaymentForDuration": {
+        "count": 1,
+        "unit": "YEAR"
+      }
+    },
+    "pricing": {
+      "singlePaymentForDuration": {
+        "count": 1,
+        "unit": "YEAR"
+      },
+      "prices": [
+        {
+          "duration": {
+            "cycleFrom": 1,
+            "numberOfCycles": 1
+          },
+          "price": {
+            "subtotal": "92.38",
+            "discount": "0",
+            "tax": {
+              "name": "Sales Tax",
+              "includedInPrice": true,
+              "rate": "8.25",
+              "amount": "7.62"
+            },
+            "total": "100.00",
+            "currency": "USD",
+            "fees": [],
+            "proration": "0"
+          }
+        }
+      ]
+    },
+    "type": "OFFLINE",
+    "orderMethod": "UNKNOWN",
+    "status": "ACTIVE",
+    "lastPaymentStatus": "PAID",
+    "startDate": "2025-04-06T05:00:00Z",
+    "endDate": "2026-04-07T04:59:59.999Z",
+    "pausePeriods": [],
+    "earliestEndDate": "2026-04-06T05:00:00Z",
+    "currentCycle": {
+      "index": 1,
+      "startedDate": "2025-04-06T05:00:00Z",
+      "endedDate": "2026-04-07T04:59:59.999Z"
+    },
+    "cycles": [
+      {
+        "index": 1,
+        "startedDate": "2025-04-06T05:00:00Z",
+        "endedDate": "2026-04-07T04:59:59.999Z"
+      }
+    ],
+    "planName": "Yearly Membership",
+    "planDescription": "Best value! Especially if you come out to Tribute more than 4x over the span of a year.",
+    "planPrice": "100",
+    "formData": {
+      "formId": "9a88f3ae-5b1b-42c4-b07f-0953f34ff002",
+      "submissionData": {}
+    },
+    "statusNew": "ACTIVE",
+    "onEcom": false,
+    "_id": "4a32f1ef-4fa4-48ae-8470-354ba5d50bd8",
+    "_createdDate": "2025-04-05T07:45:22.893Z",
+    "_updatedDate": "2025-04-06T05:00:18.310Z"
+  },
+  {
+    "planId": "be6bcdcf-55f2-4f45-a844-7a1c7dfa1985",
+    "subscriptionId": "20cb152a-68a3-428b-bf4e-9fcb211ae764",
+    "buyer": {
+      "memberId": "ebdbe63f-4bc3-4080-b557-ee294af9cad9",
+      "contactId": "ebdbe63f-4bc3-4080-b557-ee294af9cad9"
+    },
+    "priceDetails": {
+      "subtotal": "0.00",
+      "discount": "0",
+      "tax": {
+        "name": "Sales Tax",
+        "includedInPrice": true,
+        "rate": "8.25",
+        "amount": "0"
+      },
+      "total": "0.00",
+      "planPrice": "0",
+      "currency": "USD",
+      "singlePaymentUnlimited": true
+    },
+    "pricing": {
+      "singlePaymentUnlimited": true,
+      "prices": [
+        {
+          "duration": {
+            "cycleFrom": 1,
+            "numberOfCycles": 1
+          },
+          "price": {
+            "subtotal": "0.00",
+            "discount": "0",
+            "tax": {
+              "name": "Sales Tax",
+              "includedInPrice": true,
+              "rate": "8.25",
+              "amount": "0"
+            },
+            "total": "0.00",
+            "currency": "USD",
+            "fees": [],
+            "proration": "0"
+          }
+        }
+      ]
+    },
+    "type": "OFFLINE",
+    "orderMethod": "UNKNOWN",
+    "status": "ACTIVE",
+    "lastPaymentStatus": "NOT_APPLICABLE",
+    "startDate": "2025-04-04T07:32:09.600Z",
+    "pausePeriods": [],
+    "currentCycle": {
+      "index": 1,
+      "startedDate": "2025-04-04T07:32:09.600Z"
+    },
+    "cycles": [
+      {
+        "index": 1,
+        "startedDate": "2025-04-04T07:32:09.600Z"
+      }
+    ],
+    "planName": "Legacy Membership",
+    "planDescription": "Legacy Membership at Tribute Gallery, a special tier for select individuals, granting unlimited access to our vibrant music community.",
+    "planPrice": "0",
+    "formData": {
+      "formId": "9a88f3ae-5b1b-42c4-b07f-0953f34ff002",
+      "submissionData": {}
+    },
+    "statusNew": "ACTIVE",
+    "onEcom": false,
+    "_id": "cfa7487d-e673-4484-89df-9f150317f00e",
+    "_createdDate": "2025-04-04T07:32:26.008Z",
+    "_updatedDate": "2025-04-04T07:32:26.858Z"
+  }
+]

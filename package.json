@@ -11,13 +11,16 @@
   "dependencies": {
     "@wix/crm": "^1.0.423",
     "@wix/data": "^1.0.222",
-    "@wix/members": "^1.0.270",
+    "@wix/members": "^1.0.292",
     "@wix/pricing-plans": "^1.0.176",
-    "@wix/sdk": "^1.15.18",
+    "@wix/sdk": "^1.15.20",
     "axios": "^1.6.7",
+    "body-parser": "^2.2.0",
     "csv-parse": "^5.5.4",
     "electron": "^28.2.0",
     "express": "^4.21.2",
+    "ngrok": "^5.0.0-beta.2",
+    "portfinder": "^1.0.37",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1"
   }

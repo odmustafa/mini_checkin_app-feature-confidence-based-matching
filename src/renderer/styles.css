@@ -181,6 +181,21 @@ pre {
   border: 1px solid #333;
 }
 
+/* Member subscription info styling */
+.member-subscription-info {
+  margin-top: 15px;
+  padding: 15px;
+  background: #1e1e1e;
+  border-radius: 6px;
+  border: 1px solid #444;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* Expandable photo styling */
 .id-photo {
   cursor: pointer;
@@ -406,48 +421,58 @@ pre {
   list-style: none;
   padding: 0;
   margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 }
 
-.plan-item,
-.order-item {
+.plan-item {
+  margin-bottom: 10px;
+  padding: 12px;
   border-radius: 4px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  transition: all 0.2s ease;
+}
+
+.plan-item:hover {
+  background: #333;
 }
 
 .active-plan {
-  background: #e8f5e9;
-  border-left: 3px solid #2ecc71;
+  background: #1a332a;
+  border-left: 4px solid #27ae60;
 }
 
 .inactive-plan {
-  background: #f5f5f5;
-  border-left: 3px solid #95a5a6;
+  background: #2a2a2a;
+  border-left: 4px solid #95a5a6;
 }
 
 .order-item {
-  background: #f0f7ff;
-  border-left: 3px solid #3498db;
+  background: #1a2733;
+  border-left: 4px solid #3498db;
   margin-bottom: 10px;
+  padding: 12px;
+  border-radius: 4px;
+  border: 1px solid #444;
+  transition: all 0.2s ease;
+}
+
+.order-item:hover {
+  background: #223240;
 }
 
 .pending-plan {
-  background: #fff8e1;
-  border-left: 3px solid #f39c12;
+  background: #332e1a;
+  border-left: 4px solid #f39c12;
 }
 
 .paused-plan {
-  background: #e3f2fd;
-  border-left: 3px solid #2196f3;
+  background: #1a2733;
+  border-left: 4px solid #2196f3;
 }
 
 .expired-plan {
-  background: #ffebee;
-  border-left: 3px solid #e57373;
+  background: #331a1a;
+  border-left: 4px solid #e57373;
 }
 
 .plan-header,
@@ -527,30 +552,41 @@ pre {
 }
 
 .payment-paid .payment-status {
-  background: #c8e6c9;
-  color: #2e7d32;
+  background: #1a332a;
+  color: #2ecc71;
+  border: 1px solid #27ae60;
 }
 
 .payment-pending .payment-status {
-  background: #ffecb3;
-  color: #f57f17;
+  background: #332e1a;
+  color: #f39c12;
+  border: 1px solid #e67e22;
 }
 
 .payment-failed .payment-status {
-  background: #ffcdd2;
-  color: #c62828;
+  background: #331a1a;
+  color: #e74c3c;
+  border: 1px solid #c0392b;
 }
 
 .payment-refunded .payment-status {
-  background: #b2ebf2;
-  color: #0097a7;
+  background: #1a2733;
+  color: #3498db;
+  border: 1px solid #2980b9;
+}
+
+.payment-unknown .payment-status {
+  background: #2a2a2a;
+  color: #95a5a6;
+  border: 1px solid #7f8c8d;
 }
 
 .payment-info {
   display: block;
-  margin-top: 5px;
+  margin-top: 8px;
   font-size: 13px;
-  color: #555;
+  color: #b0b0b0;
+  font-style: italic;
 }
 
 .plan-details,

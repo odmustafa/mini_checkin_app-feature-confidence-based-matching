@@ -239,7 +239,7 @@ async function processScan(scan) {
         return;
       }
       
-      if (!memberResult.items || memberResult.items.length === 0) {
+      if (!memberResult.contacts || memberResult.contacts.length === 0) {
         accountDiv.innerHTML = '<div class="error">No matching Wix member found.</div>';
         return;
       }
@@ -247,26 +247,29 @@ async function processScan(scan) {
       // Format the member data for display with confidence scores
       let memberHtml = `
         <div class="member-info">
-          <h3>Contacts Found (${memberResult.items.length})</h3>
+          <h3>Contacts Found (${memberResult.contacts.length})</h3>
           <p class="member-source">Source: ${memberResult.source}</p>
           <div class="confidence-legend">
-            <div class="confidence-info">Confidence scores: 
-              <span class="high-confidence">High (60-100)</span> | 
-              <span class="medium-confidence">Medium (35-59)</span> | 
-              <span class="low-confidence">Low (0-34)</span>
+            <div class="confidence-info">Confidence levels: 
+              <span class="high-confidence">Very High/High</span> | 
+              <span class="medium-confidence">Medium</span> | 
+              <span class="low-confidence">Low/Very Low</span>
             </div>
           </div>
           <div class="contacts-list">
       `;
       
       // Add each contact with confidence score
-      memberResult.items.forEach((contact, index) => {
-        const confidenceScore = contact._confidence?.score || 0;
+      memberResult.contacts.forEach((contact, index) => {
+        // Get confidence score from the updated structure
+        const confidenceScore = contact.confidenceScore || 0;
+        const confidenceLevel = contact.confidenceLevel || 'Low';
+        // Use the confidence level to determine the class
         let confidenceClass = 'low-confidence';
         
-        if (confidenceScore >= 60) {
+        if (confidenceLevel === 'Very High' || confidenceLevel === 'High') {
           confidenceClass = 'high-confidence';
-        } else if (confidenceScore >= 35) {
+        } else if (confidenceLevel === 'Medium') {
           confidenceClass = 'medium-confidence';
         }
         
@@ -300,8 +303,8 @@ async function processScan(scan) {
         
         const contactCreated = new Date(contact._createdDate || contact.createdDate).toLocaleString();
         
-        // Format confidence details
-        const confidenceDetails = contact._confidence?.details || [];
+        // Format confidence details from the updated structure
+        const confidenceDetails = contact.matchDetails || [];
         const confidenceDetailsHtml = confidenceDetails.length > 0 ?
           `<div class="confidence-details">${confidenceDetails.join('<br>')}</div>` : '';
         
@@ -310,7 +313,7 @@ async function processScan(scan) {
           <div class="contact-item ${confidenceClass}">
             <div class="contact-header">
               <span class="contact-name">${contactName}</span>
-              <span class="confidence-score">Match: ${confidenceScore}%</span>
+              <span class="confidence-score">Match: ${Math.round(confidenceScore * 100)}% (${confidenceLevel})</span>
             </div>
             <div class="contact-details">
               <div class="contact-id">ID: ${contactId}</div>
@@ -333,8 +336,7 @@ async function processScan(scan) {
       `;
       
       accountDiv.innerHTML = memberHtml;
-      
-      // Add event listeners for the View Plans buttons
+              // Add event listeners for the View Plans buttons
       setTimeout(() => {
         // Set up the view plans buttons
         document.querySelectorAll('.view-plans-btn').forEach(button => {
@@ -342,185 +344,243 @@ async function processScan(scan) {
             const memberId = this.getAttribute('data-member-id');
             const plansContainer = document.getElementById(`plans-${memberId}`);
             
+            // Toggle functionality - if already showing plans, hide them
+            if (plansContainer && plansContainer.innerHTML.trim() !== '' && 
+                !plansContainer.querySelector('.loading')) {
+              plansContainer.innerHTML = '';
+              this.textContent = 'View Plans';
+              return;
+            }
+            
+            // Change button text to indicate loading
+            this.textContent = 'Loading...';
+            
             if (plansContainer) {
-              plansContainer.innerHTML = '<div class="loading">Loading plans and orders...</div>';
+              plansContainer.innerHTML = '<div class="loading">Loading membership and payment information...</div>';
               
-              // Use the Wix JavaScript SDK to get orders for this contact
-              // The getMemberPricingPlans method now uses the SDK implementation
-              const plansResult = await window.scanidAPI.getMemberPricingPlans(memberId);
-              
-              // Store the response in the lastWixResponse for debugging
-              window.lastWixResponse = { plansResult };
-              
-              // Set ordersResult to plansResult since they're now the same API call
-              const ordersResult = plansResult;
-              
-              // Show the raw response in the diagnostics panel for debugging
-              if (typeof showDiagnostics === 'function') {
-                showDiagnostics('Wix Pricing Plans Response', plansResult);
+              try {
+                // Use the Wix JavaScript SDK to get orders for this contact
+                const plansResult = await window.scanidAPI.getMemberPricingPlans(memberId);
+                
+                // Store the response in the lastWixResponse for debugging
+                window.lastWixResponse = { plansResult };
+                
+                // Show the raw response in the diagnostics panel for debugging
+                if (typeof showDiagnostics === 'function') {
+                  showDiagnostics('Wix Pricing Plans Response', plansResult);
+                }
+                
+                // Log the results for debugging
+                console.log('Plans result:', plansResult);
+                
+                // Change button text to indicate it can be clicked to hide
+                this.textContent = 'Hide Plans';
+                
+                if (!plansResult.success) {
+                  plansContainer.innerHTML = `<div class="error">Error loading plans: ${plansResult.error || 'Unknown error'}</div>`;
+                  this.textContent = 'View Plans';
+                  return;
+                }
+                
+                // Build the HTML for plans
+                let plansHtml = '';
+                if (plansResult.plans && plansResult.plans.length > 0) {
+                  // Use the pre-sorted plans from the backend
+                  const sortedPlans = plansResult.plans;
+                  const activePlans = plansResult.activePlans || [];
+                  const inactivePlans = plansResult.inactivePlans || [];
+                  
+                  // Create a section for active plans if any exist
+                  let activePlansHtml = '';
+                  if (activePlans.length > 0) {
+                    activePlansHtml = `
+                      <div class="active-plans-section">
+                        <h5>Active Memberships (${activePlans.length})</h5>
+                        <ul class="plans-list">
+                          ${activePlans.map(plan => {
+                            return `
+                              <li class="plan-item active-plan">
+                                <div class="plan-header">
+                                  <div class="plan-name">${plan.planName || 'Unnamed Plan'}</div>
+                                  <div class="plan-status">ACTIVE</div>
+                                </div>
+                                <div class="plan-details">
+                                  <div class="plan-price">Price: ${plan.paymentAmount || 'N/A'}</div>
+                                  <div class="plan-dates">Start: ${plan.formattedStartDate || 'N/A'}</div>
+                                  <div class="plan-dates">End: ${plan.formattedEndDate || 'No expiration'}</div>
+                                  ${plan.isRecurring ? `<div class="plan-recurring">Recurring: Yes</div>` : ''}
+                                  ${plan.orderType ? `<div class="plan-type">Type: ${plan.orderType}</div>` : ''}
+                                </div>
+                              </li>
+                            `;
+                          }).join('')}
+                        </ul>
+                      </div>
+                    `;
+                  }
+                  
+                  // Create a section for inactive plans if any exist
+                  let inactivePlansHtml = '';
+                  if (inactivePlans.length > 0) {
+                    inactivePlansHtml = `
+                      <div class="inactive-plans-section">
+                        <h5>Past Memberships (${inactivePlans.length})</h5>
+                        <ul class="plans-list">
+                          ${inactivePlans.map(plan => {
+                            // Determine plan status class and label
+                            let statusClass = 'inactive-plan';
+                            let statusLabel = plan.status || 'Inactive';
+                            
+                            if (plan.status === 'CANCELED') {
+                              statusLabel = 'CANCELED';
+                            } else if (plan.status === 'PENDING') {
+                              statusClass = 'pending-plan';
+                              statusLabel = 'PENDING';
+                            } else if (plan.status === 'PAUSED') {
+                              statusClass = 'paused-plan';
+                              statusLabel = 'PAUSED';
+                            } else if (plan.isExpired) {
+                              statusClass = 'expired-plan';
+                              statusLabel = 'EXPIRED';
+                            }
+                            
+                            return `
+                              <li class="plan-item ${statusClass}">
+                                <div class="plan-header">
+                                  <div class="plan-name">${plan.planName || 'Unnamed Plan'}</div>
+                                  <div class="plan-status">${statusLabel}</div>
+                                </div>
+                                <div class="plan-details">
+                                  <div class="plan-price">Price: ${plan.paymentAmount || 'N/A'}</div>
+                                  <div class="plan-dates">Start: ${plan.formattedStartDate || 'N/A'}</div>
+                                  <div class="plan-dates">End: ${plan.formattedEndDate || 'No expiration'}</div>
+                                  ${plan.isRecurring ? `<div class="plan-recurring">Recurring: Yes</div>` : ''}
+                                  ${plan.orderType ? `<div class="plan-type">Type: ${plan.orderType}</div>` : ''}
+                                </div>
+                              </li>
+                            `;
+                          }).join('')}
+                        </ul>
+                      </div>
+                    `;
+                  }
+                  
+                  // Combine active and inactive plans sections
+                  plansHtml = `
+                    <div class="pricing-plans">
+                      <h4>Membership Information</h4>
+                      ${activePlansHtml}
+                      ${inactivePlansHtml}
+                    </div>
+                  `;
+                } else {
+                  plansHtml = `<div class="no-plans">No membership plans found</div>`;
+                }
+                
+                // Build the HTML for payment history
+                let paymentHistoryHtml = '';
+                if (plansResult.orders && plansResult.orders.length > 0) {
+                  // Sort orders by creation date (newest first)
+                  const sortedOrders = [...plansResult.orders].sort((a, b) => {
+                    return new Date(b.createdDate || 0) - new Date(a.createdDate || 0);
+                  });
+                  
+                  paymentHistoryHtml = `
+                    <div class="pricing-orders">
+                      <h4>Payment History</h4>
+                      <ul class="orders-list">
+                        ${sortedOrders.map(order => {
+                          // Get payment status with appropriate styling
+                          let paymentStatusClass = 'payment-unknown';
+                          if (order.paymentStatus === 'PAID') {
+                            paymentStatusClass = 'payment-paid';
+                          } else if (order.paymentStatus === 'PENDING') {
+                            paymentStatusClass = 'payment-pending';
+                          } else if (order.paymentStatus === 'REFUNDED') {
+                            paymentStatusClass = 'payment-refunded';
+                          } else if (order.paymentStatus === 'FAILED') {
+                            paymentStatusClass = 'payment-failed';
+                          }
+                          
+                          return `
+                            <li class="order-item">
+                              <div class="order-header">
+                                <div class="order-name">${order.planName || 'Unnamed Order'}</div>
+                                <div class="order-date">${order.formattedCreatedDate || 'Unknown date'}</div>
+                              </div>
+                              <div class="order-details">
+                                <div class="order-payment ${paymentStatusClass}">
+                                  <span class="payment-status">${order.paymentStatus || 'Unknown'}</span>
+                                  <span class="payment-info">${order.paymentMethod || 'Unknown method'} - ${order.paymentAmount || 'N/A'}</span>
+                                </div>
+                                <div class="order-meta">
+                                  <span class="order-id">ID: ${order._id || order.id || 'N/A'}</span>
+                                  ${order.orderType ? `<span class="order-type">Type: ${order.orderType}</span>` : ''}
+                                </div>
+                              </div>
+                            </li>
+                          `;
+                        }).join('')}
+                      </ul>
+                    </div>
+                  `;
+                } else {
+                  paymentHistoryHtml = `<div class="no-orders">No payment history found</div>`;
+                }
+                
+                // Combine plans and payment history HTML with a cleaner layout
+                plansContainer.innerHTML = `
+                  <div class="member-subscription-info">
+                    ${plansHtml}
+                    ${paymentHistoryHtml}
+                  </div>
+                `;
+              } catch (error) {
+                console.error('Error fetching plan information:', error);
+                const errorMessage = error && error.message ? error.message : 'An unknown error occurred';
+                plansContainer.innerHTML = `<div class="error">Error loading plans: ${errorMessage}</div>`;
+                this.textContent = 'View Plans';
+                
+                // Show detailed error information in the diagnostics panel if available
+                if (typeof showDiagnostics === 'function') {
+                  showDiagnostics('Plan Information Error', {
+                    message: errorMessage,
+                    error: error,
+                    stack: error && error.stack ? error.stack : 'No stack trace available'
+                  });
+                }
               }
-              
-              // Log the results for debugging
-              console.log('Plans result:', plansResult);
-              console.log('Orders result:', ordersResult);
-              
-              // Build the HTML for plans
-              let plansHtml = '';
-              if (plansResult.success && plansResult.plans && plansResult.plans.length > 0) {
-              // Filter for active plans to show at the top
-              const activePlans = plansResult.plans.filter(plan => plan.status === 'ACTIVE');
-              const inactivePlans = plansResult.plans.filter(plan => plan.status !== 'ACTIVE');
-              const sortedPlans = [...activePlans, ...inactivePlans];
-              
-              plansHtml = `
-                <div class="pricing-plans">
-                  <h4>Membership Plans (${plansResult.plans.length})</h4>
-                  <ul class="plans-list">
-                    ${sortedPlans.map(plan => {
-                      // Format price if available
-                      const priceDisplay = plan.price ? 
-                        `${plan.price} ${plan.currency || ''}` : 'Free';
-                      
-                      // Determine plan status class and label
-                      let statusClass = 'inactive-plan';
-                      let statusLabel = plan.status || 'Unknown';
-                      
-                      if (plan.status === 'ACTIVE') {
-                        statusClass = 'active-plan';
-                        statusLabel = 'ACTIVE';
-                      } else if (plan.status === 'CANCELED') {
-                        statusLabel = 'CANCELED';
-                      } else if (plan.status === 'PENDING') {
-                        statusClass = 'pending-plan';
-                        statusLabel = 'PENDING';
-                      } else if (plan.status === 'PAUSED') {
-                        statusClass = 'paused-plan';
-                        statusLabel = 'PAUSED';
-                      }
-                      
-                      // Format dates
-                      const startDate = plan.validFrom ? 
-                        new Date(plan.validFrom).toLocaleDateString() : 'N/A';
-                      const endDate = plan.expiresAt ? 
-                        new Date(plan.expiresAt).toLocaleDateString() : 'No expiration';
-                      
-                      // Calculate if plan is expired
-                      const isExpired = plan.expiresAt && new Date(plan.expiresAt) < new Date();
-                      if (isExpired && statusClass !== 'active-plan') {
-                        statusClass = 'expired-plan';
-                        statusLabel = 'EXPIRED';
-                      }
-                      
-                      // Format recurring information
-                      const recurringInfo = plan.isRecurring ? 
-                        `<div class="plan-recurring">Recurring: Yes</div>` : '';
-                      
-                      return `
-                        <li class="plan-item ${statusClass}">
-                          <div class="plan-header">
-                            <div class="plan-name">${plan.planName || 'Unnamed Plan'}</div>
-                            <div class="plan-status">${statusLabel}</div>
-                          </div>
-                          <div class="plan-details">
-                            <div class="plan-price">Price: ${priceDisplay}</div>
-                            <div class="plan-dates">Start: ${startDate}</div>
-                            <div class="plan-dates">End: ${endDate}</div>
-                            ${recurringInfo}
-                            ${plan.orderType ? `<div class="plan-type">Type: ${plan.orderType}</div>` : ''}
-                            ${plan.paymentStatus ? `<div class="payment-status">Payment: ${plan.paymentStatus}</div>` : ''}
-                          </div>
-                        </li>
-                      `;
-                    }).join('')}
-                  </ul>
-                </div>
-              `;
-            } else {
-              plansHtml = `<div class="no-plans">No membership plans found</div>`;
             }
-            
-              // Since we're already showing plans in a detailed way, we can simplify the orders section
-              // or focus on different aspects like payment history
-              let ordersHtml = '';
-              if (ordersResult.success && ordersResult.orders && ordersResult.orders.length > 0) {
-              // Sort orders by creation date (newest first)
-              const sortedOrders = [...ordersResult.orders].sort((a, b) => {
-                return new Date(b.createdDate || 0) - new Date(a.createdDate || 0);
-              });
-              
-              ordersHtml = `
-                <div class="pricing-orders">
-                  <h4>Payment History</h4>
-                  <ul class="orders-list">
-                    ${sortedOrders.map(order => {
-                      // Format payment details
-                      let paymentInfo = 'No payment details';
-                      if (order.paymentDetails) {
-                        const paymentMethod = order.paymentDetails.paymentMethod || 'Unknown method';
-                        const paymentAmount = order.pricing?.price ? 
-                          `${order.pricing.price} ${order.pricing.currency || ''}` : 'Free';
-                        paymentInfo = `${paymentMethod} - ${paymentAmount}`;
-                      }
-                      
-                      // Format dates in a more readable way
-                      const createdDate = order.createdDate ? 
-                        new Date(order.createdDate).toLocaleString() : 'Unknown date';
-                      
-                      // Get payment status with appropriate styling
-                      let paymentStatusClass = 'payment-unknown';
-                      if (order.paymentStatus === 'PAID') {
-                        paymentStatusClass = 'payment-paid';
-                      } else if (order.paymentStatus === 'PENDING') {
-                        paymentStatusClass = 'payment-pending';
-                      } else if (order.paymentStatus === 'REFUNDED') {
-                        paymentStatusClass = 'payment-refunded';
-                      } else if (order.paymentStatus === 'FAILED') {
-                        paymentStatusClass = 'payment-failed';
-                      }
-                      
-                      return `
-                        <li class="order-item">
-                          <div class="order-header">
-                            <div class="order-name">${order.planName || 'Unnamed Order'}</div>
-                            <div class="order-date">${createdDate}</div>
-                          </div>
-                          <div class="order-details">
-                            <div class="order-payment ${paymentStatusClass}">
-                              <span class="payment-status">${order.paymentStatus || 'Unknown'}</span>
-                              <span class="payment-info">${paymentInfo}</span>
-                            </div>
-                            <div class="order-meta">
-                              <span class="order-id">ID: ${order._id || order.id || 'N/A'}</span>
-                              ${order.orderType ? `<span class="order-type">Type: ${order.orderType}</span>` : ''}
-                            </div>
-                          </div>
-                        </li>
-                      `;
-                    }).join('')}
-                  </ul>
-                </div>
-              `;
-            } else {
-              ordersHtml = `<div class="no-orders">No payment history found</div>`;
-            }
-            
-              // Combine plans and orders HTML
-              plansContainer.innerHTML = `
-                <div class="member-subscription-info">
-                  ${plansHtml}
-                  ${ordersHtml}
-                </div>
-              `;
-          }
+          });
         });
-      });
-    }, 100);
+      }, 100);
     } catch (err) {
       console.error('Error processing member lookup:', err);
-      accountDiv.innerHTML = `<div class="error">Error: ${err.message}</div>`;
+      const errorMessage = err && err.message ? err.message : 'An unknown error occurred';
+      accountDiv.innerHTML = `<div class="error">Error: ${errorMessage}</div>`;
+      
+      // Show detailed error information in the diagnostics panel if available
+      if (typeof showDiagnostics === 'function') {
+        showDiagnostics('Member Lookup Error', {
+          message: errorMessage,
+          error: err,
+          stack: err && err.stack ? err.stack : 'No stack trace available'
+        });
+      }
     }
   } catch (err) {
-    resultDiv.textContent = 'Error: ' + err.message;
+    console.error('Error in scan processing:', err);
+    const errorMessage = err && err.message ? err.message : 'An unknown error occurred';
+    resultDiv.textContent = 'Error: ' + errorMessage;
+    
+    // Show detailed error information in the diagnostics panel if available
+    if (typeof showDiagnostics === 'function') {
+      showDiagnostics('Scan Processing Error', {
+        message: errorMessage,
+        error: err,
+        stack: err && err.stack ? err.stack : 'No stack trace available'
+      });
+    }
   }
 }
 
