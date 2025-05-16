@@ -151,7 +151,7 @@ module.exports = {
       
       try {
         // Call the Python script to create a sorted copy
-        const output = execSync(`python "${PYTHON_SORT_SCRIPT}" "${SCAN_ID_CSV_PATH}" "${tempSortedFile}"`, { encoding: 'utf8' });
+        const output = execSync(`python3 "${PYTHON_SORT_SCRIPT}" "${SCAN_ID_CSV_PATH}" "${tempSortedFile}"`, { encoding: 'utf8' });
         console.log(output);
         sortedFilePath = tempSortedFile;
       } catch (sortError) {

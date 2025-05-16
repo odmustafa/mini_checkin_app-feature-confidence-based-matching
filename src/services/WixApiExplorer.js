@@ -1,10 +1,16 @@
 /**
  * WixApiExplorer.js
  * A service for testing and exploring Wix API endpoints and data structures
+ * Updated to use the official Wix JavaScript SDK for member searches
  */
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
+
+// Import the Wix SDK modules
+const { createClient, ApiKeyStrategy } = require('@wix/sdk');
+const { members } = require('@wix/members');
+const { contacts } = require('@wix/crm');
 
 // Load Wix configuration
 const CONFIG_PATH = path.join(__dirname, '../../wix.config.json');
@@ -19,7 +25,10 @@ if (fs.existsSync(CONFIG_PATH)) {
   }
 }
 
-// Wix API endpoints
+// Initialize the Wix SDK client
+let wixClient = null;
+
+// Wix API endpoints for direct API calls
 const WIX_API_BASE = 'https://www.wixapis.com';
 const CONTACTS_API = `${WIX_API_BASE}/contacts/v4/contacts`;
 const MEMBERS_API = `${WIX_API_BASE}/members/v1/members`;
@@ -61,50 +70,115 @@ module.exports = {
   },
 
   /**
+   * Initialize the Wix SDK client
+   * Following the official Wix JavaScript SDK documentation
+   */
+  async initializeWixClient() {
+    if (wixClient) return wixClient;
+    
+    try {
+      console.log('Initializing Wix SDK client for API Explorer');
+      
+      // Create the client with the API Key strategy as per Wix documentation
+      wixClient = createClient({
+        modules: { members, contacts },
+        auth: ApiKeyStrategy({
+          apiKey: WIX_CONFIG.apiKey,
+          siteId: WIX_CONFIG.siteId
+        })
+      });
+      
+      console.log('Wix SDK client initialized successfully');
+      return wixClient;
+    } catch (err) {
+      console.error('Error initializing Wix SDK client:', err);
+      throw err;
+    }
+  },
+
+  /**
    * Execute a test API call to explore data
    */
   async testApiCall(endpointId, searchParams = {}) {
-    if (!WIX_CONFIG.apiKey) {
-      return { error: 'API key not configured' };
-    }
-
     try {
-      let endpoint, method, data, headers;
+      // Validate API key and site ID
+      if (!WIX_CONFIG.apiKey) {
+        return { error: 'API Key not configured' };
+      }
       
-      // Common headers
-      headers = {
-        'Authorization': WIX_CONFIG.apiKey,
-        'Content-Type': 'application/json'
+      if (!WIX_CONFIG.siteId) {
+        return { error: 'Site ID not configured' };
+      }
+      
+      // For member-related endpoints, use the Wix SDK
+      if (endpointId.startsWith('members-')) {
+        // Initialize the Wix SDK client if needed
+        await this.initializeWixClient();
+        
+        // Handle member-related endpoints using the SDK
+        switch (endpointId) {
+          case 'members-list':
+            console.log('[API Explorer] Calling: members.queryMembers via Wix SDK');
+            console.log('[API Explorer] Params:', JSON.stringify({ limit: 10 }, null, 2));
+            
+            const listResult = await wixClient.members.queryMembers({
+              paging: { limit: 10 },
+              sort: [{ fieldName: 'createdDate', order: 'DESC' }]
+            });
+            
+            return {
+              success: true,
+              data: listResult,
+              endpoint: 'Wix SDK - members.queryMembers',
+              method: 'SDK call'
+            };
+            
+          case 'members-search':
+            const searchName = searchParams.name || '';
+            console.log('[API Explorer] Calling: members.queryMembers (search) via Wix SDK');
+            console.log('[API Explorer] Params:', JSON.stringify({ name: searchName }, null, 2));
+            
+            // Use the proper filter syntax according to Wix SDK documentation
+            const searchResult = await wixClient.members.queryMembers({
+              filter: {
+                // Use a filter that searches across multiple name fields
+                $or: [
+                  { firstName: { $contains: searchName } },
+                  { lastName: { $contains: searchName } },
+                  { nickname: { $contains: searchName } }
+                ]
+              },
+              paging: { limit: 10 }
+            });
+            
+            return {
+              success: true,
+              data: searchResult,
+              endpoint: 'Wix SDK - members.queryMembers (with name filter)',
+              method: 'SDK call'
+            };
+            
+          default:
+            return { error: 'Unknown members endpoint ID' };
+        }
+      }
+      
+      // For other endpoints, continue using direct API calls
+      // Set up common headers
+      let endpoint = '';
+      let method = 'GET';
+      let data = {};
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': WIX_CONFIG.apiKey
       };
       
-      // Add site ID if available
       if (WIX_CONFIG.siteId) {
         headers['wix-site-id'] = WIX_CONFIG.siteId;
       }
 
       // Configure endpoint-specific parameters
       switch (endpointId) {
-        case 'members-list':
-          endpoint = `${MEMBERS_API}/query`;
-          method = 'POST';
-          data = { 
-            query: {
-              paging: { limit: 10 },
-              sort: [{ fieldName: 'createdDate', order: 'DESC' }]
-            }
-          };
-          break;
-          
-        case 'members-search':
-          endpoint = `${MEMBERS_API}/search`;
-          method = 'POST';
-          data = { 
-            search: { 
-              name: searchParams.name || '' 
-            }
-          };
-          break;
-          
         case 'contacts-list':
           endpoint = `${CONTACTS_API}/query`;
           method = 'POST';
@@ -118,14 +192,43 @@ module.exports = {
           break;
           
         case 'contacts-search':
-          endpoint = `${CONTACTS_API}/search`;
-          method = 'POST';
-          data = {
-            search: {
-              freeText: searchParams.name || ''
-            },
-            fields: ['info', 'customFields', 'picture', 'source']
-          };
+          // Initialize the Wix SDK client if needed
+          await this.initializeWixClient();
+          
+          const searchName = searchParams.name || '';
+          console.log('[API Explorer] Calling: contacts.find via Wix SDK');
+          console.log('[API Explorer] Params:', JSON.stringify({ name: searchName }, null, 2));
+          
+          try {
+            // Use the Wix SDK to search contacts with proper filtering
+            const searchResult = await wixClient.contacts.find({
+              filter: {
+                $or: [
+                  { 'info.name.first': { $contains: searchName } },
+                  { 'info.name.last': { $contains: searchName } }
+                ]
+              },
+              paging: { limit: 10 }
+            });
+            
+            return {
+              success: true,
+              data: searchResult,
+              endpoint: 'Wix SDK - contacts.find (with name filter)',
+              method: 'SDK call'
+            };
+          } catch (err) {
+            console.error('Error searching contacts:', err);
+            // Fall back to direct API call if SDK method fails
+            endpoint = `${CONTACTS_API}/search`;
+            method = 'POST';
+            data = {
+              search: {
+                freeText: searchName
+              },
+              fields: ['info', 'customFields', 'picture', 'source']
+            };
+          }
           break;
           
         case 'contacts-extended':

@@ -107,27 +107,50 @@ class WixSdkAdapter {
   async queryCollection(collectionId) {
     await this.initialize();
     
-    console.log(`Querying collection "${collectionId}" with SDK Adapter`);
+    console.log('SDK Version:', this.sdkVersion, 'Data Version:', this.dataVersion);
     
-    // Try different methods based on availability
-    if (this.availableMethods.includes('query')) {
-      console.log('Using query() method');
+    // Log available methods on items module for debugging
+    const itemsMethods = Object.getOwnPropertyNames(
+      Object.getPrototypeOf(this.client.items)
+    ).filter(name => typeof this.client.items[name] === 'function');
+    console.log('Available items methods:', itemsMethods);
+    
+    // According to Wix SDK documentation for v1.0.222, use query method
+    try {
+      console.log('Using query() method with dataCollectionId');
       return await this.client.items.query({
         dataCollectionId: collectionId
       });
-    } 
-    else if (this.availableMethods.includes('find')) {
-      console.log('Using find() method');
-      return await this.client.items.find({
-        dataCollectionId: collectionId
-      });
-    }
-    else if (this.availableMethods.includes('list')) {
-      console.log('Using list() method');
-      return await this.client.items.list(collectionId);
-    }
-    else {
-      throw new Error(`No compatible query method found in SDK v${this.sdkVersion}`);
+    } catch (err1) {
+      console.log('query with dataCollectionId failed:', err1.message);
+      
+      try {
+        console.log('Using query() method with collectionName');
+        return await this.client.items.query({
+          collectionName: collectionId
+        });
+      } catch (err2) {
+        console.log('query with collectionName failed:', err2.message);
+        
+        try {
+          console.log('Using find() method with dataCollectionId');
+          return await this.client.items.find({
+            dataCollectionId: collectionId
+          });
+        } catch (err3) {
+          console.log('find with dataCollectionId failed:', err3.message);
+          
+          try {
+            console.log('Using find() method with collectionName');
+            return await this.client.items.find({
+              collectionName: collectionId
+            });
+          } catch (err4) {
+            console.log('All query methods failed');
+            throw new Error(`Failed to query collection: ${err4.message}`);
+          }
+        }
+      }
     }
   }
 
@@ -139,11 +162,10 @@ class WixSdkAdapter {
     
     console.log(`Getting item "${itemId}" from collection "${collectionId}"`);
     
-    if (this.availableMethods.includes('get')) {
-      return await this.client.items.get(collectionId, itemId);
-    } else {
-      throw new Error(`get() method not available in SDK v${this.sdkVersion}`);
-    }
+    return await this.client.items.getItem({
+      dataCollectionId: collectionId,
+      itemId: itemId
+    });
   }
 
   /**
@@ -154,13 +176,12 @@ class WixSdkAdapter {
     
     console.log(`Creating item in collection "${collectionId}"`);
     
-    if (this.availableMethods.includes('create')) {
-      return await this.client.items.create(collectionId, data);
-    } else {
-      throw new Error(`create() method not available in SDK v${this.sdkVersion}`);
-    }
+    return await this.client.items.createItem({
+      dataCollectionId: collectionId,
+      item: data
+    });
   }
-  
+
   /**
    * Search for members by name and date of birth
    * Following the Ethereal Engineering Technical Codex principles:
@@ -169,159 +190,85 @@ class WixSdkAdapter {
    */
   async searchMember({ firstName, lastName, dateOfBirth }) {
     try {
-      // Initialize if not already initialized
-      if (!this.initialized) {
-        await this.initialize();
+      await this.initialize();
+      
+      console.log(`Searching for member with name: ${firstName} ${lastName}, DOB: ${dateOfBirth}`);
+      
+      // Create a query builder for contacts
+      // Following the Wix JavaScript SDK documentation for contacts
+      // https://dev.wix.com/docs/sdk/backend-modules/crm/contacts/query-contacts
+      let query = this.client.contacts.queryContacts();
+      
+      // Parse the name parts for more flexible matching
+      const firstNameParts = firstName ? firstName.toLowerCase().split(/\s+/) : [];
+      const formattedLastName = lastName ? lastName.toLowerCase() : '';
+      
+      // Build the query using the proper SDK methods
+      // The Wix SDK uses eq, contains, startsWith, etc. as methods on the query object
+      if (firstName) {
+        // Use a more flexible approach for first name
+        query = query.eq('info.name.first', firstName);
       }
       
-      console.log(`Searching for contact with SDK Adapter: ${firstName} ${lastName} ${dateOfBirth}`);
-      console.log('Using CRM Contacts API for search');
-      
-      // Format the search parameters
-      const searchParams = { firstName, lastName, dateOfBirth };
-      
-      // Process first name parts for more flexible matching
-      let firstNameParts = [];
-      if (searchParams.firstName && searchParams.firstName.trim() !== '') {
-        firstNameParts = searchParams.firstName.trim().toLowerCase()
-          .split(' ')
-          .map(word => word.charAt(0).toUpperCase() + word.slice(1));
-        console.log('First name parts for search:', firstNameParts);
+      if (lastName) {
+        // Use a more flexible approach for last name
+        query = query.eq('info.name.last', lastName);
       }
       
-      // Format last name for search
-      let formattedLastName = '';
-      if (lastName && lastName.trim() !== '') {
-        formattedLastName = lastName.trim().toLowerCase()
-          .split(' ')
-          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(' ');
-        console.log('Formatted last name for search:', formattedLastName);
-      }
-        
-      // Using the Wix CRM Contacts API for search
-      let results = [];
-      
-      console.log('Using queryContacts method with query builder pattern');
-      
-      try {
-        // Create query builder for contacts - strictly following Wix documentation
-        const queryBuilder = this.client.contacts.queryContacts();
-        
-        // Apply filters based on provided search parameters
-        let hasFilters = false;
-        
-        // Add first name filter if provided
-        if (firstNameParts.length > 0) {
-          // For each first name part, we'll create a separate query
-          // and combine the results
-          const firstNameResults = [];
-          
-          for (const namePart of firstNameParts) {
-            console.log(`Searching for first name part: ${namePart}`);
-            const nameQuery = this.client.contacts.queryContacts()
-              .startsWith('info.name.first', namePart)
-              .limit(50);
-            
-            try {
-              const response = await nameQuery.find();
-              if (response.items && response.items.length > 0) {
-                firstNameResults.push(...response.items);
-              }
-            } catch (nameError) {
-              console.warn(`Error searching for first name part ${namePart}:`, nameError.message);
-            }
+      // Add date of birth filter if provided
+      if (dateOfBirth) {
+        try {
+          // Format the date of birth for comparison
+          const dobDate = new Date(dateOfBirth);
+          if (!isNaN(dobDate.getTime())) {
+            // Only add the filter if the date is valid
+            const formattedDob = dobDate.toISOString().split('T')[0]; // YYYY-MM-DD format
+            query = query.eq('info.birthdate', formattedDob);
           }
-          
-          // Add these results to our main results array
-          if (firstNameResults.length > 0) {
-            results.push(...firstNameResults);
-            hasFilters = true;
-          }
+        } catch (dateErr) {
+          console.warn('Invalid date format for date of birth:', dateErr);
+          // Continue without the date filter
         }
-        
-        // Add last name filter if provided
-        if (formattedLastName) {
-          console.log(`Searching for last name: ${formattedLastName}`);
-          const lastNameQuery = this.client.contacts.queryContacts()
-            .startsWith('info.name.last', formattedLastName)
-            .limit(50);
-          
-          try {
-            const response = await lastNameQuery.find();
-            if (response.items && response.items.length > 0) {
-              results.push(...response.items);
-              hasFilters = true;
-            }
-          } catch (lastNameError) {
-            console.warn(`Error searching for last name ${formattedLastName}:`, lastNameError.message);
-          }
-        }
-        
-        // If no specific filters were applied, get all contacts
-        if (!hasFilters) {
-          console.log('No specific filters applied, retrieving all contacts');
-          const allContactsQuery = this.client.contacts.queryContacts()
-            .limit(50);
-          
-          try {
-            const response = await allContactsQuery.find();
-            results = response.items || [];
-          } catch (allContactsError) {
-            console.error('Error retrieving all contacts:', allContactsError);
-            results = [];
-          }
-        }
-        
-        console.log(`Found ${results.length} contacts with query builder pattern`);
-      } catch (queryError) {
-        console.error('Error with contacts query builder pattern:', queryError);
-        // If the query fails, we'll return an empty result set
-        results = [];
       }
       
-      // Track unique contacts to avoid duplicates
-      const uniqueContacts = new Map();
-      results.forEach(contact => {
-        if (contact && contact._id) {
-          uniqueContacts.set(contact._id, contact);
-        }
-      });
+      // Set a reasonable limit
+      query = query.limit(10);
       
-      // Convert back to array
-      results = Array.from(uniqueContacts.values());
+      console.log('Executing contact search query');
       
-      console.log(`Total unique contacts found: ${results.length}`);
+      // Execute the query
+      // According to Wix JavaScript SDK documentation
+      // https://dev.wix.com/docs/sdk/backend-modules/crm/contacts/query-contacts#find
+      const response = await query.find();
       
-      // Calculate confidence score for each contact based on name matching and DOB
-      results = this.calculateContactConfidenceScores(results, {
+      // Get the results
+      const contacts = response.items || [];
+      console.log(`Found ${contacts.length} contacts matching criteria`);
+      
+      // Calculate confidence scores for each contact
+      const contactsWithScores = this.calculateContactConfidenceScores(contacts, {
         firstNameParts,
         formattedLastName,
         dateOfBirth
       });
       
-      console.log(`Found ${results.length} matching contacts with confidence scores`);
+      // Sort by confidence score (highest first)
+      const sortedContacts = contactsWithScores.sort((a, b) => b.confidenceScore - a.confidenceScore);
       
-      // Format the results according to Wix documentation structure
-      // Include the query parameters in the response for display in the UI
+      // Return the results
       return {
         success: true,
-        // Use 'items' as the property name to match Wix documentation
-        items: results,
-        total: results.length,
-        source: 'wix-crm-contacts',
-        queryDetails: {
-          firstName: firstNameParts.join(', ') || '',
-          lastName: formattedLastName || '',
-          dateOfBirth: dateOfBirth || '',
-          methodUsed: 'queryContacts'
-        }
+        contacts: sortedContacts,
+        total: sortedContacts.length,
+        source: 'wix-crm-contacts'
       };
     } catch (err) {
-      console.error('Error searching for contact with SDK:', err);
+      console.error('Error searching for member with CRM Contacts API:', err);
+      
       return {
         success: false,
-        error: err.message,
+        error: `Error searching for member: ${err.message}`,
+        details: err.stack || '',
         source: 'wix-crm-contacts'
       };
     }
@@ -336,171 +283,105 @@ class WixSdkAdapter {
   calculateContactConfidenceScores(contacts, searchCriteria) {
     const { firstNameParts, formattedLastName, dateOfBirth } = searchCriteria;
     
-    console.log('Calculating confidence scores for contacts');
-    console.log(`Search criteria: ${firstNameParts.join(', ')} ${formattedLastName} ${dateOfBirth}`);
-    
-    // Process each contact and add a confidence score
-    const scoredContacts = contacts.map(contact => {
-      // Start with a base score
+    return contacts.map(contact => {
+      // Start with a base confidence score
       let confidenceScore = 0;
       let matchDetails = [];
       
-      // Get the contact's name parts
-      const contactFirstName = contact.info?.name?.first || '';
-      const contactLastName = contact.info?.name?.last || '';
+      // Extract contact information
+      const contactFirstName = (contact.info?.name?.first || '').toLowerCase();
+      const contactLastName = (contact.info?.name?.last || '').toLowerCase();
       const contactDob = contact.info?.birthdate || '';
       
-      // Calculate first name match score - up to 40 points
-      // We'll check each part of the first name against the contact's first name
-      let firstNameScore = 0;
-      let firstNameMatches = 0;
-      let hasPartialFirstNameMatch = false;
-      
+      // Calculate first name similarity
       if (contactFirstName && firstNameParts.length > 0) {
-        // Split the contact's first name into parts for comparison
-        const contactFirstNameParts = contactFirstName.split(' ')
-          .map(part => part.trim())
-          .filter(part => part.length > 0);
-        
-        // Check for exact matches in first name parts
-        for (const searchPart of firstNameParts) {
-          let foundExactMatch = false;
-          
-          for (const contactPart of contactFirstNameParts) {
-            // Check for exact match
-            if (contactPart.toLowerCase() === searchPart.toLowerCase()) {
-              firstNameMatches++;
-              matchDetails.push(`First name part exact match: "${searchPart}"`);
-              foundExactMatch = true;
-              break;
-            }
-          }
-          
-          // If no exact match found, check for partial matches
-          if (!foundExactMatch) {
-            for (const contactPart of contactFirstNameParts) {
-              // Check if contact part starts with search part or vice versa
-              if (contactPart.toLowerCase().startsWith(searchPart.toLowerCase()) || 
-                  searchPart.toLowerCase().startsWith(contactPart.toLowerCase())) {
-                hasPartialFirstNameMatch = true;
-                matchDetails.push(`First name part partial match: "${searchPart}" ~ "${contactPart}"`);
-                // We don't increment firstNameMatches here, but we'll account for this later
-                break;
-              }
-            }
-          }
-        }
-        
-        // Calculate score based on percentage of matching parts
-        const totalParts = Math.max(firstNameParts.length, contactFirstNameParts.length);
-        firstNameScore = Math.round((firstNameMatches / totalParts) * 40);
-        
-        // Add bonus points for partial matches if there's at least one
-        if (hasPartialFirstNameMatch) {
-          firstNameScore += 10; // Add 10 points for having partial matches
-          firstNameScore = Math.min(firstNameScore, 40); // Cap at 40 points
-        }
-      }
-      
-      // Calculate last name match score - up to 40 points
-      let lastNameScore = 0;
-      let hasExactLastNameMatch = false;
-      
-      if (contactLastName && formattedLastName) {
         // Check for exact match
-        if (contactLastName.toLowerCase() === formattedLastName.toLowerCase()) {
-          lastNameScore = 40;
-          hasExactLastNameMatch = true;
-          matchDetails.push(`Last name exact match: "${formattedLastName}"`);
-        }
-        // Check for partial match (starts with)
-        else if (contactLastName.toLowerCase().startsWith(formattedLastName.toLowerCase()) ||
-                 formattedLastName.toLowerCase().startsWith(contactLastName.toLowerCase())) {
-          lastNameScore = 30;
-          matchDetails.push(`Last name partial match: "${formattedLastName}" ~ "${contactLastName}"`);
-        }
-        // Check for similarity
-        else {
-          // Simple character-based similarity check
-          const similarity = this.calculateStringSimilarity(contactLastName.toLowerCase(), formattedLastName.toLowerCase());
-          lastNameScore = Math.round(similarity * 25);
-          if (lastNameScore > 10) {
-            matchDetails.push(`Last name similar (${lastNameScore}%): "${formattedLastName}" ~ "${contactLastName}"`);
-          }
+        if (firstNameParts.some(part => contactFirstName === part)) {
+          confidenceScore += 0.4;
+          matchDetails.push('First name exact match');
+        } 
+        // Check for partial match
+        else if (firstNameParts.some(part => contactFirstName.includes(part) || part.includes(contactFirstName))) {
+          const bestMatchPart = firstNameParts.reduce((best, part) => {
+            const similarity = this.calculateStringSimilarity(contactFirstName, part);
+            return similarity > best.similarity ? { part, similarity } : best;
+          }, { part: '', similarity: 0 });
+          
+          confidenceScore += 0.3 * bestMatchPart.similarity;
+          matchDetails.push(`First name partial match (${Math.round(bestMatchPart.similarity * 100)}%)`);
         }
       }
       
-      // Calculate date of birth match score - up to 20 points
-      let dobScore = 0;
-      
-      if (contactDob && dateOfBirth) {
-        // Normalize date formats for comparison
-        const normalizedContactDob = this.normalizeDate(contactDob);
-        const normalizedSearchDob = this.normalizeDate(dateOfBirth);
+      // Calculate last name similarity
+      if (contactLastName && formattedLastName) {
+        const lastNameSimilarity = this.calculateStringSimilarity(contactLastName, formattedLastName);
         
-        if (normalizedContactDob && normalizedSearchDob) {
-          if (normalizedContactDob === normalizedSearchDob) {
-            dobScore = 20;
-            matchDetails.push(`Date of birth exact match: ${dateOfBirth}`);
+        // Exact match
+        if (lastNameSimilarity > 0.9) {
+          confidenceScore += 0.4;
+          matchDetails.push('Last name exact match');
+        }
+        // Strong partial match
+        else if (lastNameSimilarity > 0.7) {
+          confidenceScore += 0.3 * lastNameSimilarity;
+          matchDetails.push(`Last name strong match (${Math.round(lastNameSimilarity * 100)}%)`);
+        }
+        // Weak partial match
+        else if (lastNameSimilarity > 0.5) {
+          confidenceScore += 0.2 * lastNameSimilarity;
+          matchDetails.push(`Last name weak match (${Math.round(lastNameSimilarity * 100)}%)`);
+        }
+      }
+      
+      // Calculate date of birth match
+      if (contactDob && dateOfBirth) {
+        // Format dates for comparison
+        const contactDobDate = new Date(contactDob);
+        const searchDobDate = new Date(dateOfBirth);
+        
+        // Check if dates are valid
+        if (!isNaN(contactDobDate.getTime()) && !isNaN(searchDobDate.getTime())) {
+          // Format as YYYY-MM-DD for comparison
+          const contactDobFormatted = contactDobDate.toISOString().split('T')[0];
+          const searchDobFormatted = searchDobDate.toISOString().split('T')[0];
+          
+          // Exact match
+          if (contactDobFormatted === searchDobFormatted) {
+            confidenceScore += 0.2;
+            matchDetails.push('Date of birth exact match');
+          }
+          // Year and month match
+          else if (contactDobDate.getFullYear() === searchDobDate.getFullYear() && 
+                   contactDobDate.getMonth() === searchDobDate.getMonth()) {
+            confidenceScore += 0.1;
+            matchDetails.push('Date of birth year and month match');
+          }
+          // Only year matches
+          else if (contactDobDate.getFullYear() === searchDobDate.getFullYear()) {
+            confidenceScore += 0.05;
+            matchDetails.push('Date of birth year match');
           }
         }
       }
       
-      // Calculate total confidence score
-      confidenceScore = firstNameScore + lastNameScore + dobScore;
+      // Calculate confidence level based on score
+      let confidenceLevel = 'Low';
+      if (confidenceScore > 0.8) confidenceLevel = 'Very High';
+      else if (confidenceScore > 0.6) confidenceLevel = 'High';
+      else if (confidenceScore > 0.4) confidenceLevel = 'Medium';
+      else if (confidenceScore > 0.2) confidenceLevel = 'Low';
+      else confidenceLevel = 'Very Low';
       
-      // Apply special bonus for exact first name part match with exact last name match
-      // This is a very strong indicator it's the same person
-      if (firstNameMatches > 0 && hasExactLastNameMatch) {
-        // Add a substantial bonus (20 points) to ensure it's in the high confidence category
-        confidenceScore += 20;
-        matchDetails.push('Bonus: Exact first name part match with exact last name match');
-      }
-      // Apply bonus for partial first name match with exact last name match
-      // This is a common scenario with nicknames or abbreviated first names
-      else if (hasPartialFirstNameMatch && hasExactLastNameMatch) {
-        // Add a significant bonus (15 points) to prioritize these matches
-        confidenceScore += 15;
-        matchDetails.push('Bonus: Partial first name match with exact last name match');
-      }
-      // Also give a smaller bonus for partial first name match with partial last name match
-      else if (hasPartialFirstNameMatch && lastNameScore >= 30) {
-        // Add a moderate bonus (8 points) for partial matches on both names
-        confidenceScore += 8;
-        matchDetails.push('Bonus: Partial first name match with partial last name match');
-      }
-      
-      // Cap the total score at 100
-      confidenceScore = Math.min(confidenceScore, 100);
-      
-      // Add confidence data to the contact object
+      // Add confidence information to the contact object
       return {
         ...contact,
-        _confidence: {
-          score: confidenceScore,
-          details: matchDetails,
-          firstNameScore,
-          lastNameScore,
-          dobScore
-        }
+        confidenceScore,
+        confidenceLevel,
+        matchDetails
       };
     });
-    
-    // Sort contacts by confidence score (highest first)
-    scoredContacts.sort((a, b) => b._confidence.score - a._confidence.score);
-    
-    // Log the top matches
-    if (scoredContacts.length > 0) {
-      console.log('Top matches with confidence scores:');
-      scoredContacts.slice(0, 3).forEach((contact, index) => {
-        console.log(`Match #${index + 1}: ${contact.info?.name?.first || ''} ${contact.info?.name?.last || ''} - Score: ${contact._confidence.score}`);
-        console.log(`  Details: ${contact._confidence.details.join(', ')}`);
-      });
-    }
-    
-    return scoredContacts;
   }
-  
+
   /**
    * Calculate string similarity between two strings (0-1 scale)
    * @param {string} str1 - First string
@@ -508,65 +389,42 @@ class WixSdkAdapter {
    * @returns {number} - Similarity score between 0 and 1
    */
   calculateStringSimilarity(str1, str2) {
+    // If either string is empty, return 0
     if (!str1 || !str2) return 0;
-    if (str1 === str2) return 1;
+    
+    // Convert both strings to lowercase for case-insensitive comparison
+    const s1 = str1.toLowerCase();
+    const s2 = str2.toLowerCase();
     
     // Calculate Levenshtein distance
-    const track = Array(str2.length + 1).fill(null).map(() => 
-      Array(str1.length + 1).fill(null));
+    const m = s1.length;
+    const n = s2.length;
     
-    for (let i = 0; i <= str1.length; i += 1) {
-      track[0][i] = i;
-    }
+    // Create a matrix of size (m+1) x (n+1)
+    const d = Array(m + 1).fill().map(() => Array(n + 1).fill(0));
     
-    for (let j = 0; j <= str2.length; j += 1) {
-      track[j][0] = j;
-    }
+    // Initialize the first row and column
+    for (let i = 0; i <= m; i++) d[i][0] = i;
+    for (let j = 0; j <= n; j++) d[0][j] = j;
     
-    for (let j = 1; j <= str2.length; j += 1) {
-      for (let i = 1; i <= str1.length; i += 1) {
-        const indicator = str1[i - 1] === str2[j - 1] ? 0 : 1;
-        track[j][i] = Math.min(
-          track[j][i - 1] + 1, // deletion
-          track[j - 1][i] + 1, // insertion
-          track[j - 1][i - 1] + indicator, // substitution
+    // Fill the matrix
+    for (let i = 1; i <= m; i++) {
+      for (let j = 1; j <= n; j++) {
+        const cost = s1[i - 1] === s2[j - 1] ? 0 : 1;
+        d[i][j] = Math.min(
+          d[i - 1][j] + 1,      // deletion
+          d[i][j - 1] + 1,      // insertion
+          d[i - 1][j - 1] + cost // substitution
         );
       }
     }
     
-    const distance = track[str2.length][str1.length];
-    const maxLength = Math.max(str1.length, str2.length);
+    // Calculate similarity as 1 - normalized distance
+    const distance = d[m][n];
+    const maxLength = Math.max(m, n);
     
-    // Return similarity as a percentage (0-1)
+    // Return similarity score between 0 and 1
     return maxLength ? 1 - distance / maxLength : 1;
-  }
-  
-  /**
-   * Normalize date string to YYYY-MM-DD format for comparison
-   * @param {string} dateStr - Date string in various formats
-   * @returns {string} - Normalized date string or empty string if invalid
-   */
-  normalizeDate(dateStr) {
-    if (!dateStr) return '';
-    
-    try {
-      // Handle various date formats
-      // MM-DD-YYYY format (common in US IDs)
-      if (dateStr.match(/^\d{2}-\d{2}-\d{4}$/)) {
-        const [month, day, year] = dateStr.split('-');
-        return `${year}-${month}-${day}`;
-      }
-      
-      // Try parsing with Date object
-      const date = new Date(dateStr);
-      if (!isNaN(date.getTime())) {
-        return date.toISOString().split('T')[0];
-      }
-    } catch (e) {
-      console.warn(`Error normalizing date: ${dateStr}`, e);
-    }
-    
-    return '';
   }
   
   /**
@@ -574,6 +432,8 @@ class WixSdkAdapter {
    * Following the Ethereal Engineering Technical Codex principles:
    * - Boundary Protection: Implementing strict interface contracts for the Wix API
    * - Separation of Concerns: Maintaining clear boundaries between components
+   * 
+   * This implementation strictly follows the Wix JavaScript SDK documentation for pricing plans
    */
   async getMemberPricingPlans(memberId) {
     try {
@@ -595,71 +455,171 @@ class WixSdkAdapter {
       }
       
       // Log the request details for debugging
-      console.log(`Received request to list pricing plan orders with filter: { buyerIds: [${memberId}] }`);
+      console.log(`Requesting pricing plan orders for buyerId: ${memberId}`);
       
-      // Query for orders with the specified buyerId
-      console.log(`Listing pricing plan orders with filter: { buyerIds: [${memberId}] }`);
-      
-      // Use the managementListOrders method to filter by buyerId
-      // This follows the Wix JavaScript SDK documentation for pricing plans orders
+      // Use the managementListOrders method according to Wix JavaScript SDK documentation
+      // https://dev.wix.com/docs/sdk/backend-modules/pricing-plans/orders/management-list-orders
       const response = await this.client.orders.managementListOrders({
-        filter: {
-          buyerIds: [memberId]
-        },
+        // Filter by buyerId using the proper parameter structure
+        buyerIds: [memberId],
         // Sort by created date in descending order (newest first)
-        sort: {
+        sorting: {
           fieldName: 'createdDate',
           order: 'DESC'
         },
-        // Include additional order details
-        includePaymentDetails: true
+        // Optional filters for active orders
+        orderStatuses: ['ACTIVE', 'ENDED', 'PAUSED'],
+        // Get maximum allowed orders
+        limit: 50
       });
       
       // Log the response for debugging
-      console.log(`Found ${response.orders?.length || 0} orders matching filter`);
+      console.log(`Found ${response.orders?.length || 0} orders for member ${memberId}`);
       
-      // Process orders to extract plan details
+      // Process orders to extract plan details according to the SDK documentation structure
       const processedOrders = (response.orders || []).map(order => {
-        // Extract plan information
+        // Extract buyer information from the correct location in the response
+        const buyerId = order.buyer?.memberId || 'N/A';
+        const contactId = order.buyer?.contactId || 'N/A';
+        
+        // Extract pricing information from the correct location in the response
+        // According to the official Wix JavaScript SDK documentation
+        // The pricing information can be in different locations
+        let priceAmount, priceCurrency;
+        
+        // Check priceDetails first (as shown in the documentation example)
+        if (order.priceDetails) {
+          priceAmount = order.priceDetails.planPrice;
+          priceCurrency = order.priceDetails.currency;
+        } 
+        // Fall back to planPrice if priceDetails is not available
+        else if (order.planPrice) {
+          // planPrice could be a string or an object
+          if (typeof order.planPrice === 'string') {
+            priceAmount = order.planPrice;
+          } else {
+            priceAmount = order.planPrice.amount;
+            priceCurrency = order.planPrice.currency;
+          }
+        }
+        
+        // Get creation date from the correct field (_createdDate)
+        const createdDate = order._createdDate || null;
+        
+        // Get start date from the appropriate fields based on the SDK structure
+        const startDate = order.startDate || 
+                         (order.currentCycle && order.currentCycle.startedDate) || 
+                         createdDate;
+        
+        // Format payment amount based on available data
+        const paymentAmount = priceAmount !== undefined ? 
+          `${priceAmount} ${priceCurrency || ''}` : 
+          'Free';
+        
+        // Calculate if plan is active based on status and dates
+        const isActive = order.status === 'ACTIVE' && 
+                        (!order.endDate || new Date(order.endDate) > new Date());
+        
+        // Return a comprehensive processed order object with all available information
         return {
-          ...order,
+          // Original order data
+          _id: order._id,
+          planId: order.planId,
+          
+          // Plan information
           planName: order.planName || 'Unnamed Plan',
+          planDescription: order.planDescription || '',
           status: order.status || 'UNKNOWN',
-          validFrom: order.startDate || order.createdDate,
-          expiresAt: order.endDate,
-          price: order.pricing?.price,
-          currency: order.pricing?.currency,
-          paymentStatus: order.paymentStatus || 'UNKNOWN',
-          orderType: order.orderType || 'UNKNOWN',
+          
+          // Buyer information
+          buyerId: buyerId,
+          contactId: contactId,
+          
+          // Dates
+          createdDate: createdDate,
+          startDate: startDate,
+          endDate: order.endDate,
+          
+          // Pricing information
+          price: priceAmount,
+          currency: priceCurrency,
+          paymentStatus: order.lastPaymentStatus || 'UNKNOWN',
+          orderMethod: order.orderMethod || 'UNKNOWN',
+          
+          // Recurring information
           isRecurring: !!order.recurring,
-          recurringDetails: order.recurring,
-          paymentDetails: order.paymentDetails
+          recurringCycle: order.recurring?.cycle,
+          recurringPeriod: order.recurring?.period,
+          
+          // Payment details
+          paymentMethod: order.paymentDetails?.paymentMethod || 'Unknown',
+          paymentAmount: paymentAmount,
+          paymentDate: order.paymentDetails?.paymentDate,
+          
+          // Formatted dates for display
+          formattedStartDate: startDate ? new Date(startDate).toLocaleDateString() : 'N/A',
+          formattedEndDate: order.endDate ? new Date(order.endDate).toLocaleDateString() : 'No expiration',
+          formattedCreatedDate: createdDate ? new Date(createdDate).toLocaleString() : 'Unknown',
+          
+          // Status indicators
+          isActive: isActive,
+          isExpired: order.status === 'ENDED' || (order.endDate && new Date(order.endDate) < new Date()),
+          isPaused: order.pausePeriods && order.pausePeriods.length > 0
         };
       });
       
+      // Separate active and inactive plans for better organization
+      const activePlans = processedOrders.filter(plan => plan.isActive);
+      const inactivePlans = processedOrders.filter(plan => !plan.isActive);
+      
+      // Sort plans by creation date (newest first within each category)
+      const sortedActivePlans = activePlans.sort((a, b) => {
+        const dateA = a.createdDate ? new Date(a.createdDate) : new Date(0);
+        const dateB = b.createdDate ? new Date(b.createdDate) : new Date(0);
+        return dateB - dateA;
+      });
+      
+      const sortedInactivePlans = inactivePlans.sort((a, b) => {
+        const dateA = a.createdDate ? new Date(a.createdDate) : new Date(0);
+        const dateB = b.createdDate ? new Date(b.createdDate) : new Date(0);
+        return dateB - dateA;
+      });
+      
+      // Combine sorted plans with active plans first
+      const sortedPlans = [...sortedActivePlans, ...sortedInactivePlans];
+      
       return {
         success: true,
-        plans: processedOrders,
+        plans: sortedPlans,
         orders: processedOrders, // For backward compatibility
+        activePlans: sortedActivePlans,
+        inactivePlans: sortedInactivePlans,
         total: processedOrders.length,
         source: 'wix-pricing-plans'
       };
     } catch (err) {
       console.error('Error getting pricing plans with SDK:', err);
       
+      // Ensure we have a valid error message even if err is empty or undefined
+      const errorMessage = err && err.message ? err.message : 'Unknown error occurred while retrieving pricing plans';
+      
+      // Create a detailed error response
       return {
         success: false,
-        error: `Error getting pricing plans: ${err.message}`,
-        details: err.stack || '',
-        source: 'wix-sdk'
+        error: `Error getting pricing plans: ${errorMessage}`,
+        details: err && err.stack ? err.stack : 'No stack trace available',
+        errorObject: err || {},
+        source: 'wix-sdk',
+        timestamp: new Date().toISOString()
       };
     }
   }
 }
 
-// Create a singleton instance
+// Create an instance of the adapter
 const adapter = new WixSdkAdapter();
 
+// Export the adapter methods
 module.exports = {
   /**
    * Search for a contact using the Wix CRM Contacts API
@@ -679,17 +639,23 @@ module.exports = {
   },
   
   /**
-   * Get pricing plans for a member using the SDK adapter
+   * Get pricing plans for a member
+   * Following the Ethereal Engineering Technical Codex principles:
+   * - Boundary Protection: Implementing strict interface contracts for the Wix API
+   * - Separation of Concerns: Maintaining clear boundaries between components
+   * 
+   * This implementation strictly follows the Wix JavaScript SDK documentation for pricing plans
    */
   getMemberPricingPlans: async function(memberId) {
     try {
       return await adapter.getMemberPricingPlans(memberId);
     } catch (err) {
-      console.error('SDK Adapter getMemberPricingPlans error:', err);
+      console.error('Error getting pricing plans with SDK:', err);
       return {
         success: false,
-        error: err.message,
-        source: 'wix-sdk-adapter'
+        error: `Error getting pricing plans: ${err.message}`,
+        details: err && err.stack ? err.stack : 'No stack trace available',
+        source: 'wix-sdk'
       };
     }
   },
@@ -706,7 +672,7 @@ module.exports = {
       // Import the pricing plans module
       const { orders } = require('@wix/pricing-plans');
       
-      // Add the pricing plans module to the client if not already added
+      // Add the pricing plans module to the client
       if (!adapter.client.orders) {
         console.log('Adding pricing-plans orders module to the client');
         adapter.client.orders = orders;
