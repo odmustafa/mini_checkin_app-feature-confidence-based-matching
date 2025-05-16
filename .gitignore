@@ -28,6 +28,9 @@ Thumbs.db
 .vscode/*
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# VS Code workspace files
+*.code-workspace
 *.suo
 *.ntvs*
 *.njsproj
