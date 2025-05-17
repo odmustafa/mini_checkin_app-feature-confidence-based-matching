@@ -23,7 +23,7 @@ Before beginning the New Account Activation process, members must have:
 - Wix Website (Member accounts and membership information)
 - Scan-ID (connects to license scanner)
 - TimeXpress (connects to Anviz C2 Pro)
-- FiDO (Front Desk Operations application)
+- TRiBE (Front Desk Operations application)
 
 ## Process Flow
 
@@ -39,12 +39,12 @@ The diagram below illustrates the complete New Account Activation process from s
    - Staff confirms the member visually matches their ID
 
 2. **ID Verification:**
-   - Staff initiates the process in FiDO
+   - Staff initiates the process in TRiBE
    - ID is scanned through the Duplex Scanner
    - System verifies ID information and age requirement (21+)
 
 3. **Account Matching:**
-   - FiDO searches for a matching account using scanned information
+   - TRiBE searches for a matching account using scanned information
    - Staff confirms the account belongs to the member
    - System pulls membership plan details
 
