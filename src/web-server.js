@@ -701,11 +701,6 @@ app.get('/api/photos/:filename', (req, res) => {
   res.sendFile(photoPath);
 });
 
-// Specific route for Anviz interface
-app.get('/anviz', (req, res) => {
-  res.sendFile(path.join(__dirname, 'renderer', 'anviz-web.html'));
-});
-
 // Serve the main HTML file for all other routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'renderer', 'index.html'));

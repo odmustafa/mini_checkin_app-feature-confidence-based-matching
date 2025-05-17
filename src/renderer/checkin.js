@@ -662,20 +662,4 @@ async function handleFingerprintEnrollment(memberData) {
   }
 }
 
-// Add event listener for the Enroll Fingerprint buttons
-document.addEventListener('click', function(event) {
-  if (event.target && event.target.classList.contains('enroll-fingerprint-btn')) {
-    const memberId = event.target.getAttribute('data-member-id');
-    const memberName = event.target.getAttribute('data-member-name');
-    const memberData = {
-      id: memberId,
-      name: memberName
-    };
-    
-    // Store member data in localStorage for the Anviz page
-    localStorage.setItem('selectedMember', JSON.stringify(memberData));
-    
-    // Navigate to the Anviz page
-    window.location.href = 'anviz.html';
-  }
-});
+// Fingerprint enrollment functionality has been removed

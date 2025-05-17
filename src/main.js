@@ -9,7 +9,6 @@ const WixSdkInspector = require('./services/WixSdkInspector');
 const WixSdkAdapter = require('./services/WixSdkAdapter');
 const WixSdkCompatAdapter = require('./services/WixSdkCompatAdapter');
 const WebhookService = require('./services/WebhookService');
-const AnvizService = require('./services/AnvizService');
 
 let mainWindow;
 
@@ -173,51 +172,7 @@ WebhookService.on('webhook', (data) => {
   }
 });
 
-// Anviz SDK handlers
-
-// Initialize Anviz SDK
-ipcMain.handle('anviz:initialize', async () => {
-  return await AnvizService.initialize();
-});
-
-// Connect to Anviz device
-ipcMain.handle('anviz:connect-device', async (event, options) => {
-  return await AnvizService.connectDevice(options);
-});
-
-// Disconnect from Anviz device
-ipcMain.handle('anviz:disconnect-device', async () => {
-  return await AnvizService.disconnectDevice();
-});
-
-// Add user to Anviz device
-ipcMain.handle('anviz:add-user', async (event, userData) => {
-  return await AnvizService.addUser(userData);
-});
-
-// Start fingerprint enrollment
-ipcMain.handle('anviz:start-finger-enrollment', async (event, enrollmentData) => {
-  return await AnvizService.startFingerEnrollment(enrollmentData);
-});
-
-// Start event listener
-ipcMain.handle('anviz:start-event-listener', async () => {
-  return await AnvizService.startEventListener();
-});
-
-// Stop event listener
-ipcMain.handle('anviz:stop-event-listener', async () => {
-  return await AnvizService.stopEventListener();
-});
-
-// Set up Anviz event forwarding to the renderer process
-AnvizService.registerCallback('all', (event) => {
-  if (mainWindow) {
-    mainWindow.webContents.send('anviz:event', event);
-  }
-});
-
 // Clean up Anviz resources on app quit
 app.on('will-quit', async () => {
-  await AnvizService.cleanup();
+  // Removed AnvizService cleanup call
 });
