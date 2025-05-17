@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anviz Fingerprint Enrollment - Web Mode</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Anviz Fingerprint Enrollment</h1>
+            <p class="subtitle">Web Development Mode</p>
+        </header>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Device Connection</h2>
+            </div>
+            <div class="card-body">
+                <div class="status-indicator">
+                    <div id="connection-status" class="status-circle disconnected"></div>
+                    <span id="connection-text">Disconnected</span>
+                </div>
+                <div class="form-group">
+                    <label for="device-ip">Device IP:</label>
+                    <input type="text" id="device-ip" value="192.168.1.100" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="device-port">Port:</label>
+                    <input type="number" id="device-port" value="5010" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="device-password">Password:</label>
+                    <input type="password" id="device-password" value="123456" class="form-control">
+                </div>
+                <div class="button-group">
+                    <button id="connect-btn" class="btn btn-primary">Connect</button>
+                    <button id="disconnect-btn" class="btn btn-secondary" disabled>Disconnect</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>User Management</h2>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="user-id">User ID:</label>
+                    <input type="number" id="user-id" value="10001" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="user-name">Name:</label>
+                    <input type="text" id="user-name" placeholder="John Doe" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="user-card">Card Number (optional):</label>
+                    <input type="text" id="user-card" placeholder="Card number" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="user-password">User Password (optional):</label>
+                    <input type="password" id="user-password" placeholder="Password" class="form-control">
+                </div>
+                <div class="button-group">
+                    <button id="add-user-btn" class="btn btn-primary" disabled>Add User</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Fingerprint Enrollment</h2>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="enrollment-user-id">User ID:</label>
+                    <input type="number" id="enrollment-user-id" value="10001" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="finger-index">Finger Index:</label>
+                    <select id="finger-index" class="form-control">
+                        <option value="0">Right Thumb</option>
+                        <option value="1">Right Index</option>
+                        <option value="2">Right Middle</option>
+                        <option value="3">Right Ring</option>
+                        <option value="4">Right Little</option>
+                        <option value="5">Left Thumb</option>
+                        <option value="6">Left Index</option>
+                        <option value="7">Left Middle</option>
+                        <option value="8">Left Ring</option>
+                        <option value="9">Left Little</option>
+                    </select>
+                </div>
+                <div class="button-group">
+                    <button id="start-enrollment-btn" class="btn btn-primary" disabled>Start Enrollment</button>
+                </div>
+                <div id="enrollment-status" class="status-box">
+                    <p>Enrollment status will appear here...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Event Log</h2>
+            </div>
+            <div class="card-body">
+                <div id="event-log" class="log-container">
+                    <p class="log-entry">Web development mode active. Events will be simulated.</p>
+                </div>
+                <div class="button-group">
+                    <button id="clear-log-btn" class="btn btn-secondary">Clear Log</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        // Connect to Socket.io server
+        const socket = io();
+        
+        // DOM Elements
+        const connectBtn = document.getElementById('connect-btn');
+        const disconnectBtn = document.getElementById('disconnect-btn');
+        const addUserBtn = document.getElementById('add-user-btn');
+        const startEnrollmentBtn = document.getElementById('start-enrollment-btn');
+        const clearLogBtn = document.getElementById('clear-log-btn');
+        const connectionStatus = document.getElementById('connection-status');
+        const connectionText = document.getElementById('connection-text');
+        const eventLog = document.getElementById('event-log');
+        const enrollmentStatus = document.getElementById('enrollment-status');
+        
+        // Device connection state
+        let deviceConnected = false;
+        
+        // Add event to log
+        function logEvent(message, isError = false) {
+            const entry = document.createElement('p');
+            entry.className = 'log-entry' + (isError ? ' error' : '');
+            entry.textContent = `${new Date().toLocaleTimeString()} - ${message}`;
+            eventLog.appendChild(entry);
+            eventLog.scrollTop = eventLog.scrollHeight;
+        }
+        
+        // Update connection status UI
+        function updateConnectionStatus(connected, message) {
+            deviceConnected = connected;
+            connectionStatus.className = 'status-circle ' + (connected ? 'connected' : 'disconnected');
+            connectionText.textContent = message || (connected ? 'Connected' : 'Disconnected');
+            
+            // Update button states
+            connectBtn.disabled = connected;
+            disconnectBtn.disabled = !connected;
+            addUserBtn.disabled = !connected;
+            startEnrollmentBtn.disabled = !connected;
+        }
+        
+        // Connect button click handler
+        connectBtn.addEventListener('click', () => {
+            const ip = document.getElementById('device-ip').value;
+            const port = document.getElementById('device-port').value;
+            const password = document.getElementById('device-password').value;
+            
+            if (!ip || !port) {
+                logEvent('Please enter device IP and port', true);
+                return;
+            }
+            
+            logEvent(`Connecting to Anviz device at ${ip}:${port}...`);
+            connectionText.textContent = 'Connecting...';
+            
+            // Simulate connection delay
+            setTimeout(() => {
+                updateConnectionStatus(true, 'Connected (Simulated)');
+                logEvent('Connected to Anviz device (Simulated)');
+            }, 1500);
+        });
+        
+        // Disconnect button click handler
+        disconnectBtn.addEventListener('click', () => {
+            logEvent('Disconnecting from Anviz device...');
+            
+            // Simulate disconnection delay
+            setTimeout(() => {
+                updateConnectionStatus(false);
+                logEvent('Disconnected from Anviz device');
+            }, 1000);
+        });
+        
+        // Add user button click handler
+        addUserBtn.addEventListener('click', () => {
+            const userId = document.getElementById('user-id').value;
+            const userName = document.getElementById('user-name').value;
+            const userCard = document.getElementById('user-card').value;
+            const userPassword = document.getElementById('user-password').value;
+            
+            if (!userId || !userName) {
+                logEvent('Please enter user ID and name', true);
+                return;
+            }
+            
+            logEvent(`Adding user: ${userName} (ID: ${userId})...`);
+            
+            // Simulate adding user delay
+            setTimeout(() => {
+                logEvent(`User ${userName} added successfully with ID ${userId}`);
+                // Auto-update enrollment user ID field
+                document.getElementById('enrollment-user-id').value = userId;
+            }, 1000);
+        });
+        
+        // Start enrollment button click handler
+        startEnrollmentBtn.addEventListener('click', () => {
+            const userId = document.getElementById('enrollment-user-id').value;
+            const fingerIndex = document.getElementById('finger-index').value;
+            const fingerName = document.getElementById('finger-index').options[document.getElementById('finger-index').selectedIndex].text;
+            
+            if (!userId) {
+                logEvent('Please enter user ID for enrollment', true);
+                return;
+            }
+            
+            logEvent(`Starting fingerprint enrollment for user ID ${userId}, finger: ${fingerName}...`);
+            enrollmentStatus.innerHTML = '<p>Please place your finger on the scanner...</p>';
+            
+            // Simulate enrollment process
+            setTimeout(() => {
+                enrollmentStatus.innerHTML = '<p>First scan completed. Please remove your finger.</p>';
+                logEvent('First scan completed. Waiting for second scan...');
+                
+                setTimeout(() => {
+                    enrollmentStatus.innerHTML = '<p>Please place your finger on the scanner again...</p>';
+                    
+                    setTimeout(() => {
+                        enrollmentStatus.innerHTML = '<p>Second scan completed. Please remove your finger.</p>';
+                        logEvent('Second scan completed. Processing...');
+                        
+                        setTimeout(() => {
+                            enrollmentStatus.innerHTML = '<p class="success">Enrollment completed successfully!</p>';
+                            logEvent(`Fingerprint enrollment completed successfully for user ID ${userId}, finger: ${fingerName}`);
+                        }, 1500);
+                    }, 2000);
+                }, 1500);
+            }, 2000);
+        });
+        
+        // Clear log button click handler
+        clearLogBtn.addEventListener('click', () => {
+            eventLog.innerHTML = '';
+            logEvent('Log cleared');
+        });
+        
+        // Initialize
+        logEvent('Anviz web interface initialized in simulation mode');
+    </script>
+</body>
+</html>

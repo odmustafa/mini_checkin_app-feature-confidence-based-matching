@@ -86,8 +86,10 @@ window.addEventListener('beforeunload', () => {
 
 // Main function to process a scan (either from button click or watch feature)
 async function processScan(scan) {
+  // Clear previous results
   const resultDiv = document.getElementById('scan-result');
   const accountDiv = document.getElementById('account-info');
+  
   // Diagnostics panel
   let diagPanel = document.getElementById('diagnostics-panel');
   if (!diagPanel) {
@@ -96,8 +98,28 @@ async function processScan(scan) {
     diagPanel.style = 'background:#f4f4f4;border:1px solid #ccc;padding:8px;margin:8px 0;overflow:auto;max-height:200px;font-size:12px;';
     resultDiv.parentNode.insertBefore(diagPanel, resultDiv.nextSibling);
   }
+  
   function showDiagnostics(title, data) {
     diagPanel.innerHTML = `<strong>${title}</strong><pre>${JSON.stringify(data, null, 2)}</pre>`;
+  }
+  
+  // Helper function to create an Enroll Fingerprint button
+  function createEnrollFingerprintButton(contact) {
+    const enrollBtn = document.createElement('button');
+    enrollBtn.className = 'secondary-btn enroll-fingerprint-btn';
+    enrollBtn.textContent = 'Enroll Fingerprint';
+    enrollBtn.addEventListener('click', () => {
+      // If we have the anvizIntegration object, set the selected member data
+      if (window.anvizIntegration) {
+        window.anvizIntegration.setSelectedMember({
+          scan: scan,
+          contact: contact
+        });
+      }
+      // Navigate to the Anviz page
+      window.location.href = 'anviz.html';
+    });
+    return enrollBtn;
   }
   
   resultDiv.textContent = 'Processing scan...';
@@ -374,10 +396,6 @@ document.getElementById('scan-btn').addEventListener('click', async () => {
   // This will fetch the latest scan and process it
   await processScan();
 });
-
-// Helper function to handle fingerprint enrollment
-async function handleFingerprintEnrollment(memberData) {
-  try {
     const scan = await window.scanidAPI.getLatestScan();
     if (!scan) {
       resultDiv.textContent = JSON.stringify(scan, null, 2);
@@ -460,23 +478,15 @@ async function handleFingerprintEnrollment(memberData) {
                 <div class="member-card" data-member-id="${memberId}" data-source="${searchResult.source}" data-index="${index}">
                   <div class="member-card-header">
                     <h4>${name}</h4>
-                    <div class="member-card-actions">
-                      <button class="view-plans-btn" data-member-id="${memberId}">View Plans</button>
-                      <button class="enroll-fingerprint-btn secondary-btn" data-member-id="${memberId}" data-index="${index}">Enroll Fingerprint</button>
-                    </div>
+                    <button class="view-plans-btn" data-member-id="${memberId}">View Plans</button>
                   </div>
                   <div class="member-card-details">
                     <p><strong>Email:</strong> ${email}</p>
                     <p><strong>Member ID:</strong> ${memberId || 'N/A'}</p>
-                    ${member.confidenceLevel ? `<p class="confidence-level ${member.confidenceLevel.toLowerCase().replace(' ', '-')}"><strong>Match Confidence:</strong> ${member.confidenceLevel}</p>` : ''}
-                    ${member.matchDetails && member.matchDetails.length > 0 ? `
-                      <div class="match-details">
-                        <p><strong>Match Details:</strong></p>
-                        <ul>
-                          ${member.matchDetails.map(detail => `<li>${detail}</li>`).join('')}
-                        </ul>
-                      </div>
-                    ` : ''}
+                  </div>
+                  <div class="member-actions">
+                    <button class="view-plans-btn">View Plans</button>
+                    <button class="enroll-fingerprint-btn secondary-btn">Enroll Fingerprint</button>
                   </div>
                   <div class="plans-container" id="plans-${memberId}"></div>
                 </div>
@@ -659,23 +669,5 @@ async function handleFingerprintEnrollment(memberData) {
     }, 100);
   } catch (err) {
     resultDiv.textContent = 'Error: ' + err.message;
-  }
-}
-
-// Add event listener for the Enroll Fingerprint buttons
-document.addEventListener('click', function(event) {
-  if (event.target && event.target.classList.contains('enroll-fingerprint-btn')) {
-    const memberId = event.target.getAttribute('data-member-id');
-    const memberName = event.target.getAttribute('data-member-name');
-    const memberData = {
-      id: memberId,
-      name: memberName
-    };
-    
-    // Store member data in localStorage for the Anviz page
-    localStorage.setItem('selectedMember', JSON.stringify(memberData));
-    
-    // Navigate to the Anviz page
-    window.location.href = 'anviz.html';
   }
 });

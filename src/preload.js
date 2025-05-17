@@ -71,3 +71,24 @@ contextBridge.exposeInMainWorld('webhookAPI', {
     };
   }
 });
+
+// Expose Anviz SDK API functionality
+contextBridge.exposeInMainWorld('anvizAPI', {
+  initialize: () => ipcRenderer.invoke('anviz:initialize'),
+  connectDevice: (options) => ipcRenderer.invoke('anviz:connect-device', options),
+  disconnectDevice: () => ipcRenderer.invoke('anviz:disconnect-device'),
+  addUser: (userData) => ipcRenderer.invoke('anviz:add-user', userData),
+  startFingerEnrollment: (enrollmentData) => ipcRenderer.invoke('anviz:start-finger-enrollment', enrollmentData),
+  startEventListener: () => ipcRenderer.invoke('anviz:start-event-listener'),
+  stopEventListener: () => ipcRenderer.invoke('anviz:stop-event-listener'),
+  onAnvizEvent: (callback) => {
+    // Create a listener for Anviz events
+    const listener = (event, data) => callback(data);
+    ipcRenderer.on('anviz:event', listener);
+    
+    // Return a function to remove the listener
+    return () => {
+      ipcRenderer.removeListener('anviz:event', listener);
+    };
+  }
+});

@@ -1,0 +1,16 @@
+/Users/omar/Downloads/20240106 - Tribute Breaks and /mini_checkin_app-feature-confidence-based-matching/src/assets/anviz-wrapper/bin/Release/net6.0/tc-b_new_sdk.dll
+/Users/omar/Downloads/20240106 - Tribute Breaks and /mini_checkin_app-feature-confidence-based-matching/src/assets/anviz-wrapper/bin/Release/net6.0/AnvizWrapper
+/Users/omar/Downloads/20240106 - Tribute Breaks and /mini_checkin_app-feature-confidence-based-matching/src/assets/anviz-wrapper/bin/Release/net6.0/AnvizWrapper.deps.json
+/Users/omar/Downloads/20240106 - Tribute Breaks and /mini_checkin_app-feature-confidence-based-matching/src/assets/anviz-wrapper/bin/Release/net6.0/AnvizWrapper.runtimeconfig.json
+/Users/omar/Downloads/20240106 - Tribute Breaks and /mini_checkin_app-feature-confidence-based-matching/src/assets/anviz-wrapper/bin/Release/net6.0/AnvizWrapper.dll
+/Users/omar/Downloads/20240106 - Tribute Breaks and /mini_checkin_app-feature-confidence-based-matching/src/assets/anviz-wrapper/bin/Release/net6.0/AnvizWrapper.pdb
+/Users/omar/Downloads/20240106 - Tribute Breaks and /mini_checkin_app-feature-confidence-based-matching/src/assets/anviz-wrapper/obj/Release/net6.0/AnvizWrapper.GeneratedMSBuildEditorConfig.editorconfig
+/Users/omar/Downloads/20240106 - Tribute Breaks and /mini_checkin_app-feature-confidence-based-matching/src/assets/anviz-wrapper/obj/Release/net6.0/AnvizWrapper.AssemblyInfoInputs.cache
+/Users/omar/Downloads/20240106 - Tribute Breaks and /mini_checkin_app-feature-confidence-based-matching/src/assets/anviz-wrapper/obj/Release/net6.0/AnvizWrapper.AssemblyInfo.cs
+/Users/omar/Downloads/20240106 - Tribute Breaks and /mini_checkin_app-feature-confidence-based-matching/src/assets/anviz-wrapper/obj/Release/net6.0/AnvizWrapper.csproj.CoreCompileInputs.cache
+/Users/omar/Downloads/20240106 - Tribute Breaks and /mini_checkin_app-feature-confidence-based-matching/src/assets/anviz-wrapper/obj/Release/net6.0/AnvizWrapper.sourcelink.json
+/Users/omar/Downloads/20240106 - Tribute Breaks and /mini_checkin_app-feature-confidence-based-matching/src/assets/anviz-wrapper/obj/Release/net6.0/AnvizWrapper.dll
+/Users/omar/Downloads/20240106 - Tribute Breaks and /mini_checkin_app-feature-confidence-based-matching/src/assets/anviz-wrapper/obj/Release/net6.0/refint/AnvizWrapper.dll
+/Users/omar/Downloads/20240106 - Tribute Breaks and /mini_checkin_app-feature-confidence-based-matching/src/assets/anviz-wrapper/obj/Release/net6.0/AnvizWrapper.pdb
+/Users/omar/Downloads/20240106 - Tribute Breaks and /mini_checkin_app-feature-confidence-based-matching/src/assets/anviz-wrapper/obj/Release/net6.0/AnvizWrapper.genruntimeconfig.cache
+/Users/omar/Downloads/20240106 - Tribute Breaks and /mini_checkin_app-feature-confidence-based-matching/src/assets/anviz-wrapper/obj/Release/net6.0/ref/AnvizWrapper.dll

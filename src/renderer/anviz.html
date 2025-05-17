@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anviz Fingerprint Enrollment</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Load web client API for browser compatibility -->
+  <script src="web-client.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="tabs">
+      <a href="index.html" class="tab-btn">Member Check-In</a>
+      <a href="index.html#api-explorer" class="tab-btn">Wix API Explorer</a>
+      <a href="webhooks.html" class="tab-btn">Webhooks</a>
+      <a href="anviz.html" class="tab-btn active">Fingerprint Enrollment</a>
+    </div>
+    
+    <!-- Anviz Fingerprint Enrollment Tab -->
+    <div id="anviz-tab" class="tab-content active">
+      <h2>Anviz Fingerprint Enrollment</h2>
+      
+      <div class="anviz-container">
+        <!-- Device Connection Section -->
+        <div class="anviz-section">
+          <h3>Device Connection</h3>
+          <div class="connection-form">
+            <div class="form-group">
+              <label for="device-ip">Device IP:</label>
+              <input type="text" id="device-ip" value="192.168.1.100" placeholder="Enter device IP">
+            </div>
+            <div class="form-group">
+              <label for="device-port">Device Port:</label>
+              <input type="number" id="device-port" value="5010" placeholder="Enter device port">
+            </div>
+            <div class="button-group">
+              <button id="initialize-btn" class="action-btn">Initialize SDK</button>
+              <button id="connect-btn" class="action-btn">Connect to Device</button>
+              <button id="disconnect-btn" class="action-btn" disabled>Disconnect</button>
+            </div>
+          </div>
+          <div id="connection-status" class="status-box">
+            <p>Status: Not connected</p>
+          </div>
+        </div>
+        
+        <!-- User Management Section -->
+        <div class="anviz-section">
+          <h3>User Management</h3>
+          <div class="user-form">
+            <div class="form-group">
+              <label for="employee-id">Employee ID:</label>
+              <input type="text" id="employee-id" placeholder="Enter employee ID">
+            </div>
+            <div class="form-group">
+              <label for="first-name">First Name:</label>
+              <input type="text" id="first-name" placeholder="Enter first name">
+            </div>
+            <div class="form-group">
+              <label for="last-name">Last Name:</label>
+              <input type="text" id="last-name" placeholder="Enter last name">
+            </div>
+            <div class="button-group">
+              <button id="add-user-btn" class="action-btn" disabled>Add User to Device</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Fingerprint Enrollment Section -->
+        <div class="anviz-section">
+          <h3>Fingerprint Enrollment</h3>
+          <div class="enrollment-form">
+            <div class="form-group">
+              <label for="enroll-employee-id">Employee ID:</label>
+              <input type="text" id="enroll-employee-id" placeholder="Enter employee ID for enrollment">
+            </div>
+            <div class="form-group">
+              <label for="finger-index">Finger Index:</label>
+              <select id="finger-index">
+                <option value="0">Right Thumb</option>
+                <option value="1">Right Index</option>
+                <option value="2">Right Middle</option>
+                <option value="3">Right Ring</option>
+                <option value="4">Right Little</option>
+                <option value="5">Left Thumb</option>
+                <option value="6">Left Index</option>
+                <option value="7">Left Middle</option>
+                <option value="8">Left Ring</option>
+                <option value="9">Left Little</option>
+              </select>
+            </div>
+            <div class="button-group">
+              <button id="start-enrollment-btn" class="action-btn" disabled>Start Enrollment</button>
+            </div>
+          </div>
+          <div id="enrollment-status" class="status-box">
+            <p>Status: Not enrolled</p>
+          </div>
+        </div>
+        
+        <!-- Event Listener Section -->
+        <div class="anviz-section">
+          <h3>Event Listener</h3>
+          <div class="listener-form">
+            <div class="button-group">
+              <button id="start-listener-btn" class="action-btn" disabled>Start Event Listener</button>
+              <button id="stop-listener-btn" class="action-btn" disabled>Stop Event Listener</button>
+            </div>
+          </div>
+          <div id="event-log" class="event-log">
+            <div class="log-header">Event Log</div>
+            <div id="event-log-content" class="log-content"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Load web compatibility layer before other scripts -->
+  <script src="web-compatibility.js"></script>
+  <script src="app.js"></script>
+  <script src="anviz-integration.js"></script>
+  <script src="anviz.js"></script>
+</body>
+</html>

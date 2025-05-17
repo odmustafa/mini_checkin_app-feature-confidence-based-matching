@@ -1,15 +1,24 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+/**
+ * Electron main entry point for the Mini Check-In App
+ * This file properly initializes the Electron app
+ */
+
+// Import Electron modules
+const electron = require('electron');
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
+const ipcMain = electron.ipcMain;
 const path = require('path');
-const ScanIDService = require('./services/ScanIDService');
-const WixService = require('./services/WixService');
-const WixApiExplorer = require('./services/WixApiExplorer');
-const WixSdkTest = require('./services/WixSdkTest');
-const WixSdkTestSimple = require('./services/WixSdkTestSimple');
-const WixSdkInspector = require('./services/WixSdkInspector');
-const WixSdkAdapter = require('./services/WixSdkAdapter');
-const WixSdkCompatAdapter = require('./services/WixSdkCompatAdapter');
-const WebhookService = require('./services/WebhookService');
-const AnvizService = require('./services/AnvizService');
+const ScanIDService = require('./src/services/ScanIDService');
+const WixService = require('./src/services/WixService');
+const WixApiExplorer = require('./src/services/WixApiExplorer');
+const WixSdkTest = require('./src/services/WixSdkTest');
+const WixSdkTestSimple = require('./src/services/WixSdkTestSimple');
+const WixSdkInspector = require('./src/services/WixSdkInspector');
+const WixSdkAdapter = require('./src/services/WixSdkAdapter');
+const WixSdkCompatAdapter = require('./src/services/WixSdkCompatAdapter');
+const WebhookService = require('./src/services/WebhookService');
+const AnvizService = require('./src/services/AnvizService');
 
 let mainWindow;
 
@@ -18,7 +27,7 @@ function createWindow() {
     width: 900,
     height: 700,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'src/preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
       // Disable disk cache to avoid permission issues
@@ -26,7 +35,7 @@ function createWindow() {
       partition: 'nopersist'
     }
   });
-  mainWindow.loadFile(path.join(__dirname, 'renderer/index.html'));
+  mainWindow.loadFile(path.join(__dirname, 'src/renderer/index.html'));
   mainWindow.on('closed', () => { mainWindow = null; });
 }
 
@@ -98,8 +107,6 @@ ipcMain.handle('wix-sdk:inspect', async () => {
 ipcMain.handle('wix-sdk:adapter-test', async (event, { collectionId }) => {
   return await WixSdkAdapter.testAdapter(collectionId);
 });
-
-// Direct API handlers removed - using only SDK as per requirements
 
 // Wix SDK Compatibility Adapter handler
 ipcMain.handle('wix-sdk:compat-test', async (event, { collectionId }) => {

@@ -385,6 +385,28 @@ app.post('/api/wix/find-member', async (req, res) => {
     const WixService = require('./services/WixService');
     const result = await WixService.findMember({ firstName, lastName, dateOfBirth });
     
+    // Transform the response to match what the UI expects
+    // If the response has contacts but no results, convert contacts to results
+    if (result.success && result.contacts && !result.results) {
+      // Copy the contacts array to results
+      result.results = result.contacts;
+      
+      // Make sure we preserve the source information
+      if (!result.source) {
+        result.source = 'wix-crm-contacts';
+      }
+      
+      // Log the confidence information for debugging
+      console.log('Confidence information in contacts:');
+      result.contacts.forEach((contact, index) => {
+        console.log(`Contact ${index}:`, {
+          confidenceScore: contact.confidenceScore,
+          confidenceLevel: contact.confidenceLevel,
+          matchDetails: contact.matchDetails
+        });
+      });
+    }
+    
     res.json(result);
   } catch (err) {
     console.error('Wix API Find Member Error:', err.message);
@@ -677,6 +699,11 @@ app.get('/api/photos/:filename', (req, res) => {
   
   // Send the file
   res.sendFile(photoPath);
+});
+
+// Specific route for Anviz interface
+app.get('/anviz', (req, res) => {
+  res.sendFile(path.join(__dirname, 'renderer', 'anviz-web.html'));
 });
 
 // Serve the main HTML file for all other routes

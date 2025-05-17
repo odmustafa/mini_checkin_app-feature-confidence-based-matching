@@ -8,6 +8,38 @@
  * - Fail Fast and Learn: Using fallback mechanisms and detailed error reporting
  */
 
+// Initialize wixSdk immediately to avoid "Cannot read properties of undefined (reading 'getConfig')" error
+if (typeof window !== 'undefined' && !window.wixSdk) {
+  console.log('Creating wixSdk compatibility layer for web (immediate initialization)');
+  
+  // Add a configuration object
+  const wixConfig = {
+    apiKey: 'web-mode-api-key',
+    siteId: 'web-mode-site-id',
+    environment: 'web'
+  };
+  
+  window.wixSdk = {
+    // Add getConfig method
+    getConfig: () => {
+      console.log('Web compatibility: Returning mock Wix configuration');
+      return wixConfig;
+    },
+    // Map searchMember to scanidAPI.findWixMember (will be properly initialized later)
+    searchMember: async (params) => {
+      console.log('Web compatibility: wixSdk.searchMember called before full initialization');
+      if (window.scanidAPI && window.scanidAPI.findWixMember) {
+        const { firstName, lastName, dateOfBirth } = params;
+        return await window.scanidAPI.findWixMember(firstName, lastName, dateOfBirth);
+      }
+      return { success: false, error: 'scanidAPI not yet initialized' };
+    },
+    // Stub methods that will be properly initialized later
+    getMemberPricingPlans: async () => ({ success: false, error: 'Not fully initialized yet' }),
+    listPricingPlanOrders: async () => ({ success: false, error: 'Not fully initialized yet' })
+  };
+}
+
 // Helper function to convert file:// URLs to web server URLs for photos
 function convertPhotoPath(photoPath) {
   if (!photoPath) return '';
@@ -109,30 +141,30 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add a MutationObserver to automatically convert file:// URLs in images
     setupPhotoPathConverter();
     
-    // Create a compatibility layer for Electron's window.wixSdk in web environment
-    if (!window.wixSdk) {
-      console.log('Creating wixSdk compatibility layer for web');
+    // Update the compatibility layer for Electron's window.wixSdk in web environment
+    // The basic wixSdk object was already created at the top of the file
+    if (window.wixSdk) {
+      console.log('Updating wixSdk compatibility layer with full functionality');
       
-      window.wixSdk = {
-      // Map searchMember to scanidAPI.findWixMember
-      searchMember: async (params) => {
+      // Update the methods to use scanidAPI now that it's available
+      window.wixSdk.searchMember = async (params) => {
         console.log('Web compatibility: Redirecting wixSdk.searchMember to scanidAPI.findWixMember', params);
         const { firstName, lastName, dateOfBirth } = params;
         return await window.scanidAPI.findWixMember(firstName, lastName, dateOfBirth);
-      },
+      };
       
       // Map getMemberPricingPlans to scanidAPI.getMemberPricingPlans
-      getMemberPricingPlans: async (memberId) => {
+      window.wixSdk.getMemberPricingPlans = async (memberId) => {
         console.log('Web compatibility: Redirecting wixSdk.getMemberPricingPlans to scanidAPI.getMemberPricingPlans', memberId);
         return await window.scanidAPI.getMemberPricingPlans(memberId);
-      },
+      };
       
       // Add other methods as needed
-      listPricingPlanOrders: async (options) => {
+      window.wixSdk.listPricingPlanOrders = async (options) => {
         console.log('Web compatibility: Redirecting wixSdk.listPricingPlanOrders to scanidAPI.listPricingPlanOrders', options);
         return await window.scanidAPI.listPricingPlanOrders(options);
-      }
-    };
+      };
+    }
   }
   
   // Create a compatibility layer for Electron's window.electronAPI in web environment
@@ -170,3 +202,4 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Running in Electron mode - web compatibility layer not needed');
   }
 });
+

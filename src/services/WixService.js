@@ -8,9 +8,8 @@
  */
 const fs = require('fs');
 const path = require('path');
-// Import the adapter module but don't call any methods yet
+// Import the adapter module with all exported methods
 const wixSdkAdapterModule = require('./WixSdkAdapter');
-const WixSdkAdapter = wixSdkAdapterModule.adapter;
 // Import the Pricing Plans service
 const WixPricingPlansService = require('./WixPricingPlansService');
 
@@ -74,7 +73,7 @@ module.exports = {
       logOperation('searchMember', { firstName: formattedFirstName, lastName: formattedLastName, dateOfBirth });
       
       // Use the SDK adapter to search for members
-      const result = await WixSdkAdapter.searchMember({
+      const result = await wixSdkAdapterModule.searchMember({
         firstName: formattedFirstName,
         lastName: formattedLastName,
         dateOfBirth
@@ -111,7 +110,7 @@ module.exports = {
       logOperation('getMemberPricingPlans', { memberId });
       
       // Use the SDK adapter to get pricing plans for the member
-      const result = await WixSdkAdapter.getMemberPricingPlans(memberId);
+      const result = await wixSdkAdapterModule.getMemberPricingPlans(memberId);
       
       return result;
     } catch (err) {

@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "c6kDZ1EUuZpi+TRIhLaNOJpTiF+ojjjmgh1u963VzNq/rB+rMtx2vH/990Wa6bqwLgfz4mGqe+mUtSqbdkRhqg==",
+  "success": true,
+  "projectFilePath": "/Users/omar/Downloads/20240106 - Tribute Breaks and /mini_checkin_app-feature-confidence-based-matching/src/assets/anviz-wrapper/AnvizWrapper.csproj",
+  "expectedPackageFiles": [
+    "/Users/omar/.nuget/packages/microsoft.netcore.app.ref/6.0.29/microsoft.netcore.app.ref.6.0.29.nupkg.sha512",
+    "/Users/omar/.nuget/packages/microsoft.aspnetcore.app.ref/6.0.29/microsoft.aspnetcore.app.ref.6.0.29.nupkg.sha512",
+    "/Users/omar/.nuget/packages/microsoft.netcore.app.host.osx-arm64/6.0.29/microsoft.netcore.app.host.osx-arm64.6.0.29.nupkg.sha512"
+  ],
+  "logs": []
+}

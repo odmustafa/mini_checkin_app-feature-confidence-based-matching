@@ -1,38 +1,79 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
-const path = require('path');
-const ScanIDService = require('./services/ScanIDService');
-const WixService = require('./services/WixService');
-const WixApiExplorer = require('./services/WixApiExplorer');
-const WixSdkTest = require('./services/WixSdkTest');
-const WixSdkTestSimple = require('./services/WixSdkTestSimple');
-const WixSdkInspector = require('./services/WixSdkInspector');
-const WixSdkAdapter = require('./services/WixSdkAdapter');
-const WixSdkCompatAdapter = require('./services/WixSdkCompatAdapter');
-const WebhookService = require('./services/WebhookService');
-const AnvizService = require('./services/AnvizService');
+/**
+ * Electron main entry point for the Mini Check-In App
+ * This file properly initializes the Electron app
+ */
 
+// Import required modules
+const electron = require('electron');
+const path = require('path');
+const fs = require('fs');
+
+// Get app and BrowserWindow from electron
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
+const ipcMain = electron.ipcMain;
+
+// Import services
+const ScanIDService = require('./src/services/ScanIDService');
+const WixService = require('./src/services/WixService');
+const WixApiExplorer = require('./src/services/WixApiExplorer');
+const WixSdkTest = require('./src/services/WixSdkTest');
+const WixSdkTestSimple = require('./src/services/WixSdkTestSimple');
+const WixSdkInspector = require('./src/services/WixSdkInspector');
+const WixSdkAdapter = require('./src/services/WixSdkAdapter');
+const WixSdkCompatAdapter = require('./src/services/WixSdkCompatAdapter');
+const WebhookService = require('./src/services/WebhookService');
+const AnvizService = require('./src/services/AnvizService');
+
+// Keep a global reference of the window object
 let mainWindow;
 
 function createWindow() {
+  console.log('Creating main window...');
+  // Create the browser window
   mainWindow = new BrowserWindow({
     width: 900,
     height: 700,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'src/preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
-      // Disable disk cache to avoid permission issues
       webSecurity: true,
       partition: 'nopersist'
     }
   });
-  mainWindow.loadFile(path.join(__dirname, 'renderer/index.html'));
-  mainWindow.on('closed', () => { mainWindow = null; });
+
+  // Load the index.html file
+  mainWindow.loadFile(path.join(__dirname, 'src/renderer/index.html'));
+  
+  // Open DevTools for debugging
+  mainWindow.webContents.openDevTools();
+
+  // Emitted when the window is closed
+  mainWindow.on('closed', function() {
+    mainWindow = null;
+  });
+  
+  console.log('Main window created successfully');
 }
 
-app.whenReady().then(createWindow);
-app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
-app.on('activate', () => { if (mainWindow === null) createWindow(); });
+// Create window when Electron has finished initialization
+app.on('ready', createWindow);
+
+// Quit when all windows are closed
+app.on('window-all-closed', function() {
+  // On macOS applications and their menu bar stay active until the user quits
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});
+
+app.on('activate', function() {
+  // On macOS it's common to re-create a window when the dock icon is clicked
+  if (mainWindow === null) {
+    createWindow();
+  }
+});
 
 // IPC: Read latest Scan-ID CSV entry
 ipcMain.handle('scanid:get-latest', async () => {
@@ -98,8 +139,6 @@ ipcMain.handle('wix-sdk:inspect', async () => {
 ipcMain.handle('wix-sdk:adapter-test', async (event, { collectionId }) => {
   return await WixSdkAdapter.testAdapter(collectionId);
 });
-
-// Direct API handlers removed - using only SDK as per requirements
 
 // Wix SDK Compatibility Adapter handler
 ipcMain.handle('wix-sdk:compat-test', async (event, { collectionId }) => {
