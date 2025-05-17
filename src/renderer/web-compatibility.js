@@ -132,8 +132,8 @@ function fixImageSrc(img) {
 
 // Initialize on document load
 document.addEventListener('DOMContentLoaded', function() {
-  // Check if we're running in a browser environment (not Electron)
-  const isWebEnvironment = !window.scanidAPI || !window.electronAPI;
+  // Force desktop mode for the front desk Windows computer
+  const isWebEnvironment = false; // Disabled web development mode
   
   if (isWebEnvironment) {
     console.log('Initializing web compatibility layer for browser environment');

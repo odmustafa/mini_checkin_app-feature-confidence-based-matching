@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "/Users/omar/Downloads/20240106 - Tribute Breaks and /mini_checkin_app-feature-confidence-based-matching/src/assets/anviz-wrapper/AnvizWrapper.csproj": {}
+    "C:\\Users\\tmeyn\\mini_checkin_app\\src\\assets\\anviz-wrapper\\AnvizWrapper.csproj": {}
   },
   "projects": {
-    "/Users/omar/Downloads/20240106 - Tribute Breaks and /mini_checkin_app-feature-confidence-based-matching/src/assets/anviz-wrapper/AnvizWrapper.csproj": {
+    "C:\\Users\\tmeyn\\mini_checkin_app\\src\\assets\\anviz-wrapper\\AnvizWrapper.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/omar/Downloads/20240106 - Tribute Breaks and /mini_checkin_app-feature-confidence-based-matching/src/assets/anviz-wrapper/AnvizWrapper.csproj",
+        "projectUniqueName": "C:\\Users\\tmeyn\\mini_checkin_app\\src\\assets\\anviz-wrapper\\AnvizWrapper.csproj",
         "projectName": "AnvizWrapper",
-        "projectPath": "/Users/omar/Downloads/20240106 - Tribute Breaks and /mini_checkin_app-feature-confidence-based-matching/src/assets/anviz-wrapper/AnvizWrapper.csproj",
-        "packagesPath": "/Users/omar/.nuget/packages/",
-        "outputPath": "/Users/omar/Downloads/20240106 - Tribute Breaks and /mini_checkin_app-feature-confidence-based-matching/src/assets/anviz-wrapper/obj/",
+        "projectPath": "C:\\Users\\tmeyn\\mini_checkin_app\\src\\assets\\anviz-wrapper\\AnvizWrapper.csproj",
+        "packagesPath": "C:\\Users\\tmeyn\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\tmeyn\\mini_checkin_app\\src\\assets\\anviz-wrapper\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/omar/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\tmeyn\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -37,7 +43,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net6.0": {
@@ -53,26 +60,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[6.0.29, 6.0.29]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.osx-arm64",
-              "version": "[6.0.29, 6.0.29]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[6.0.29, 6.0.29]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.204/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203\\RuntimeIdentifierGraph.json"
         }
       }
     }

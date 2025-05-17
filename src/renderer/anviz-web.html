@@ -1,16 +1,17 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anviz Fingerprint Enrollment - Web Mode</title>
+    <title>Anviz Fingerprint Enrollment - Desktop Mode</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <header>
             <h1>Anviz Fingerprint Enrollment</h1>
-            <p class="subtitle">Web Development Mode</p>
+            <p class="subtitle">Desktop Mode - Front Desk Computer</p>
         </header>
 
         <div class="card">
@@ -24,7 +25,7 @@
                 </div>
                 <div class="form-group">
                     <label for="device-ip">Device IP:</label>
-                    <input type="text" id="device-ip" value="192.168.1.100" class="form-control">
+                    <input type="text" id="device-ip" value="192.168.8.243" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="device-port">Port:</label>
@@ -35,7 +36,8 @@
                     <input type="password" id="device-password" value="123456" class="form-control">
                 </div>
                 <div class="button-group">
-                    <button id="connect-btn" class="btn btn-primary">Connect</button>
+                    <button id="initialize-btn" class="btn btn-primary">Initialize SDK</button>
+                    <button id="connect-btn" class="btn btn-primary" disabled>Connect</button>
                     <button id="disconnect-btn" class="btn btn-secondary" disabled>Disconnect</button>
                 </div>
             </div>
@@ -106,8 +108,14 @@
                 <h2>Event Log</h2>
             </div>
             <div class="card-body">
+                <div class="button-group">
+                    <button id="start-listener-btn" class="btn btn-primary" disabled>Start Event Listener</button>
+                    <button id="stop-listener-btn" class="btn btn-secondary" disabled>Stop Listener</button>
+                </div>
                 <div id="event-log" class="log-container">
-                    <p class="log-entry">Web development mode active. Events will be simulated.</p>
+                    <div id="event-log-content">
+                        <p class="log-entry">Desktop mode active. Ready to connect to Anviz C2 Pro (192.168.8.243:5010).</p>
+                    </div>
                 </div>
                 <div class="button-group">
                     <button id="clear-log-btn" class="btn btn-secondary">Clear Log</button>
@@ -116,24 +124,48 @@
         </div>
     </div>
 
-    <script src="/socket.io/socket.io.js"></script>
+    <!-- Load the anviz.js script which contains the proper Electron IPC integration -->
+    <script src="anviz.js"></script>
     <script>
-        // Connect to Socket.io server
-        const socket = io();
+        // Use Electron IPC instead of Socket.io in desktop mode
         
         // DOM Elements
         const connectBtn = document.getElementById('connect-btn');
         const disconnectBtn = document.getElementById('disconnect-btn');
-        const addUserBtn = document.getElementById('add-user-btn');
-        const startEnrollmentBtn = document.getElementById('start-enrollment-btn');
-        const clearLogBtn = document.getElementById('clear-log-btn');
         const connectionStatus = document.getElementById('connection-status');
         const connectionText = document.getElementById('connection-text');
-        const eventLog = document.getElementById('event-log');
+        const addUserBtn = document.getElementById('add-user-btn');
+        const startEnrollmentBtn = document.getElementById('start-enrollment-btn');
         const enrollmentStatus = document.getElementById('enrollment-status');
+        const clearLogBtn = document.getElementById('clear-log-btn');
+        const eventLog = document.getElementById('event-log');
         
         // Device connection state
+        let sdkInitialized = false;
         let deviceConnected = false;
+        
+        // Check if we have access to the Electron IPC API
+        const hasAnvizAPI = typeof window.anvizAPI !== 'undefined';
+        
+        // Initialize the Anviz SDK on page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (hasAnvizAPI) {
+                logEvent('Initializing Anviz SDK...');
+                try {
+                    const result = await window.anvizAPI.initialize();
+                    if (result.success) {
+                        sdkInitialized = true;
+                        logEvent('Anviz SDK initialized successfully');
+                    } else {
+                        logEvent(`Failed to initialize Anviz SDK: ${result.error}`, true);
+                    }
+                } catch (error) {
+                    logEvent(`Error initializing Anviz SDK: ${error.message}`, true);
+                }
+            } else {
+                logEvent('Anviz API not available. Make sure you are running in desktop mode.', true);
+            }
+        });
         
         // Add event to log
         function logEvent(message, isError = false) {
@@ -158,10 +190,19 @@
         }
         
         // Connect button click handler
-        connectBtn.addEventListener('click', () => {
+        connectBtn.addEventListener('click', async () => {
+            if (!hasAnvizAPI) {
+                logEvent('Anviz API not available. Make sure you are running in desktop mode.', true);
+                return;
+            }
+
+            if (!sdkInitialized) {
+                logEvent('Please initialize the SDK first', true);
+                return;
+            }
+            
             const ip = document.getElementById('device-ip').value;
-            const port = document.getElementById('device-port').value;
-            const password = document.getElementById('device-password').value;
+            const port = parseInt(document.getElementById('device-port').value, 10);
             
             if (!ip || !port) {
                 logEvent('Please enter device IP and port', true);
@@ -171,26 +212,64 @@
             logEvent(`Connecting to Anviz device at ${ip}:${port}...`);
             connectionText.textContent = 'Connecting...';
             
-            // Simulate connection delay
-            setTimeout(() => {
-                updateConnectionStatus(true, 'Connected (Simulated)');
-                logEvent('Connected to Anviz device (Simulated)');
-            }, 1500);
+            try {
+                const result = await window.anvizAPI.connectDevice({ ip, port });
+                
+                if (result.success) {
+                    deviceConnected = true;
+                    updateConnectionStatus(true, `Connected to ${result.deviceInfo ? result.deviceInfo.model : 'Anviz device'}`);
+                    logEvent(`Connected to Anviz device at ${ip}:${port}`);
+                } else {
+                    updateConnectionStatus(false, 'Connection failed');
+                    logEvent(`Failed to connect: ${result.error}`, true);
+                }
+            } catch (error) {
+                updateConnectionStatus(false, 'Connection error');
+                logEvent(`Error connecting to device: ${error.message}`, true);
+            }
         });
         
         // Disconnect button click handler
-        disconnectBtn.addEventListener('click', () => {
+        disconnectBtn.addEventListener('click', async () => {
+            if (!hasAnvizAPI) {
+                logEvent('Anviz API not available. Make sure you are running in desktop mode.', true);
+                return;
+            }
+            
+            if (!deviceConnected) {
+                logEvent('Not connected to any device', true);
+                return;
+            }
+            
             logEvent('Disconnecting from Anviz device...');
             
-            // Simulate disconnection delay
-            setTimeout(() => {
-                updateConnectionStatus(false);
-                logEvent('Disconnected from Anviz device');
-            }, 1000);
+            try {
+                const result = await window.anvizAPI.disconnectDevice();
+                
+                if (result.success) {
+                    deviceConnected = false;
+                    updateConnectionStatus(false, 'Disconnected');
+                    logEvent('Disconnected from Anviz device');
+                } else {
+                    logEvent(`Failed to disconnect: ${result.error}`, true);
+                }
+            } catch (error) {
+                logEvent(`Error disconnecting from device: ${error.message}`, true);
+            }
         });
         
         // Add user button click handler
-        addUserBtn.addEventListener('click', () => {
+        addUserBtn.addEventListener('click', async () => {
+            if (!hasAnvizAPI) {
+                logEvent('Anviz API not available. Make sure you are running in desktop mode.', true);
+                return;
+            }
+            
+            if (!deviceConnected) {
+                logEvent('Please connect to the device first', true);
+                return;
+            }
+            
             const userId = document.getElementById('user-id').value;
             const userName = document.getElementById('user-name').value;
             const userCard = document.getElementById('user-card').value;
@@ -203,16 +282,39 @@
             
             logEvent(`Adding user: ${userName} (ID: ${userId})...`);
             
-            // Simulate adding user delay
-            setTimeout(() => {
-                logEvent(`User ${userName} added successfully with ID ${userId}`);
-                // Auto-update enrollment user ID field
-                document.getElementById('enrollment-user-id').value = userId;
-            }, 1000);
+            try {
+                // Use the real Anviz API to add a user
+                const result = await window.anvizAPI.addUser({
+                    userId: parseInt(userId, 10),
+                    name: userName,
+                    cardNumber: userCard || '',
+                    password: userPassword || ''
+                });
+                
+                if (result.success) {
+                    logEvent(`User ${userName} added successfully with ID ${userId}`);
+                    // Auto-update enrollment user ID field
+                    document.getElementById('enrollment-user-id').value = userId;
+                } else {
+                    logEvent(`Failed to add user: ${result.error}`, true);
+                }
+            } catch (error) {
+                logEvent(`Error adding user: ${error.message}`, true);
+            }
         });
         
         // Start enrollment button click handler
-        startEnrollmentBtn.addEventListener('click', () => {
+        startEnrollmentBtn.addEventListener('click', async () => {
+            if (!hasAnvizAPI) {
+                logEvent('Anviz API not available. Make sure you are running in desktop mode.', true);
+                return;
+            }
+            
+            if (!deviceConnected) {
+                logEvent('Please connect to the device first', true);
+                return;
+            }
+            
             const userId = document.getElementById('enrollment-user-id').value;
             const fingerIndex = document.getElementById('finger-index').value;
             const fingerName = document.getElementById('finger-index').options[document.getElementById('finger-index').selectedIndex].text;
@@ -225,25 +327,26 @@
             logEvent(`Starting fingerprint enrollment for user ID ${userId}, finger: ${fingerName}...`);
             enrollmentStatus.innerHTML = '<p>Please place your finger on the scanner...</p>';
             
-            // Simulate enrollment process
-            setTimeout(() => {
-                enrollmentStatus.innerHTML = '<p>First scan completed. Please remove your finger.</p>';
-                logEvent('First scan completed. Waiting for second scan...');
+            try {
+                // Use the real Anviz API to start fingerprint enrollment
+                const result = await window.anvizAPI.startFingerEnrollment({
+                    userId: parseInt(userId, 10),
+                    fingerIndex: parseInt(fingerIndex, 10)
+                });
                 
-                setTimeout(() => {
-                    enrollmentStatus.innerHTML = '<p>Please place your finger on the scanner again...</p>';
+                if (result.success) {
+                    logEvent(`Enrollment process started for user ID ${userId}, finger: ${fingerName}`);
                     
-                    setTimeout(() => {
-                        enrollmentStatus.innerHTML = '<p>Second scan completed. Please remove your finger.</p>';
-                        logEvent('Second scan completed. Processing...');
-                        
-                        setTimeout(() => {
-                            enrollmentStatus.innerHTML = '<p class="success">Enrollment completed successfully!</p>';
-                            logEvent(`Fingerprint enrollment completed successfully for user ID ${userId}, finger: ${fingerName}`);
-                        }, 1500);
-                    }, 2000);
-                }, 1500);
-            }, 2000);
+                    // Listen for enrollment events from the device
+                    // These will be handled by the Anviz event system
+                } else {
+                    enrollmentStatus.innerHTML = `<p class="error">Failed to start enrollment: ${result.error}</p>`;
+                    logEvent(`Failed to start enrollment: ${result.error}`, true);
+                }
+            } catch (error) {
+                enrollmentStatus.innerHTML = `<p class="error">Error starting enrollment: ${error.message}</p>`;
+                logEvent(`Error starting enrollment: ${error.message}`, true);
+            }
         });
         
         // Clear log button click handler
@@ -253,7 +356,29 @@
         });
         
         // Initialize
-        logEvent('Anviz web interface initialized in simulation mode');
+        try {
+            logEvent('Anviz interface initialized in desktop mode for front desk computer');
+            
+            // Register for Anviz events if the API is available
+            if (hasAnvizAPI && window.anvizAPI.registerEventListener) {
+                window.anvizAPI.registerEventListener((eventType, data) => {
+                    logEvent(`Received event from Anviz device: ${eventType}`);
+                    
+                    // Handle different event types
+                    if (eventType === 'enrollment') {
+                        if (data.status === 'progress') {
+                            enrollmentStatus.innerHTML = `<p>${data.message || 'Enrollment in progress...'}</p>`;
+                        } else if (data.status === 'complete') {
+                            enrollmentStatus.innerHTML = `<p class="success">Enrollment completed successfully!</p>`;
+                        } else if (data.status === 'error') {
+                            enrollmentStatus.innerHTML = `<p class="error">${data.message || 'Enrollment failed'}</p>`;
+                        }
+                    }
+                });
+            }
+        } catch (error) {
+            logEvent(`Error during initialization: ${error.message}`, true);
+        }
     </script>
 </body>
 </html>

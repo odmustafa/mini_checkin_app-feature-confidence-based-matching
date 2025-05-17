@@ -1,0 +1,5 @@
+C:\Users\tmeyn\mini_checkin_app\src\assets\anviz-wrapper\obj\Debug\net6.0\AnvizWrapper.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\tmeyn\mini_checkin_app\src\assets\anviz-wrapper\obj\Debug\net6.0\AnvizWrapper.AssemblyInfoInputs.cache
+C:\Users\tmeyn\mini_checkin_app\src\assets\anviz-wrapper\obj\Debug\net6.0\AnvizWrapper.AssemblyInfo.cs
+C:\Users\tmeyn\mini_checkin_app\src\assets\anviz-wrapper\obj\Debug\net6.0\AnvizWrapper.csproj.CoreCompileInputs.cache
+C:\Users\tmeyn\mini_checkin_app\src\assets\anviz-wrapper\obj\Debug\net6.0\AnvizWrapper.sourcelink.json
