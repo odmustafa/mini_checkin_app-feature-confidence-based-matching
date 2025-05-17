@@ -20,7 +20,7 @@ const isDevelopment = !isWindows;
 
 // Path to the C# wrapper executable and its directory (Windows only)
 const ANVIZ_WRAPPER_DIR = isWindows ? path.join(__dirname, '../assets/anviz-wrapper') : null;
-const ANVIZ_WRAPPER_PATH = isWindows ? path.join(ANVIZ_WRAPPER_DIR, 'AnvizWrapper.exe') : null;
+const ANVIZ_WRAPPER_PATH = isWindows ? path.join(ANVIZ_WRAPPER_DIR, 'bin/Release/net6.0/AnvizWrapper.exe') : null;
 
 // Communication channels (Windows only)
 const TEMP_DIR = os.tmpdir();
@@ -74,7 +74,9 @@ class AnvizService {
 				this.initialized = result.success;
 				return result;
 			} catch (error) {
-				console.log('Failed to initialize with wrapper, falling back to simulation mode');
+				console.error('Failed to initialize with wrapper, detailed error:', error);
+                                console.error('Failed to initialize with wrapper, detailed error:', error);
+console.log('Failed to initialize with wrapper, falling back to simulation mode');
 				simulationMode = true;
 				this.initialized = true;
 				return { success: true, message: 'Simulation mode initialized (fallback)' };
@@ -446,7 +448,83 @@ class AnvizService {
 	/**
 	 * Clean up resources
 	 */
-	async cleanup() {
+	/**
+         * Execute a command through the Anviz wrapper
+         * @private
+         * @param {Object} commandData Command data to send
+         * @returns {Promise<Object>} Command result
+         */
+                /**
+         * Execute a command through the Anviz wrapper
+         * @private
+         * @param {Object} commandData Command data to send
+         * @returns {Promise<Object>} Command result
+         */
+        async _executeCommand(commandData) {
+                try {
+                        if (simulationMode) {
+                                console.log('Cannot execute command in simulation mode');
+                                return { success: false, error: 'Simulation mode active' };
+                        }
+
+                        if (!fs.existsSync(ANVIZ_WRAPPER_PATH)) {
+                                console.log('Anviz wrapper executable not found, using direct connection mode');
+                                this._useFallbackMode = true;
+                                simulationMode = true;
+                                return { success: false, error: 'Wrapper executable not found' };
+                        }
+
+                        // Write the command to a temporary file
+                        fs.writeFileSync(REQUEST_FILE, JSON.stringify(commandData));
+
+                        // Execute the wrapper with the --execute flag
+                        const wrapperProcess = spawn(ANVIZ_WRAPPER_PATH, ['--execute']);
+
+                        // Return a promise that resolves when the wrapper completes
+                        return new Promise((resolve, reject) => {
+                                let output = '';
+
+                                wrapperProcess.stdout.on('data', (data) => {
+                                        output += data.toString();
+                                });
+
+                                wrapperProcess.stderr.on('data', (data) => {
+                                        console.error(`Wrapper stderr: ${data}`);
+                                });
+
+                                wrapperProcess.on('error', (error) => {
+                                        console.error('Failed to start wrapper process:', error);
+                                        reject(error);
+                                });
+
+                                wrapperProcess.on('close', (code) => {
+                                        if (code !== 0) {
+                                                const errorMsg = `Wrapper process exited with code ${code}`;
+                                                console.error(errorMsg);
+                                                reject(new Error(errorMsg));
+                                                return;
+                                        }
+
+                                        try {
+                                                // Read the response from the temporary file
+                                                if (fs.existsSync(RESPONSE_FILE)) {
+                                                        const responseData = JSON.parse(fs.readFileSync(RESPONSE_FILE, 'utf8'));
+                                                        resolve(responseData);
+                                                } else {
+                                                        reject(new Error('Response file not found'));
+                                                }
+                                        } catch (error) {
+                                                reject(error);
+                                        }
+                                });
+                        });
+                } catch (error) {
+                        console.error('Error executing command:', error);
+                        return { success: false, error: error.message };
+                }
+        }
+
+        async cleanup() {
 		// Clear any simulation intervals
 		if (this._simulatedEventInterval) {
 			clearInterval(this._simulatedEventInterval);
@@ -463,3 +541,11 @@ const anvizService = new AnvizService();
 
 // Export the singleton
 module.exports = anvizService;
+
+
+
+
+
+
+
+

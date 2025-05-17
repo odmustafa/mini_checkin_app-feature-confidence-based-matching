@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AnvizWrapper")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3a0e2da611a8350b71a55461a000fbc453d19572")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+59517d2301c0effa7890ec3c26b6f36ed08a6154")]
 [assembly: System.Reflection.AssemblyProductAttribute("AnvizWrapper")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AnvizWrapper")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

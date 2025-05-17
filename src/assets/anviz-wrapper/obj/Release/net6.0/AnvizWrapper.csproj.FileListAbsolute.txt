@@ -14,3 +14,19 @@
 /Users/omar/Downloads/20240106 - Tribute Breaks and /mini_checkin_app-feature-confidence-based-matching/src/assets/anviz-wrapper/obj/Release/net6.0/AnvizWrapper.pdb
 /Users/omar/Downloads/20240106 - Tribute Breaks and /mini_checkin_app-feature-confidence-based-matching/src/assets/anviz-wrapper/obj/Release/net6.0/AnvizWrapper.genruntimeconfig.cache
 /Users/omar/Downloads/20240106 - Tribute Breaks and /mini_checkin_app-feature-confidence-based-matching/src/assets/anviz-wrapper/obj/Release/net6.0/ref/AnvizWrapper.dll
+C:\Users\tmeyn\mini_checkin_app\src\assets\anviz-wrapper\bin\Release\net6.0\tc-b_new_sdk.dll
+C:\Users\tmeyn\mini_checkin_app\src\assets\anviz-wrapper\bin\Release\net6.0\AnvizWrapper.exe
+C:\Users\tmeyn\mini_checkin_app\src\assets\anviz-wrapper\bin\Release\net6.0\AnvizWrapper.deps.json
+C:\Users\tmeyn\mini_checkin_app\src\assets\anviz-wrapper\bin\Release\net6.0\AnvizWrapper.runtimeconfig.json
+C:\Users\tmeyn\mini_checkin_app\src\assets\anviz-wrapper\bin\Release\net6.0\AnvizWrapper.dll
+C:\Users\tmeyn\mini_checkin_app\src\assets\anviz-wrapper\bin\Release\net6.0\AnvizWrapper.pdb
+C:\Users\tmeyn\mini_checkin_app\src\assets\anviz-wrapper\obj\Release\net6.0\AnvizWrapper.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\tmeyn\mini_checkin_app\src\assets\anviz-wrapper\obj\Release\net6.0\AnvizWrapper.AssemblyInfoInputs.cache
+C:\Users\tmeyn\mini_checkin_app\src\assets\anviz-wrapper\obj\Release\net6.0\AnvizWrapper.AssemblyInfo.cs
+C:\Users\tmeyn\mini_checkin_app\src\assets\anviz-wrapper\obj\Release\net6.0\AnvizWrapper.csproj.CoreCompileInputs.cache
+C:\Users\tmeyn\mini_checkin_app\src\assets\anviz-wrapper\obj\Release\net6.0\AnvizWrapper.sourcelink.json
+C:\Users\tmeyn\mini_checkin_app\src\assets\anviz-wrapper\obj\Release\net6.0\AnvizWrapper.dll
+C:\Users\tmeyn\mini_checkin_app\src\assets\anviz-wrapper\obj\Release\net6.0\refint\AnvizWrapper.dll
+C:\Users\tmeyn\mini_checkin_app\src\assets\anviz-wrapper\obj\Release\net6.0\AnvizWrapper.pdb
+C:\Users\tmeyn\mini_checkin_app\src\assets\anviz-wrapper\obj\Release\net6.0\AnvizWrapper.genruntimeconfig.cache
+C:\Users\tmeyn\mini_checkin_app\src\assets\anviz-wrapper\obj\Release\net6.0\ref\AnvizWrapper.dll
