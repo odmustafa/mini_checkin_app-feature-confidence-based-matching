@@ -12,6 +12,10 @@ A check-in application that reads Scan-ID export data from a CSV file and integr
 - Real-time Scan-ID file watching
 - Proper case conversion for improved contact matching
 
+## New Account Activation Flow - Explained
+- Check [New Account Activation Flow](./New-Account-Activation-flow.md) for a detailed explanation of the New Account Activation flow (now with a neat flowchart!)
+
+  
 ## Recent Improvements
 - Added confidence-based contact matching system with color-coded indicators
 - Implemented intelligent scoring algorithm for name and DOB matching
@@ -28,8 +32,6 @@ A check-in application that reads Scan-ID export data from a CSV file and integr
 - Fixed email display in contact list to properly show primary email addresses
 - Deprecated all direct API calls in favor of the official Wix JavaScript SDK
 
-## New Account Activation Flow - Explained
-- Check [New Account Activation Flow](./New-Account-Activation-flow.md) for a detailed explanation of the New Account Activation flow (now with a neat flowchart!) 
 
 ## How it works
 - Click "Scan ID" to read the latest scan from the Scan-ID CSV export
@@ -44,19 +46,6 @@ A check-in application that reads Scan-ID export data from a CSV file and integr
 - You can select any match to view their pricing plans
 - You can also click "Watch Scan-ID" to monitor for new scans automatically
 
-## Running the App
-
-### As a Desktop App (Electron)
-```
-npm start
-```
-
-### As a Web App
-```
-npm run web
-```
-Then open http://localhost:3000 (or the port shown in the console) in your browser.
-
 ## Configuration
 - The Scan-ID CSV export path is located at: `src/assets/scan-id-export.csv`
 - Wix API credentials are stored in `wix.config.json` in the root directory
@@ -70,6 +59,21 @@ Then open http://localhost:3000 (or the port shown in the console) in your brows
   "publicKey": "YOUR_WIX_PUBLIC_KEY"
 }
 ```
+
+## Running the App
+
+### As a Desktop App (Electron)
+```
+npm start
+```
+
+### As a Web App
+```
+npm run web
+```
+Then open http://localhost:3000 (or the port shown in the console) in your browser.
+
+
 
 ## Architecture
 - **Frontend**: HTML, CSS, JavaScript in `src/renderer/`
@@ -99,24 +103,16 @@ This will start a web server and automatically open your browser to the app. The
 ---
 
 ## Development
-This project follows the Ethereal Engineering Technical Codex principles:
-- **Boundary Protection**: Implementing strict interface contracts for APIs
-- **Fail Fast and Learn**: Using fallback mechanisms and detailed error reporting
-- **Separation of Concerns**: Maintaining clear boundaries between components
-  
-It serves as a focused prototype for the check-in workflow, based on the architecture and best practices of the main Front Desk Ops application.
+This project serves as a focused prototype for the check-in workflow, based on the architecture and best practices of the main Front Desk Ops application.
 
 ## AI Usage
-This project relies heavily on AI technologies including:
+This project relies heavily on AI technologies including (like, I'm not a programmer whatsoever lol):
 - Windsurf (Pro)
 - Claude 3.7 Sonnet (within Windsurf via Cascade)
 - GPT-4.1 (free limited time) (within Windsurf via Cascade)
 - ChatGPT (Pro)
 
-## Useage
-This project is for developing an application that will be used by staff at Tribute Music Gallery primarily to 
-- Check-in members upon arrival
-- New account activation
+
 
 ## TO-DO
 - (MISSION CRITICAL) Get all of the parts of the New Account Activation flow functioning.
