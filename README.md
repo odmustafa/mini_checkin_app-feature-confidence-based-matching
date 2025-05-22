@@ -7,7 +7,10 @@ A check-in application that reads Scan-ID export data from a CSV file and integr
 >SEE THIS OTHER REPO: https://github.com/odmustafa/wix-rest-api-test/
 
 
-> Basically, if you see any reference to "Wix JavaScript SDK" or "Anviz C2 Pro" (fingerprint scanner) or "Anviz SDK",  we decided to instead use "Wix REST API" and "Secugen Hamster Pro 20 Usb Fingerprint Reader" and "Secugen SDK"
+> NOTE: if you see any reference to "Wix JavaScript SDK" or "Anviz C2 Pro" (fingerprint scanner) or "Anviz SDK",  we decided to instead use "Wix REST API" and "Secugen Hamster Pro 20 Usb Fingerprint Reader" and "Secugen SDK"
+
+## New Account Activation Flow - Explained
+- Check [New Account Activation Flow](./New-Account-Activation-flow.md) for a detailed explanation of the New Account Activation flow (now with a neat flowchart!)
 
 ## Features
 - Scan ID data parsing from CSV exports
@@ -34,21 +37,20 @@ A check-in application that reads Scan-ID export data from a CSV file and integr
 - Fixed email display in contact list to properly show primary email addresses
 - Deprecated all direct API calls in favor of the official Wix JavaScript SDK
 
-## New Account Activation Flow - Explained
-- Check [New Account Activation Flow](./New-Account-Activation-flow.md) for a detailed explanation of the New Account Activation flow (now with a neat flowchart!) 
+ 
 
 ## How it works
-- Click "Scan ID" to read the latest scan from the Scan-ID CSV export
-- The app displays the person's name, DOB, ID number, and other details
-- It then searches for matching contacts in Wix using the CRM Contacts API
+- Click "Scan ID" to read the latest scan from the Scan-ID CSV export (Staff will insert members ID into the Duplex ID Scanner, which will automatically update csv file and save a combined front/back scan of ID in a single image file)
+- The app displays the person's name, DOB, ID number, and other details as well as the image of the scanned Id
+- It then searches for matching contacts in Wix using the Wix REST API
 - Matches are displayed with confidence scores and color-coding:
   - High confidence (60-100 points): Green
   - Medium confidence (35-59 points): Yellow
   - Low confidence (0-34 points): Red
-- Each match shows detailed information about why it was matched
+  - (Each match shows detailed information about why it was matched)
 - Contacts are sorted by confidence score with the best matches first
 - You can select any match to view their pricing plans
-- You can also click "Watch Scan-ID" to monitor for new scans automatically
+- **SLIGHT CHANGE OF PLAN FOR THIS PART OF THE PROCESS** Need to integrate fingerprint scanner functionality with SecuGen SDK 
 
 ## Running the App
 
