@@ -4,6 +4,8 @@ A check-in application that reads Scan-ID export data from a CSV file and integr
 
 > UPDATE: Wix REST API works a lot better than Wix Javascript API for getting the data from Wix and displaying on a standalone desktop application. Some of this `README.md` file is outdated and has not been updated yet.
 
+>SEE THIS OTHER REPO: https://github.com/odmustafa/wix-rest-api-test/
+
 
 > Basically, if you see any reference to "Wix JavaScript SDK" or "Anviz C2 Pro" (fingerprint scanner) or "Anviz SDK",  we decided to instead use "Wix REST API" and "Secugen Hamster Pro 20 Usb Fingerprint Reader" and "Secugen SDK"
 
