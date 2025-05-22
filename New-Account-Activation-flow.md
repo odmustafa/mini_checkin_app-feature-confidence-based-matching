@@ -4,7 +4,9 @@
 
 The New Account Activation process is the final step for new members joining Tribute Music Gallery. This process occurs during the member's initial visit to the venue and serves two critical purposes:
 1. Verification of identity and age (21+)
-2. Creation of TouchID (fingerprint) for express check-in during future visits
+2. Confirm membership plan was purchased and is currently active (with no previous membership history)
+3. Creation of TouchID (fingerprint) for express check-in during future visits
+4. Creation of new entry in local database to save data associated with new member, their membership, and various membership-related counters (i.e. information from ID scan, Wix account information, list of orders (for latest membership plan information along with membership history)
 
 ## Prerequisites
 
