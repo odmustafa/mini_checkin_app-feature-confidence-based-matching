@@ -2,15 +2,19 @@
 
 A check-in application that reads Scan-ID export data from a CSV file and integrates with Wix APIs for member verification and pricing plan retrieval. The app can run either as an Electron desktop application or as a web-based application in your browser.
 
+> UPDATE: Wix REST API works a lot better than Wix Javascript API for getting the data from Wix and displaying on a standalone desktop application. Some of this `README.md` file is outdated and has not been updated yet.
+
+
+> Basically, if you see any reference to "Wix JavaScript SDK" or "Anviz C2 Pro" (fingerprint scanner) or "Anviz SDK",  we decided to instead use "Wix REST API" and "Secugen Hamster Pro 20 Usb Fingerprint Reader" and "Secugen SDK"
+
 ## Features
 - Scan ID data parsing from CSV exports
-- Contact verification using Wix CRM Contacts API
+- Contact verification using Wix REST API
 - Confidence-based contact matching with visual indicators
-- Pricing plan retrieval for verified contacts
 - Flexible name matching for better search results
-- API Explorer for testing different Wix API endpoints
-- Real-time Scan-ID file watching
 - Proper case conversion for improved contact matching
+- Pricing plan retrieval for verified contacts
+- Local database used to store data associated with each member, their membership, and various membership-related counters (i.e. information from ID scan, Wix account information, list of orders (for latest membership plan information along with membership history)
 
 ## Recent Improvements
 - Added confidence-based contact matching system with color-coded indicators
@@ -61,6 +65,7 @@ Then open http://localhost:3000 (or the port shown in the console) in your brows
 - The Scan-ID CSV export path is located at: `src/assets/scan-id-export.csv`
 - Wix API credentials are stored in `wix.config.json` in the root directory
 - Sample format for `wix.config.json`:
+- * NOTE: `wix.config.json` FILE WILL BE INCLUDED IN EMAIL *
 ```json
 {
   "apiKey": "YOUR_WIX_API_KEY",
@@ -99,12 +104,11 @@ This will start a web server and automatically open your browser to the app. The
 ---
 
 ## Development
-This project follows the Ethereal Engineering Technical Codex principles:
-- **Boundary Protection**: Implementing strict interface contracts for APIs
-- **Fail Fast and Learn**: Using fallback mechanisms and detailed error reporting
-- **Separation of Concerns**: Maintaining clear boundaries between components
-  
-It serves as a focused prototype for the check-in workflow, based on the architecture and best practices of the main Front Desk Ops application.
+The purpose of the program in this repository was mainly to explore best strategy for pulling data from Wix into a standalone desktop application. The UI was not the main focus in this, so the final product will look nothing like what you see with this app. Also, been using this to explain what we're needing overall with this Front Desk Ops application. 
+
+- UPDATE: Wix REST API works a lot better than Wix Javascript API for getting the data from Wix and displaying on a standalone desktop application.
+
+
 
 ## AI Usage
 This project relies heavily on AI technologies including:
@@ -123,9 +127,9 @@ This project is for developing an application that will be used by staff at Trib
 - (MISSION CRITICAL) Get Member Check-in process functioning
 - (Not as critical, but still important) DJ/Artist list and check-in
 - (Not as critical, but still important) DJ/Artist guestlist check-in
-- (Not as critical, but still important) Incident Report Module (for staff to create Incident Reports - hopefully implimented before incident occures which requires reporting (i.e. Breach of the Peace Report (Tx Tabc Enf 5122))
+- (Not as critical, but still important) Implimentation of Guest Pass feature (this will enable new Membership Perk for month/year membership renewals)
 - Not cry (...I am but a simple man .__.;; )
 - (Future components) Staff Task List (for internal use)
 - (Future components) Staff Schedule Management (for internal use)
-- (Future components) Implimentation of Guest Pass feature (this will enable new Membership Perk for month/year membership renewals)
+- (Future components) Incident Report Module (for staff to create Incident Reports - hopefully implimented before incident occures which requires reporting (i.e. Breach of the Peace Report (Tx Tabc Enf 5122))
 
